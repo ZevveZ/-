@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'scutmocc.apps.AppConfig'
+    'scutmocc.apps.ScutmoccConfig'
 ]
 
 MIDDLEWARE_CLASSES = [
