@@ -1,10 +1,52 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>首页</title>
+    <script type="text/javascript" src="{% static 'scutmocc/js/jquery-3.1.0.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'scutmocc/css/jquery.fancybox.css' %}">
+    <script type="text/babel" src="{% static 'scutmocc/js/jquery.fancybox.js' %}"></script>
+    <script src="{% static 'scutmocc/js/jquery.fancybox.pack.js' %}" ></script>
+    <link rel="stylesheet" href="{% static 'scutmocc/css/homepage.css' %}">
+    <script type="text/javascript" src="{% static 'scutmocc/js/homepage.js' %}"></script>
+
 </head>
 <body>
-This is homepage.
+
+<header>
+	<nav>
+		<div id="logo"><img src="{% static 'scutmocc/css/logo.jpg' %}" alt="logo"/></div>
+		<ul id="leftbar">
+			<li><a href="#">项目</a></li>
+			<li><a href="#">课程</a></li>
+			<li><a href="">论坛</a></li>
+			<li><a href="">个人</a></li>
+		</ul>
+		<ul id="rightbar">
+			<li><a id="login"  class="fancybox" href="#user" title="Login">登录</a></li>
+			<li><a id="register" class="fancybox" href="#newuser" title="Register">注册</a></li>
+		</ul>
+	</nav>
+</header>
+<div id="clear"></div>
+<div class="container">
+	<form id="user" action="">
+		<fieldset>
+			<legend>登录</legend>
+			<label for="username">用户名:</label>
+			<input type="text" id="username" name="username" />
+			<label for="password">密码:</label>
+			<input type="password" id="password" name="password" />
+			<input type="submit" value="login"/>
+		</fieldset>
+	</form>
+</div>
+<div class="container">
+	<div id="newuser">
+		<a href="">个人</a>
+		<a href="">社团</a>
+	</div>
+</div>
 </body>
 </html>
