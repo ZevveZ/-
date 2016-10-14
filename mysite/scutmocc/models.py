@@ -48,7 +48,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 class Person(models.Model):
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
     Nickname = models.CharField(max_length=10, null=False)
-    College = models.ForeignKey()
+    College = models.ForeignKey(    )
     Sex = models.BooleanField()
     Signature = models.CharField(max_length=100)
     Zc_Date = models.DateField(False, True)
