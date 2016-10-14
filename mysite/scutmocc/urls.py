@@ -1,8 +1,14 @@
 from django.conf.urls import url
+
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    url(r'^$', views.homepage, name='homepage'),
+    url(r'^$', auth_views.login, {'template_name': 'homepage/homepage.html'}, name='homepage'),
+    # mark
+    url(r'^logout/$', auth_views.logout, {'template_name': 'homepage/logout.html'}, name='logout'),
+    # include all urls
+
     # consider the length of \d+ latter
     url(r'^(?P<user_id>\d+)$', views.user_center, name='user_center'),
     url(r'^course/$', views.course_list, name='course_list'),
