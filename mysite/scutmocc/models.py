@@ -4,7 +4,6 @@ from django.db import models
 
 
 # Create your models here.
-
 class MyUserManager(BaseUserManager):
     def create_user(self, email, password=None):
         if not email:
@@ -60,28 +59,24 @@ class Person(models.Model):
     Rank = models.IntegerField()
 
 
-# Lession repo
+# Lesson repo
 class LabelField(models.Model):
-    Lession = {
+    Lesson = {
         ('a', '项目'),
         ('b', '理论课'),
         ('c', '技能')
     }
-    Label_Kind = models.CharField(max_length=1, choices=Lession)
+    Label_Kind = models.CharField(max_length=1, choices=Lesson)
     Label_Name = models.CharField(max_length=50)
 
 
 # College Field
-
-
 class CollegeField(models.Model):
     College_Name = models.CharField(max_length=30)
     College_Account = models.IntegerField()
 
 
-# Submit Lession
-
-
+# Submit Lesson
 class SubmitLes(models.Model):
     Person_Id = models.ForeignKey(MyUser)
     Label_Id = models.ForeignKey(LabelField)
@@ -98,8 +93,6 @@ class SubmitLes(models.Model):
 
 
 # Comment Lesson
-
-
 class CommentField(models.Model):
     Les_Id = models.ForeignKey(SubmitLes)
     Person_Id = models.ForeignKey(MyUser)
@@ -107,16 +100,13 @@ class CommentField(models.Model):
 
 
 # Answer Lesson
-
-
 class AnswerField(models.Model):
     Comment_Id = models.ForeignKey(CommentField)
     Person_Id = models.ForeignKey(MyUser)
     Answer = models.CharField(max_length=500)
 
-    #   Relation of Choice Lesson
 
-
+# Relation of Choice Lesson
 class ChoiceLes(models.Model):
     Les_Id = models.ForeignKey(SubmitLes)
     Person = models.ForeignKey(MyUser)
@@ -124,9 +114,8 @@ class ChoiceLes(models.Model):
     End = models.BooleanField()
     Les_Assess = models.CharField(max_length=500, null=True)
 
-    #   Board
 
-
+#   Board
 class Board(models.Model):
     Field = {
         ('a', '活动区'),
@@ -139,9 +128,8 @@ class Board(models.Model):
     Zrzt_sum = models.IntegerField()
     Zt_sum = models.IntegerField()
 
-    #  Theme
 
-
+#  Theme
 class Theme(models.Model):
     Content = models.CharField()
     Title = models.CharField()
@@ -155,9 +143,8 @@ class Theme(models.Model):
     Legal = models.BooleanField()
     Sc_sum = models.IntegerField()
 
-    # BBS answer
 
-
+# BBS answer
 class ThemeAnswer(models.Model):
     Hfr_Id = models.ForeignKey(MyUser)
     Lc_no = models.IntegerField()
@@ -166,16 +153,14 @@ class ThemeAnswer(models.Model):
     Dz_sum = models.IntegerField()
     Legal = models.BooleanField()
 
-    # Collect Theme
 
-
+# Collect Theme
 class CollectTheme(models.Model):
     Yh_Id = models.ForeignKey(MyUser)
     Theme_Id = models.ForeignKey(Theme)
 
-    # Pay attention
 
-
+# Pay attention
 class Attention(models):
     Fs_Id = models.ForeignKey(MyUser)
     Ox_Id = models.ForeignKey(MyUser)
