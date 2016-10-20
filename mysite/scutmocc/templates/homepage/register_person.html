@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>form</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <style>
+        body{
+        background-color: #f5f5f5;
+        }
+        #form_control{
+            text-align: center;
+            width: 600px;
+            margin: 100px auto;
+            border: solid 1px lightgrey;
+        }
+        .btn{
+            margin: 0 auto;
+        }
+    </style>
+
+</head>
+<body>
+<div id="form_control">
+<form  action="form.html" class="form-horizontal" role="form">
+    <fieldset>
+        <legend>注册</legend>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="zxh">学号</label>
+        <div class="col-sm-4">
+            <input class="form-control" type="text" id="zxh" name="zxh" placeholder="请输入你的学号" required/>
+        </div>
+        <label class="col-sm-2 control-label" for="xm">姓名</label>
+        <div class="col-sm-4">
+            <input class="form-control" type="text" id="xm" name="xm" placeholder="请填写你的姓名" required/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="nickname">昵称</label>
+        <div class="col-sm-4">
+            <input class="form-control" type="text" id="nickname" name="nickname" placeholder="请输入你的昵称" required/>
+        </div>
+        <label class="col-sm-2 control-label" for="email">邮箱</label>
+        <div class="col-sm-4">
+            <input class="form-control" type="email" id="email" name="email" placeholder="请绑定你的邮箱" required/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="psd">密码</label>
+        <div class="col-sm-4">
+            <input class="form-control" type="password" id="psd" name="psd" placeholder="请设置你的密码" required/>
+        </div>
+        <label class="col-sm-2 control-label" for="sec">确认密码</label>
+        <div class="col-sm-4">
+            <input  class="form-control" type="password" id="sec" name="sec" required/>
+        </div>
+    </div>
+        <button type="button" class="btn btn-primary btn-lg">提交注册信息</button>
+    </fieldset>
+
+</form>
+</div>
+</body>
+<script src="js/jquery-1.11.2.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/check.js"></script>
+</html>
