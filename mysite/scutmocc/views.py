@@ -5,7 +5,7 @@ from django.shortcuts import render
 
 def homepage(request):
     return render(request, 'homepage/homepage.html')
-git
+
 # display user center
 
 
