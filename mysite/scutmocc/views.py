@@ -1,7 +1,6 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 
-
-# display the homepage
 from scutmocc.validation import validate
 
 
@@ -46,14 +45,24 @@ def bbs_theme(request, board_name, theme_id):
 
 # deal with personal registration
 def personal_registration(request):
+    # 前端保证此时用户不会处于登录状态
     if request.method == 'POST':
-        zxh = request.POST.get('zxh')
         xm = request.POST.get('xm')
+        zxh = request.POST.get('zxh')
         if validate(zxh, xm):
+            nickname = request.POST.get('nickname')
+            email = request.POST.get('email')
             password = request.POST.get('password')
-            # 创建User
+            # 验证邮箱
+            user = User.objects.create_user(zxh, email, password, last_name=xm)
+            user.person.Nickname = nickname
+            user.save()
         else:
             # 身份验证失败
+            return render(request, template_name='homepage/register_person.html', context={'tips': 'validation_fail'})
+    else:
+        # 不是post方式，返回empty的注册界面
+        return render(request, template_name='homepage/register_person.html')
 
 
 # deal with community registration

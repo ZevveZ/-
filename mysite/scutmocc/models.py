@@ -1,25 +1,36 @@
-from django.db import models
 from django.contrib.auth.models import PermissionsMixin, User
-
+from django.db import models
 
 # Create your models here.
 
 
 class Person(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    Nickname = models.CharField(max_length=10, null=False)
-    # College = models.ForeignKey()
-    Sex = models.BooleanField()
-    Signature = models.CharField(max_length=100)
-    Zc_Date = models.DateField(auto_now_add=True)
-    Fb_sum = models.IntegerField()
-    Hf_sum = models.IntegerField()
-    Gz_sum = models.IntegerField()
-    Bgz_sum = models.IntegerField()
-    Sc_sum = models.IntegerField()
-    Rank = models.IntegerField()
+    Nickname = models.CharField(max_length=10)
+    College = models.CharField(max_length=20)
+    Sex = models.NullBooleanField(null=True)
+    Signature = models.CharField(max_length=100, null=True)
+    Fb_sum = models.IntegerField(default=0)
+    Hf_sum = models.IntegerField(default=0)
+    Gz_sum = models.IntegerField(default=0)
+    Bgz_sum = models.IntegerField(default=0)
+    Sc_sum = models.IntegerField(default=0)
+    Rank = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.user
 
 
+def update_person(sender, instance, created, **kwargs):
+    if created:
+        person = Person()
+        person.user = instance
+        person.save()
+    else:
+        instance.person.save()
+
+
+models.signals.post_save.connect(update_person, sender=User)
 # # Lesson repo
 # class LabelField(models.Model):
 #     Lesson = {
