@@ -1,0 +1,4 @@
+数据库设计/
+migrations/
+*.pyc
+*.sqlite3
