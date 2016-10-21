@@ -1,7 +1,7 @@
 # Register your models here.
 
 from django.contrib import admin
-from  scutmocc.models import Person
+from  scutmocc.models import Person, Activity
 from  scutmocc.models import AnswerField
 from  scutmocc.models import LabelField
 from  scutmocc.models import SubmitLes
@@ -23,3 +23,4 @@ admin.site.register(Theme)
 admin.site.register(ThemeAnswer)
 admin.site.register(CollectTheme)
 admin.site.register(Attention)
+admin.site.register(Activity)

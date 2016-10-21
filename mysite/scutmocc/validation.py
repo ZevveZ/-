@@ -1,7 +1,10 @@
 import re
 import urllib.parse
+from http.client import RemoteDisconnected
 from urllib.error import URLError
 from urllib.request import Request, urlopen
+import base64
+from itsdangerous import URLSafeTimedSerializer as usts
 
 
 # 将学号姓名post给统一认证账号系统
@@ -37,6 +40,10 @@ def get_content(zxh, xm):
             print('Reason:', e.reason)
         # 如果出现异常返回False
         return ''
+    except RemoteDisconnected as e:
+        # 本地没有网络连接
+        print(e)
+        return ''
     else:
         return str(resp.read(), encoding='utf-8')
 
@@ -55,3 +62,20 @@ def get_result(content):
 def validate(zxh, xm):
     # print(get_result(get_content(zxh, xm)))
     return get_result(get_content(zxh, xm))
+
+
+# 用于验证邮箱
+class Token:
+    def __init__(self, security_key):
+        self.security_key = security_key
+        self.salt = base64.encodebytes(bytes(security_key, encoding='utf-8'))
+
+    def generate_validation__token(self, username):
+        serializer = usts(self.security_key)
+        return serializer.dumps(username, self.salt)
+
+    def confirm_validation_token(self, token, expiration=3600):
+        serializer = usts(self.security_key)
+        return serializer.loads(token, max_age=expiration, salt=self.salt)
+
+

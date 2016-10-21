@@ -127,3 +127,11 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# 添加邮箱信息
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = False
+EMAIL_HOST = 'smtp.sina.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'zevvez@sina.com'
+EMAIL_HOST_PASSWORD = 'scutmoccmail'
+DEFAULT_FROM_EMAIL = 'ScutMocc <zevvez@sina.com>'

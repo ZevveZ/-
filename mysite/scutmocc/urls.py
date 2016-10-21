@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^$', auth_views.login, {'template_name': 'homepage/homepage.html'}, name='homepage'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'homepage/logout.html'}, name='logout'),
     url(r'^register_person$', views.personal_registration, name='personal_registration'),
+    url(r'^activate/(.+)/$', views.activate, name='activate'),
     # consider the length of \d+ latter
     url(r'^(?P<user_id>\d+)$', views.user_center, name='user_center'),
     url(r'^course/$', views.course_list, name='course_list'),
