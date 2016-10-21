@@ -1,3 +1,5 @@
+# Register your models here.
+
 from django.contrib import admin
 from  scutmocc.models import Person, Activity
 from  scutmocc.models import AnswerField

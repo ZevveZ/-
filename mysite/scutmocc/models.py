@@ -1,7 +1,8 @@
 # coding: utf-8
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import PermissionsMixin, User
+from django.contrib.auth.models import User
 from django.db import models
+
+# Create your models here.
 
 
 class Person(models.Model):
@@ -18,7 +19,19 @@ class Person(models.Model):
     Rank = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.user.last_name
+        return self.user
+
+
+def update_person(sender, instance, created, **kwargs):
+    if created:
+        person = Person()
+        person.user = instance
+        person.save()
+    else:
+        instance.person.save()
+
+
+models.signals.post_save.connect(update_person, sender=User)
 
 
 class Activity(models.Model):
@@ -53,7 +66,7 @@ class SubmitLes(models.Model):
     Les_Time = models.IntegerField()
     Les_Way = models.CharField(max_length=200, null=True)
     Les_Price = models.IntegerField()
-    Les_Merge = models.IntegerField() # 0～3 社团 0~10
+    Les_Merge = models.IntegerField()  # 0～3 社团 0~10
     Les_Another = models.CharField(max_length=150, null=True)
     Les_Term = models.IntegerField(default=1)
     Les_Next = models.DateField(null=True)

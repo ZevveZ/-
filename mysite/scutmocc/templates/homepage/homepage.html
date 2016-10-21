@@ -10,7 +10,6 @@
     <script src="{% static 'scutmocc/js/jquery.fancybox.pack.js' %}" ></script>
     <link rel="stylesheet" href="{% static 'scutmocc/css/homepage.css' %}">
     <script type="text/javascript" src="{% static 'scutmocc/js/homepage.js' %}"></script>
-
 </head>
 <body>
 
@@ -69,7 +68,7 @@
 </div>
 <div class="container">
 	<div id="newuser">
-		<a href="">个人</a>
+		<a href="{% url 'personal_registration' %}">个人</a>
 		<a href="">社团</a>
 	</div>
 </div>
