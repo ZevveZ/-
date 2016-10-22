@@ -1,11 +1,12 @@
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from scutmocc.validation import validate, Token
 from mysite.settings import SECRET_KEY
-
+from .forms import ActivityForm, PersonalForm
 
 def homepage(request):
     return render(request, 'homepage/homepage.html')
@@ -53,13 +54,15 @@ m_token = Token(SECRET_KEY)
 def personal_registration(request):
     # 前端保证此时用户不会处于登录状态
     if request.method == 'POST':
-        xm = request.POST.get('xm')
-        zxh = request.POST.get('zxh')
+        form = PersonalForm(request.POST)
+        if form.is_valid():
+            zxh = form.cleaned_data['xuehao']
+            xm = form.cleaned_data['realname']
+            nickname = form.cleaned_data['nickname']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
 
         if validate(zxh, xm):
-            nickname = request.POST.get('nickname')
-            email = request.POST.get('email')
-            password = request.POST.get('psd')
             user = User.objects.create_user(zxh, email, password, last_name=xm, is_active=False)
             user.person.Nickname = nickname
             user.save()
@@ -75,12 +78,23 @@ def personal_registration(request):
             return render(request, template_name='homepage/register_person.html', context={'tips': 'validation_fail'})
     else:
         # 不是post方式，返回empty的注册界面
-        return render(request, template_name='homepage/register_person.html')
+        form = PersonalForm()
+        return render(request, 'homepage/register_person.html', {'form': form})
 
 
 # deal with community registration
-def community_registration(request):
-    pass
+def activity_registration(request):
+    if request.method == 'POST':
+        form = ActivityForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            account = form.cleaned_data['account']
+            introduce = form.cleaned_data['introduce']
+            password = form.cleaned_data['password']
+            return HttpResponseRedirect('/personal_registration/')
+    else:
+        form = ActivityForm()
+    return render(request, 'homepage/register_activity.html', {'form': form})
 
 
 def activate(request, token):
