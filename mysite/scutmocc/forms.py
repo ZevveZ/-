@@ -1,5 +1,8 @@
 # coding: utf-8
 from django import forms
+from django.contrib.auth.models import User
+
+from .validation import validate
 
 
 class ActivityForm(forms.Form):
@@ -16,6 +19,15 @@ class ActivityForm(forms.Form):
 
         if psd != sec_psd:
             raise forms.ValidationError("两次密码输入不一致!", code='psd-inequality')
+
+        # 验证社会名称是否已经注册过
+        name = cleaned_data.get('name')
+        try:
+            User.objects.get(last_name=name)
+        except User.DoesNotExist:
+            pass
+        else:
+            raise forms.ValidationError("社团名称已经被注册！")
 
 
 class PersonalForm(forms.Form):
@@ -34,5 +46,18 @@ class PersonalForm(forms.Form):
         if psd != sec_psd:
             raise forms.ValidationError("两次密码输入不一致!", code='psd-inequality')
 
+        # 验证学号和姓名
+        xh = cleaned_data.get('xuehao')
+        xm = cleaned_data.get('realname')
+        if not validate(xh, xm):
+            raise forms.ValidationError("学号和姓名不一致！")
+
+        # 验证学号是否已经注册过
+        try:
+            User.objects.get(username=xh)
+        except User.DoesNotExist:
+            pass
+        else:
+            raise forms.ValidationError("学号已经被注册！")
 
 

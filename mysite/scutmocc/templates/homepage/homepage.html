@@ -27,7 +27,7 @@
 		<ul id="rightbar">
             {% if user.is_authenticated %}
                 <li><a href="{% url 'logout' %}">退出</a></li>
-                <li><a href="">{{ user }}</a></li>
+                <li><a href="">{{ user.last_name }}</a></li>
             {% else %}
 			<li><a id="register" class="fancybox" href="#newuser" title="Register">注册</a></li>
             <li><a id="login"  class="fancybox" href="#user" title="Login">登录</a></li>

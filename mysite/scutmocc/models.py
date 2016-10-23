@@ -19,7 +19,7 @@ class Person(models.Model):
     Rank = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.user
+        return self.user.last_name
 
 
 def update_person(sender, instance, created, **kwargs):
@@ -41,6 +41,19 @@ class Activity(models.Model):
 
     def __str__(self):
         return self.user.last_name
+
+
+def update_activity(sender, instance, created, **kwargs):
+    if created:
+        activity = Activity()
+        activity.user = instance
+        activity.save()
+
+    else:
+        instance.activity.save()
+
+
+models.signals.post_save.connect(update_activity, sender=User)
 
 
 # Lesson repo

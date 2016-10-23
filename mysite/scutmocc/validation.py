@@ -78,4 +78,3 @@ class Token:
         serializer = usts(self.security_key)
         return serializer.loads(token, max_age=expiration, salt=self.salt)
 
-
