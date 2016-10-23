@@ -1,0 +1,37 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Title{% endblock %}</title>
+    {% block style %}
+        <link rel="stylesheet" href="{% static 'scutmocc/css/bootstrap.min.css' %}"/>
+        <style>
+            body {
+                background-color: #f5f5f5;
+            }
+
+            #form_container {
+                text-align: center;
+                width: 600px;
+                margin: 100px auto;
+                border: solid 1px lightgrey;
+            }
+
+            .btn {
+                margin: 0 auto;
+            }
+        </style>
+    {% endblock %}
+</head>
+<body>
+    <div id="form_container">
+        {% block form %}
+        {% endblock %}
+    </div>
+
+</body>
+<script src="{% static 'scutmocc/js/jquery-1.11.2.js'%}"></script>
+<script src="{% static 'scutmocc/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'scutmocc/js/check.js' %}"></script>
+</html>
