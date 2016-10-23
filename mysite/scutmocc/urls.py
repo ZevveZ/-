@@ -1,7 +1,7 @@
 from django.conf.urls import url
+from django.contrib.auth import views as auth_views
 
 from . import views
-from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^$', auth_views.login, {'template_name': 'homepage/homepage.html'}, name='homepage'),
@@ -9,6 +9,16 @@ urlpatterns = [
     url(r'^register_person$', views.personal_registration, name='personal_registration'),
     url(r'^register_activity$', views.activity_registration, name='activity_registration'),
     url(r'^activate/(.+)/$', views.activate, name='activate'),
+    url(r'^change_password/$', auth_views.password_change, {'template_name': 'homepage/change_password.html', 'post_change_redirect': r'/scutmocc/'},
+        name='password_change'),
+    url(r'reset_password/$', auth_views.password_reset, {'template_name': 'homepage/reset_password.html',
+                                                         'email_template_name': 'homepage/password_reset_email.html',
+                                                         'subject_template_name': 'homepage/password_reset_subject.txt',
+                                                         'post_reset_redirect': '/scutmocc/'},
+        name='password_reset'),
+    url(r'^reset_password_confirm/$', auth_views.password_reset_confirm, {'template_name': 'homepage/reset_password_confirm.html',
+                                                                          'post_reset_redirect': '/scutmocc/'},
+        name='password_reset_confirm'),
     # consider the length of \d+ latter
     url(r'^(?P<user_id>\d+)$', views.user_center, name='user_center'),
     url(r'^course/$', views.course_list, name='course_list'),
