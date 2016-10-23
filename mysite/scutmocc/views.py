@@ -63,7 +63,7 @@ def personal_registration(request):
             user = User.objects.create_user(zxh, email, password, last_name=xm, is_active=False)
             user.person.Nickname = nickname
             user.save()
-            #验证邮箱
+            # 验证邮箱
             token = m_token.generate_validation__token(user.username)
             message = '\n'.join([u'{0}，欢迎加入ScutMocc'.format(user.last_name),
                                  u'请访问链接，完成用户验证',
