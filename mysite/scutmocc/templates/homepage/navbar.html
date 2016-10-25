@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}Title{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'scutmocc/css/jquery.fancybox.css' %}">
+    <link rel="stylesheet" href="{% static 'scutmocc/css/bootstrap.min.css' %}"/>
     <style>
         .fancybox-custom .fancybox-skin {
 			box-shadow: 0 0 50px #222;
@@ -96,8 +97,10 @@
 {% block aside %}{% endblock %}
 {% block footer %}{% endblock %}
 </body>
- <script type="text/javascript" src="{% static 'scutmocc/js/jquery-3.1.0.min.js' %}"></script>
- <script type="text/babel" src="{% static 'scutmocc/js/jquery.fancybox.js' %}"></script>
+ <script  src="{% static 'scutmocc/js/jquery-3.1.0.min.js' %}"></script>
+<script src="{% static 'scutmocc/js/jquery-1.11.2.js'%}"></script>
+<script src="{% static 'scutmocc/js/bootstrap.min.js' %}"></script>
+ <script  src="{% static 'scutmocc/js/jquery.fancybox.js' %}"></script>
     <script src="{% static 'scutmocc/js/jquery.fancybox.pack.js' %}" ></script>
     <script>
         $(document).ready(function() {

@@ -21,7 +21,7 @@ class ActivityForm(forms.Form):
         if psd != sec_psd:
             raise forms.ValidationError("两次密码输入不一致!", code='psd-inequality')
 
-        # 验证社会名称是否已经注册过
+        # 验证社团名称是否已经注册过
         name = cleaned_data.get('name')
         try:
             User.objects.get(last_name=name)
@@ -29,6 +29,15 @@ class ActivityForm(forms.Form):
             pass
         else:
             raise forms.ValidationError("社团名称已经被注册！")
+
+        # 验证邮箱是否已经注册过
+        account = cleaned_data.get('account')
+        try:
+            User.objects.get(username=account)
+        except User.DoesNotExist:
+            pass
+        else:
+            raise forms.ValidationError("邮箱已被其他社团注册")
 
 
 class PersonalForm(forms.Form):
