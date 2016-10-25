@@ -9,6 +9,7 @@ class ActivityForm(forms.Form):
     name = forms.CharField(label='社团名称', max_length=20)
     account = forms.EmailField(label='绑定邮箱')
     introduce = forms.CharField(label='社团简介', widget=forms.Textarea, max_length=200)
+    image = forms.ImageField(label = '社团头像')
     password = forms.CharField(label='账号密码', widget=forms.PasswordInput, max_length=20)
     second_psd = forms.CharField(widget=forms.PasswordInput, max_length=20)
 

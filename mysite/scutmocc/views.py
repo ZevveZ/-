@@ -1,3 +1,4 @@
+# coding: utf-8
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -5,6 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from mysite.settings import SECRET_KEY
+from scutmocc.models import Activity
 from scutmocc.validation import Token
 from .forms import ActivityForm, PersonalForm
 
@@ -84,7 +86,7 @@ def personal_registration(request):
 # deal with activity registration
 def activity_registration(request):
     if request.method == 'POST':
-        form = ActivityForm(request.POST)
+        form = ActivityForm(request.POST, request.FILES)
         if form.is_valid():
             name = form.cleaned_data['name']
             account = form.cleaned_data['account']
@@ -92,8 +94,11 @@ def activity_registration(request):
             password = form.cleaned_data['password']
 
             user = User.objects.create_user(account, account, password, last_name=name, is_active=False)
-            user.activity.Act_intro = introduce
+            # user.activity.Act_intro = introduce
+            # user.activity.Act_image = image
             user.save()
+            instance = Activity(Act_intro=introduce, Act_image=request.FILES['image'])
+            instance.save()
 
             # 验证邮箱,人工验证社团用户
             message = '\n'.join([u'{0}，欢迎加入ScutMocc'.format(user.last_name),
