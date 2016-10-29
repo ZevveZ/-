@@ -50,6 +50,11 @@ def bbs_theme(request, board_name, theme_id):
     return render(request, 'bbs/theme.html', {'board_name': board_name, 'theme_id': theme_id})
 
 
+#test
+def test(request):
+    return render(request, 'homepage/test.html')
+
+
 # deal with  personal registration
 m_token = Token(SECRET_KEY)
 
@@ -94,11 +99,9 @@ def activity_registration(request):
             password = form.cleaned_data['password']
 
             user = User.objects.create_user(account, account, password, last_name=name, is_active=False)
-            # user.activity.Act_intro = introduce
-            # user.activity.Act_image = image
+            user.activity.Act_intro = introduce
+            user.activity.Act_image = request.FILES['image']
             user.save()
-            instance = Activity(Act_intro=introduce, Act_image=request.FILES['image'])
-            instance.save()
 
             # 验证邮箱,人工验证社团用户
             message = '\n'.join([u'{0}，欢迎加入ScutMocc'.format(user.last_name),
