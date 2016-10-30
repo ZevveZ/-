@@ -1,0 +1,13 @@
+{% load staticfiles %}
+<script src="{% static 'scutmocc/js/jquery-3.1.0.min.js' %}"></script>
+<script src="{% static 'scutmocc/js/jquery-1.11.2.js' %}"></script>
+<script src="{% static 'scutmocc/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'scutmocc/js/jquery.fancybox.js' %}"></script>
+<script src="{% static 'scutmocc/js/jquery.fancybox.pack.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('.fancybox').fancybox();
+        $('#id_username').attr("placeholder", "用户名");
+        $('#id_password').attr("placeholder", "密码");
+    });
+</script>

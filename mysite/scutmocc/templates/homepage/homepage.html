@@ -1,2 +1,13 @@
-{% extends 'homepage/navbar.html' %}
-{% block title %}首页{% endblock %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+   {% include 'template/navstyle.html' %}
+</head>
+<body>
+{% include 'template/navbar.html' %}
+</body>
+{% include 'template/navscript.html' %}
+</html>
