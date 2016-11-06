@@ -42,8 +42,7 @@
         {% endif %}
     </ul>
 </nav>
-<div class="container">
-    <form id="user" action="{% url 'homepage' %}" method="post" class="form-horizontal" role="form">
+<form id="user" action="{% url 'homepage' %}" method="post" class="form-horizontal" role="form">
         {% csrf_token %}
         <fieldset>
             <legend>登录</legend>
@@ -65,11 +64,8 @@
             <input type="submit" value="登录" class="btn btn-primary btn-lg btn-block"/>
             <input type="hidden" name="next" value="{% url 'homepage' %}"/>
         </fieldset>
-    </form>
-</div>
-<div class="container">
-    <div id="newuser">
+</form>
+<div id="newuser">
             <a href="{% url 'personal_registration' %}" class="btn btn-primary btn-lg ">个 人</a>
             <a href="{% url 'activity_registration' %}" class="btn btn-primary btn-lg ">社 团</a>
-    </div>
 </div>

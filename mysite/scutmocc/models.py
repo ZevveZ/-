@@ -123,19 +123,22 @@ class ChoiceLes(models.Model):
 
 #   Board
 class Board(models.Model):
-    Field = {
+    Field = [
         ('a', '活动区'),
         ('b', '问题区'),
         ('c', '话题区')
-    }
-    Board_type = models.CharField(max_length=1, choices=Field)
+    ]
+    Board_name = models.CharField(max_length=1, choices=Field, default='a')
     Gg_content = models.CharField(max_length=200)
     Jrzt_sum = models.IntegerField(default=0)
     Zrzt_sum = models.IntegerField(default=0)
     Zt_sum = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.Board_type
+        for x in self.Field:
+            if self.Board_name == x[0]:
+                return x[1]
+
 
 
 #  Theme
@@ -143,13 +146,13 @@ class Theme(models.Model):
     Content = models.TextField()
     Title = models.CharField(max_length=50)
     Fb_date = models.DateTimeField(auto_now_add=True)
-    Zjhf_date = models.DateTimeField()
+    Zjhf_date = models.DateTimeField(auto_now_add=True)
     Hf_sum = models.IntegerField(default=0)
-    Zjhf_sum = models.IntegerField(default=0)
+    Zjhfr = models.ForeignKey(User, related_name='hfr_set')
     Zd = models.BooleanField()
     Dz_sum = models.IntegerField(default=0)
     Board_type = models.ForeignKey(Board)
-    Fbr_id = models.ForeignKey(User)
+    Fbr = models.ForeignKey(User, related_name='fbr_set')
     Yd_sum = models.IntegerField(default=0)
     Legal = models.BooleanField()
     Sc_sum = models.IntegerField(default=0)

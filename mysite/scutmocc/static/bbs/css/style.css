@@ -1,0 +1,52 @@
+.avatar-48 {
+    width: 48px;
+    height: 48px;
+}
+.broaden{
+    width:1000px;
+}
+.count{
+    text-align: right;
+    padding-top:15px;
+}
+.star{
+    color:#EB5424;
+}
+
+/*控制标题的长度*/
+.constrain-length{
+    display:inline-block;
+    /*解决inline-block不对齐*/
+    vertical-align: middle;
+    max-width:750px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+.topic-item{
+    padding:10px 15px;
+    margin:0px -15px;
+    border-bottom: 1px solid #F0F0F0;
+}
+.topic-item:last-child{
+    border-bottom: 0px;
+}
+
+.page_board{
+    background-color:#e9eaed;
+}
+.sub_nav {
+    background-color: #f8f8f8;
+    margin-top: -20px;
+    margin-bottom: 15px;
+    padding:8px 0px;
+}
+.panel-footer ul{
+    margin:0px;
+}
+.name{
+    width:150px;
+    display: block;
+    float: left;
+    text-align: left;
+}

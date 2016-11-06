@@ -3,10 +3,10 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_list_or_404
+from scutmocc.models import Theme
 
 from mysite.settings import SECRET_KEY
-from scutmocc.models import Activity
 from scutmocc.validation import Token
 from .forms import ActivityForm, PersonalForm
 
@@ -37,22 +37,26 @@ def lesson_detail(request, label_id, les_id):
 
 # display the homepage of bbs
 def bbs_homepage(request):
-    return render(request, 'bbs/homepage.html')
+    best_theme_list = Theme.objects.order_by('-Dz_sum', '-Zjhf_date')[:10]
+    return render(request, "bbs/homepage.html", context={"best_theme_list": best_theme_list})
 
 
 # display one of boards in bbs
 def bbs_board(request, board_type):
-    return render(request, 'bbs/board.html', {'board_type': board_type})
+    if board_type == 'activity':
+        board_type = '活动区'
+        theme_list =
+    elif board_type == 'question':
+        board_type = '问题区'
+    else:
+        board_type = '话题区'
+
+    return render(request, 'bbs/board.html', context={'board_type': board_type})
 
 
 # display one of themes in board
 def bbs_theme(request, board_name, theme_id):
     return render(request, 'bbs/theme.html', {'board_name': board_name, 'theme_id': theme_id})
-
-
-#test
-def test(request):
-    return render(request, 'homepage/test.html')
 
 
 # deal with  personal registration

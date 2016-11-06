@@ -1,10 +1,155 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ board_type }}</title>
+    {% include 'template/navstyle.html' %}
+    <link rel="stylesheet" href="{% static 'bbs/css/style.css' %}">
 </head>
-<body>
-This is the {{ board_type }} board.
+<body class="page_board">
+{% include 'template/navbar.html' %}
+<!--
+<div class="sub_nav">
+    <div class="container">
+        <div class="modal" id="school-selector" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>请选择学院</strong>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul class="nav nav-pills">
+            <li role="presentation">
+                <a href="#"  data-toggle="modal" data-target="#school-selector">选择学院</a>
+            </li>
+            <li role="presentation" class="active"><a href="#">默认排序</a></li>
+            <li role="presentation"><a href="#">精品主题</a></li>
+            <li role="presentation"><a href="#">最新发表</a></li>
+            <li role="presentation"><a href="#">最新回复</a></li>
+            <li role="presentation"><a href="#">最多回复</a></li>
+        </ul>
+    </div>
+</div>
+-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="modal" id="school-selector" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <strong>请选择学院</strong>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="media">
+                                        <label class="media-left">J</label>
+                                        <span class="media-body">
+                                            <span class="name"><a href="#" title="计算机科学与工程学院">计算机科学与工程学院</a></span>
+                                            <span class="name"><a href="#" title="经济与贸易学院">经济与贸易学院</a></span>
+                                            <span class="name"><a href="#" title="建筑学院">建筑学院</a></span>
+                                        </span>
+                                    </div>
+                                    <div class="media">
+                                        <label class="media-left">Y</label>
+                                        <span class="media-body">
+                                            <span class="name"><a href="#" title="艺术学院">艺术学院</a></span>
+                                            <span class="name"><a href="#" title="医学院">医学院</a></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="nav nav-pills">
+                        <li role="presentation">
+                            <a href="#"  data-toggle="modal" data-target="#school-selector">选择学院</a>
+                        </li>
+                        <li role="presentation" class="active"><a href="#">默认排序</a></li>
+                        <li role="presentation"><a href="#">精品主题</a></li>
+                        <li role="presentation"><a href="#">最新发表</a></li>
+                        <li role="presentation"><a href="#">最新回复</a></li>
+                        <li role="presentation"><a href="#">最多回复</a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <ul class="media-list">
+                        <li class="media topic-item">
+                            <!--用户头像，待解决-->
+                            <div class="media-left">
+                                <a href="#">
+                                    <img class="media-object avatar-48" src="{% static 'bbs/img/blue_z.png' %}"
+                                         alt="zev">
+                                </a>
+                            </div>
+                            <div class="media-body broaden">
+                                <div class="media-heading">
+                                    <a class="constrain-length" title="hello world" href="#">hello world</a>
+                                    <!--通过js触发tooltip-->
+                                    <span class="glyphicon glyphicon-star-empty star" aria-hidden="true"
+                                          data-toggle="tooltip" data-original-title="精华主题"></span>
+                                </div>
+                                <div>
+                                    <a href="#">zev</a>
+                                    <span class="hidden-mobile">
+                                    •
+                                    最后由
+                                        <a href="#">zev</a>
+                                    发表于
+                                        <abbr title="">1 hour ago</abbr>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="media-right count">
+                                <span class="badge">0</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <ul class="pagination">
+                        <li>
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li><a href="#">1</a></li>
+                        <li>
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">公告</div>
+                <div class="panel-body">
+                    招募版主！
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Statistics</div>
+                <ul class="list-group">
+                    <li class="list-group-item">社区会员: 1 人</li>
+                    <li class="list-group-item">帖子数: 1 个</li>
+                    <li class="list-group-item">回帖数: 0 条</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+{% include 'template/navscript.html' %}
 </html>
