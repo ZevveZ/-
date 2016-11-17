@@ -29,7 +29,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ user.last_name }} <span
                         class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">个人中心</a></li>
+                    <li><a href="">个人中心</a></li>
                     <li class="divider"></li>
                     <li><a href="{% url 'password_change' %}">修改密码</a></li>
                     <li class="divider"></li>
@@ -42,7 +42,7 @@
         {% endif %}
     </ul>
 </nav>
-<div class="container">
+<div class="layer">
     <form id="user" action="{% url 'homepage' %}" method="post" class="form-horizontal" role="form">
         {% csrf_token %}
         <fieldset>
@@ -67,7 +67,7 @@
         </fieldset>
     </form>
 </div>
-<div class="container">
+<div class="layer">
     <div id="newuser">
             <a href="{% url 'personal_registration' %}" class="btn btn-primary btn-lg ">个 人</a>
             <a href="{% url 'activity_registration' %}" class="btn btn-primary btn-lg ">社 团</a>

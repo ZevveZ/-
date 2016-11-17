@@ -73,7 +73,7 @@ class LabelField(models.Model):
 # Submit Lesson
 class SubmitLes(models.Model):
     Person_Id = models.ForeignKey(User)
-    Label_Id = models.ForeignKey(LabelField)
+    Label_Id = models.ForeignKey(LabelField, default=None)
     Les_Name = models.CharField(max_length=60)
     Les_Plan = models.CharField(max_length=200)
     Les_Time = models.IntegerField()
@@ -83,7 +83,7 @@ class SubmitLes(models.Model):
     Les_Another = models.CharField(max_length=150, null=True)
     Les_Term = models.IntegerField(default=1)
     Les_Next = models.DateField(null=True)
-    Les_Status = models.BooleanField()
+    Les_Status = models.BooleanField(default=True)
 
     def __str__(self):
         return self.Les_Name

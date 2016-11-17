@@ -1,5 +1,8 @@
 # coding: utf-8
 from django import forms
+from django.db import models
+from django.forms import ModelForm, Textarea
+from scutmocc.models import SubmitLes
 from django.contrib.auth.models import User
 
 from .validation import validate
@@ -69,5 +72,17 @@ class PersonalForm(forms.Form):
             pass
         else:
             raise forms.ValidationError("学号已经被注册！")
+
+
+class SublesForm(ModelForm):
+    class Meta:
+        model = SubmitLes
+        fields = ['Label_Id', 'Les_Name', 'Les_Plan', 'Les_Time', 'Les_Way', 'Les_Price', 'Les_Merge', 'Les_Another']
+        widgets = {
+            'another': Textarea(attrs={'cols': 80, 'rows': 20}),
+        }
+
+
+
 
 
