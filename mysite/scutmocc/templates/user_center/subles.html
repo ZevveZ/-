@@ -1,0 +1,17 @@
+{% extends 'user_center/user_center.html' %}
+{% block title %}发布{% endblock %}
+{% block content %}
+    <form action="#" class="form-horizontal" role="form" method="post">
+       {% csrf_token %}
+    <fieldset>
+        <legend>发布</legend>
+     {% for field in form %}
+      <div class="form-group">
+         <label for="{{ field.label_tag }}"> {{ field.label_tag }}</label>
+        <div class="col-sm-12"> {{ field }} </div>
+          {{ field.errors }}
+    </div>
+    {% endfor %}
+    </fieldset>
+    </form>
+{% endblock %}
