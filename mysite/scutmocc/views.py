@@ -18,10 +18,11 @@ def homepage(request):
 # display user center
 def user_center(request, user_id):
     user = User.objects.get(id=user_id)
-    return render(request, 'user_center/user_center.html', {'user_id': user_id, 'user_name': user.last_name})
+    return render(request, 'user_center/user_center.html', {'user_id': user.id, 'user_name': user.last_name})
 
 
-def submit_les(request, user_id):
+def submit_les(request, user_id, kind):
+    user = User.objects.get(id=user_id)
     if request.method == 'POST':
         lesson = SubmitLes(Person_Id=user_id)
         form = SublesForm(request.POST, instance=lesson)
