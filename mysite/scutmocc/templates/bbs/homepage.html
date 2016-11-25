@@ -15,7 +15,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body>
+<body style="padding-top:70px">
 {% include 'template/navbar.html' %}
 <div class="jumbotron">
     <div class="container">
@@ -58,15 +58,15 @@
                             <div class="media-left">
                                 <a href="#">
                                     <img class="media-object avatar-48" src="{% static 'bbs/img/blue_z.png' %}"
-                                         alt="zev">
+                                         alt="{{ theme.Fbr.last_name }}">
                                 </a>
                             </div>
                             <div class="media-body broaden">
                                 <div class="media-heading">
                                     <a class="constrain-length" title="{{ theme.Title }}" href="#">{{ theme.Title }}</a>
                                     <!--通过js触发tooltip-->
-                                    <span class="glyphicon glyphicon-star-empty star" aria-hidden="true"
-                                          data-toggle="tooltip" data-original-title="精华主题"></span>
+                                    <i class="fa fa-diamond" aria-hidden="true"
+                                          data-toggle="tooltip" data-original-title="精华主题"></i>
                                 </div>
                                 <div>
                                     <a href="#">{{ theme.Board_type }}</a>
@@ -78,11 +78,11 @@
                                         {% if theme.Hf_sum ==  0 %}
                                             <a href="#">{{ theme.Fbr.last_name }}</a>
                                             发表于
-                                            <abbr title="">{{ theme.Fb_date|date:"Y-m-d H:i:s"}}</abbr>
+                                            <abbr title="时间">{{ theme.Fb_date|date:"Y-m-d H:i:s"}}</abbr>
                                         {% else %}
                                             <a href="#">{{ theme.Zjhfr.last_name }}</a>
                                             回复于
-                                            <abbr title="">{{ theme.Zjhf_date|date:"Y-m-d H:i:s" }}</abbr>
+                                            <abbr title="时间">{{ theme.Zjhf_date|date:"Y-m-d H:i:s" }}</abbr>
                                         {% endif %}
                                     </span>
                                 </div>

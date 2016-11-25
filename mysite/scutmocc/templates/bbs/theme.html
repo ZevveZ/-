@@ -1,10 +1,280 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ theme_item.Title }}</title>
+    {% include 'template/navstyle.html' %}
+    <link rel="stylesheet" href="{% static 'bbs/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'scutmocc/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bbs/css/fluidbox.min.css' %}">
 </head>
-<body>
-This is the {{ theme_id }} theme in {{ board_name }} board
+<body class="page_board">
+{% include 'template/navbar.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading media">
+                    <div class="media-body" style="width: 10000px;">
+                        <h1 class="media-heading">{{ theme_item.Title }}</h1>
+                        <div class="info">
+                            <span>{{ theme_item.College_type }}</span>
+                            •
+                            <a href="#">{{ theme_item.Fbr.last_name }}</a>
+                            <span class="hidden-mobile">
+                            •
+                            发表于
+                            <abbr title="时间">{{ theme_item.Fb_date|date:"Y-m-d H:i:s" }}</abbr>
+                                {% if theme_item.Hf_sum != 0 %}
+                                    •
+                                    最后由
+                                    <a href="#">{{ theme_item.Zjhfr.last_name }}</a>
+                                    回复于
+                                    <abbr title="时间">{{ theme_item.Zjhf_date|date:"Y-m-d H:i:s" }}</abbr>
+                                {% endif %}
+                                •
+                            阅读数{{ theme_item.Yd_sum }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="media-right">
+                        <a href="#">
+                            <img class="media-object avatar-48" src="{% static 'bbs/img/blue_z.png' %}"
+                                 alt="zev">
+                        </a>
+                    </div>
+                </div>
+                {% if theme_item.Dz_sum >= 10 %}
+                    <div class="label-awesome">
+                        <i class="fa fa-diamond" aria-hidden="true"
+                           data-toggle="tooltip" data-original-title="精华主题"></i>
+                        精华主题
+                    </div>
+                {% endif %}
+                <div class="panel-body markdown">
+                    <article>
+                        {{ theme_item.Content }}
+                    </article>
+                </div>
+                <div class="panel-footer">
+                    <div class="opts-color" data-id="{{ theme_item.id }}" data-type="theme">
+                        <a href="#" class="dianzan">
+                            {% if is_dianzan %}
+                                <i class="fa fa-heart opts_active" aria-hidden="true"></i>
+                                <span style="display: inline;">{{ theme_item.Dz_sum }}个赞</span>
+                            {% else %}
+                                <i class="fa fa-heart" aria-hidden="true"></i>
+                                <span style="display: none;"></span>
+                            {% endif %}
+                        </a>
+                        <a href="#" data-id="{{ theme_item.Fbr.id }}" data-type="attention">
+                            {% if is_paid %}
+                                <i class="fa fa-eye opts_active" aria-hidden="true"></i>
+                            {% else %}
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            {% endif %}
+                            <span>关注</span>
+                        </a>
+                        <a href="#" data-id="{{ theme_item.id }}" data-type="collection">
+                            {% if is_collected %}
+                                <i class="fa fa-bookmark opts_active" aria-hidden="true"></i>
+                            {% else %}
+                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                            {% endif %}
+                            <span>收藏</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-default panel reply-list">
+                <div class="panel-heading">
+                    共收到
+                    <b>{{ theme_item.Hf_sum }}</b>
+                    条回复
+                </div>
+                <div class="panel-body">
+                    {% if request.user.is_authenticated %}
+                        {% for reply_item in reply_list %}
+                            <div class="reply">
+                                <div class="avatar">
+                                    <a href="#">
+                                        <img class="media-object avatar-48" src="{% static 'bbs/img/blue_z.png' %}"
+                                             alt="zev">
+                                    </a>
+                                </div>
+                                <div class="infos">
+                                    <div class="info">
+                                        <span>{{ reply_item.reply_infos.Hfr_Id }}</span>
+                                        <span>#{{ reply_item.reply_infos.Lc_no }}</span>
+                                        ·
+                                        <abbr>{{ reply_item.reply_infos.Fb_date|date:"Y-m-d H:i:s" }}</abbr>
+                                        <span class="opts-color pull-right" data-id="{{ reply_item.reply_infos.id }}" data-type="reply">
+                                            {% if reply_item.reply_infos.Hfr_Id == request.user %}
+                                                <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                            {% endif %}
+                                            <a href="#"><i class="fa fa-reply" aria-hidden="true"></i></a>
+                                            <a href="#" class="dianzan">
+                                                {% if reply_item.is_dianzan %}
+                                                    <i class="fa fa-heart opts_active" aria-hidden="true"></i>
+                                                    <span style="display: inline;">{{ reply_item.reply_infos.Dz_sum }}个赞</span>
+                                                {% else %}
+                                                    <i class="fa fa-heart" aria-hidden="true"></i>
+                                                    <span style="display: none;"></span>
+                                                {% endif %}
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <div class="markdown">
+                                        {% if reply_item.reply_infos.Legal == False %}
+                                            <p>非法回复</p>
+                                        {% else %}
+                                            <p>{{ reply_item.reply_infos.Hf_Content }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {% for reply_item in theme_item.themeanswer_set.all %}
+                            <div class="reply">
+                                <div class="avatar">
+                                    <a href="#">
+                                        <img class="media-object avatar-48" src="{% static 'bbs/img/blue_z.png' %}"
+                                             alt="zev">
+                                    </a>
+                                </div>
+                                <div class="infos">
+                                    <div class="info">
+                                        <span>{{ reply_item.Hfr_Id }}</span>
+                                        <span>#{{ reply_item.Lc_no }}</span>
+                                        ·
+                                        <abbr>{{ reply_item.Fb_date|date:"Y-m-d H:i:s" }}</abbr>
+                                        <span class="opts-color pull-right" data-id="{{ reply_item.id }}" data-type="reply">
+                                            <a href="#"><i class="fa fa-reply" aria-hidden="true"></i></a>
+                                            <a href="#" class="dianzan">
+                                                <i class="fa fa-heart" aria-hidden="true"></i>
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <div class="markdown">
+                                        {% if reply_item.Legal == False %}
+                                            <p>非法回复</p>
+                                        {% else %}
+                                            <p>{{ reply_item.Hf_Content }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="panel-default panel">
+                <div class="panel-heading">
+                    回复主题
+                </div>
+                <div class="panel-body">
+                    <div class="opts-color">
+                        <a href="#emoji-modal" data-toggle="modal"><i class="fa fa-smile-o"></i></a>
+                        <a href="#"><i class="fa fa-image"></i></a>
+                    </div>
+                    <form action="{% url 'bbs_reply' %}" method="post" onsubmit="return validate_reply_form(this);">
+                        {% csrf_token %}
+                        <textarea name="reply_content" rows="4" style="height: 80px; width:100%" class="markdown"></textarea>
+                        <input hidden name="theme_id" value="{{ theme_item.id }}" />
+                        <button type="submit" class="btn btn-primary pull-right">回复</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body" align="center" id="theme-sidebar">
+                    <a href="#" class="btn btn-default" style="width:100%">
+                        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                    </a>
+                    <hr>
+                    <div class="opts-color" data-id="{{ theme_item.id }}" data-type="theme">
+                        <a href="#" style="display:block" class="dianzan">
+                            {% if is_dianzan %}
+                                <i class="fa fa-heart opts_active" aria-hidden="true" style="display:block;font-size: 40px;"></i>
+                                <span style="display: inline;">{{ theme_item.Dz_sum }}个赞</span>
+                            {% else %}
+                                <i class="fa fa-heart" aria-hidden="true" style="display:block;font-size: 40px;"></i>
+                                <span style="display: none;"></span>
+                            {% endif %}
+                        </a>
+                        <div class="btn-group" role="group" style="margin-top: 10px;">
+                            <a href="#" class="btn btn-default" data-id="{{ theme_item.Fbr.id }}" data-type="attention">
+                                {% if is_paid %}
+                                    <i class="fa fa-eye opts_active" aria-hidden="true"></i>
+                                {% else %}
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                {% endif %}
+                                <span>关注</span>
+                            </a>
+                            <a href="#" class="btn btn-default" data-id="{{ theme_item.id }}", data-type="collection">
+                                {% if is_collected %}
+                                    <i class="fa fa-bookmark opts_active" aria-hidden="true"></i>
+                                {% else %}
+                                    <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                {% endif %}
+                                <span>收藏</span>
+                            </a>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="opts-color">
+                        分享到：
+                        <a href="#" title="分享到QQ"><i class="fa fa-qq" aria-hidden="true"></i></a>
+                        <a href="#" title="分享到微信"><i class="fa fa-wechat" aria-hidden="true"></i></a>
+                    </div>
+                    <hr>
+                    <div>
+                        共收到{{ theme_item.Hf_sum }}条回复
+                    </div>
+                    <a href="#" class="btn btn-default" style="width:100%; margin-top: 10px;">参与回复</a>
+                    <hr>
+                    <a href="#bottom" class="btn btn-default" style="width:100%">
+                        <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<a name="bottom"></a>
+<div class="modal" tabindex="-1" role="dialog" id="emoji-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">请选择表情</h4>
+            </div>
+            <div class="modal-body">
+                <div id="emoji-list">
+                    <a href="#">&#x1F600;</a>
+                    <a href="#">&#x1F601;</a>
+                    <a href="#">&#x1F602;</a>
+                    <a href="#">&#x1F603;</a>
+                    <a href="#">&#x1F604;</a>
+                    <a href="#">&#x1F605;</a>
+                    <a href="#">&#x1F606;</a>
+                    <a href="#">&#x1F607;</a>
+                    <a href="#">&#x1F608;</a>
+                    <a href="#">&#x1F609;</a>
+                    <a href="#">&#x1F60A;</a>
+                    <a href="#">&#x1F60B;</a>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 </body>
+{% include 'template/navscript.html' %}
+<script src="{% static 'scutmocc/js/twemoji.min.js' %}"></script>
+<script src="{% static 'bbs/js/jquery.fluidbox.min.js' %}"></script>
+<script src="{% static 'bbs/js/script.js' %}"></script>
 </html>
