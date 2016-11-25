@@ -77,10 +77,16 @@ class PersonalForm(forms.Form):
 class SublesForm(ModelForm):
     class Meta:
         model = SubmitLes
-        fields = ['Label_Id', 'Les_Name', 'Les_Plan', 'Les_Time', 'Les_Way', 'Les_Price', 'Les_Merge', 'Les_Another']
+        fields = ['Label_Id', 'Les_Name', 'Les_Intro', 'Les_Time',  'Les_Price', 'Les_Merge', 'Les_Another']
         widgets = {
-            'another': Textarea(attrs={'cols': 80, 'rows': 20}),
+            'Les_Another': Textarea(attrs={'cols': 50, 'rows': 10}),
         }
+
+    def clean(self):
+        cleaned_data = super(SublesForm, self).clean()
+        pnum = cleaned_data.get('Les_Merge')
+        if pnum > 10:
+            raise forms.ValidationError("招收人数不能超过10个！")
 
 
 

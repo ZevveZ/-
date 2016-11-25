@@ -29,10 +29,10 @@ def submit_les(request, user_id, kind):
         if form.is_valid():
             form.save()
         else:
-            render(request, 'user_center/subles.html', {'form': form})
+            render(request, 'user_center/subles.html', {'form': form, 'kind': kind})
     else:
         form = SublesForm()
-        return render(request, 'user_center/subles.html', {'form': form})
+        return render(request, 'user_center/subles.html', {'form': form, 'kind': kind})
 
 
 # display all kinds of course

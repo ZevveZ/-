@@ -25,6 +25,7 @@ urlpatterns = [
     # consider the length of \d+ latter
     url(r'^(?P<user_id>\d+)$', views.user_center, name='user_center'),
     url(r'^(?P<user_id>\d+)/subles/(?P<kind>\d+)/$', views.submit_les, name='sub_les'),
+
     url(r'^course/$', views.course_list, name='course_list'),
     url(r'^course/(?P<label_id>\d+)/$', views.course_detail, name='course_detail'),
     url(r'^course/(?P<label_id>\d+)/(?P<les_id>\d+)$', views.lesson_detail, name='lesson_detail'),
