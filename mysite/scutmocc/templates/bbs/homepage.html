@@ -1,10 +1,103 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>论坛</title>
+    {% include 'template/navstyle.html' %}
+    <link rel="stylesheet" href="{% static 'bbs/css/style.css' %}">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body>
-This is the homepage of bbs.
+<body style="padding-top:70px">
+{% include 'template/navbar.html' %}
+<div class="jumbotron">
+    <div class="container">
+        <h2>欢迎来到华工步行街</h2>
+        <p>这里可以吧啦吧啦</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <a class="thumbnail" href="{% url 'bbs_board' board_type='activity' %}">
+                <div class="caption text-center">
+                    <h3>活动区</h3>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a class="thumbnail" href="{% url 'bbs_board' board_type='question' %}">
+                <div class="caption text-center">
+                    <h3>问题区</h3>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a class="thumbnail" href="{% url 'bbs_board' board_type='topic' %}">
+                <div class="caption text-center">
+                    <h3>话题区</h3>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">论坛精华主题</div>
+        <div class="panel-body row">
+            <div class="col-md-12">
+                <ul class="media-list">
+                    {% for theme in best_theme_list %}
+                        <li class="media topic-item">
+                            <!--用户头像，待解决-->
+                            <div class="media-left">
+                                <a href="#">
+                                    <img class="media-object avatar-48" src="{% static 'bbs/img/blue_z.png' %}"
+                                         alt="{{ theme.Fbr.last_name }}">
+                                </a>
+                            </div>
+                            <div class="media-body broaden">
+                                <div class="media-heading">
+                                    <a class="constrain-length" title="{{ theme.Title }}" href="#">{{ theme.Title }}</a>
+                                    <!--通过js触发tooltip-->
+                                    <i class="fa fa-diamond" aria-hidden="true"
+                                          data-toggle="tooltip" data-original-title="精华主题"></i>
+                                </div>
+                                <div>
+                                    <a href="#">{{ theme.Board_type }}</a>
+                                    •
+                                    <a href="#">{{ theme.Fbr.last_name }}</a>
+                                    <span class="hidden-mobile">
+                                    •
+                                    最后由
+                                        {% if theme.Hf_sum ==  0 %}
+                                            <a href="#">{{ theme.Fbr.last_name }}</a>
+                                            发表于
+                                            <abbr title="时间">{{ theme.Fb_date|date:"Y-m-d H:i:s"}}</abbr>
+                                        {% else %}
+                                            <a href="#">{{ theme.Zjhfr.last_name }}</a>
+                                            回复于
+                                            <abbr title="时间">{{ theme.Zjhf_date|date:"Y-m-d H:i:s" }}</abbr>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="media-right count">
+                                <span class="badge">{{ theme.Dz_sum }}</span>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="panel-footer"><a href="#">查看更多精华主题</a></div>
+    </div>
+</div>
 </body>
+{% include 'template/navscript.html' %}
 </html>
