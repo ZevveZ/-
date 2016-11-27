@@ -91,6 +91,9 @@ def bbs_board(request, board_type):
 def bbs_theme(request, board_type, theme_id):
     try:
         theme_item = Theme.objects.get(pk=theme_id)
+        # 更新阅读数
+        theme_item.Yd_sum +=1
+        theme_item.save()
     except ObjectDoesNotExist:
         raise Http404()
     # 判断用户是否已经登录
@@ -221,9 +224,13 @@ def bbs_collect_theme(request):
         raise Http404()
 
 
+# 将板块名字转换为对应的url
+board_name_to_url = {'a': 'activity', 'b': 'question', 'c': 'topic'}
+
+
 @login_required
 def bbs_reply(request):
-    # 区别回复主题还是回复评论，后台实现/不区分回复主题和评论，而是直接以@的形式
+    # 不区别回复主题还是回复评论
     # 正确性检测：前端非空检测;后台检测@last_name是否正确
     # 回复评论的格式 @last_name
     # 通知主题作者
@@ -231,13 +238,59 @@ def bbs_reply(request):
     try:
         # 获取主题
         theme = Theme.objects.get(pk=request.POST.get("theme_id"))
-        # 获取回复内容
-        reply_content = request.POST.get("reply_content")
+        # 获取回复的原始内容
+        raw_content = request.POST.get("reply_content")
+        # display_content被加工成能够显示在前端
+        display_content = raw_content
+
         # 检查是否有@其他人
-        it = re.finditer(r'@(\w+)\s', reply_content)
+        it = re.finditer(r'@(\w+)\s', raw_content)
         for i in it:
+            try:
+                mentioned_user = User.objects.get(last_name=i.group(1))
+                # 发送通知给被@的用户
+                # ----
+                # 对存在的用户在回复内容中进行链接标记,注意用户的last_name不会再修改
+                # 添加标记<a href="某个用户中心">用户的last_name</a>
+                display_content = display_content.replace(i.group(),
+                                                          r'!(a href="%d"!)@%s!(/a!)&nbsp;' % (mentioned_user.id, i.group(1)))
+            except ObjectDoesNotExist:
+                # @的用户不存在时当做普通文本
+                pass
+
+        # 保存回复
+        themeanswer = ThemeAnswer.objects.create(Hfr_Id=request.user, Theme_Id=theme, raw_content=raw_content, display_content=display_content)
+        # 通知主题的作者
+        # ----
+        # 更新主题信息
+        theme.Zjhf_date = themeanswer.Fb_date
+        theme.Hf_sum += 1
+        theme.Zjhfr = request.user
+        theme.save()
+        # 重定向到主题页面
+        return redirect('bbs_theme', board_type=board_name_to_url[theme.Board_type.Board_name], theme_id=theme.id)
+    except ObjectDoesNotExist:
+        # 主题不存在
+        raise Http404()
+
+
+@login_required
+def bbs_reply_delete(request, reply_id):
+    try:
+        # 删除回复
+        reply = ThemeAnswer.objects.get(pk=reply_id)
+        reply.delete()
+        # 更新回复数
+        reply.Theme_Id.Hf_sum -= 1
+        reply.Theme_Id.save()
+        return redirect('bbs_theme', board_type=board_name_to_url[reply.Theme_Id.Board_type.Board_name], theme_id=reply.Theme_Id.id)
     except ObjectDoesNotExist:
         raise Http404()
+
+
+@login_required
+def bbs_theme_edit(request):
+    return render(request, 'bbs/theme_edit.html')
 
 
 # deal with  personal registration

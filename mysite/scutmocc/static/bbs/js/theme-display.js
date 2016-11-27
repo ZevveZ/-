@@ -3,7 +3,7 @@
  */
 $(document).ready(function(){
     $('.zoom-in').fluidbox();
-    twemoji.parse(document.getElementById('emoji-list'));
+    twemoji.parse($("#emoji-list")[0],{ext:'.svg',folder:'2/svg'});
     $('.dianzan').click(function(){
         // 获取data-id，data-type
         var id = $(this).parent().data("id");
@@ -57,6 +57,28 @@ $(document).ready(function(){
            }
        });
     });
+    //转换content
+    $(".content").each(function(){
+        //判断是否需要处理
+        if($(this).text().indexOf("!(")!=-1){
+            $(this).html($(this).text().replace(/!\(/g, "<").replace(/!\)/g, ">"));
+        }
+        twemoji.parse($(this)[0], {ext:'.svg',folder:'2/svg'});
+    });
+
+    //处理回复时添加表情
+    $("#emoji-list li").on("click",function(){
+        $("textarea.markdown").val($("textarea.markdown").val()+$(this).children('img').attr('alt'));
+    });
+    //处理鼠标悬浮在表情
+    $('#emoji-list li').on("mouseover mouseout",function(){
+       if(event.type == "mouseover"){
+           $(this).css("background-color","lightgray");
+           $('.modal-footer').html($(this).html());
+       }else if(event.type == "mouseout"){
+            $(this).css("background-color","");
+       }
+    });
 });
 
 function validate_reply_form(reply_form){
@@ -73,4 +95,14 @@ function validate_reply_form(reply_form){
         }
     }
     return true;
+};
+
+//回复评论时调用
+function reply_comment(item){
+    $('textarea.markdown').focus();
+    $('textarea.markdown').val($('textarea.markdown').val() + ' @' + $(item).parent().siblings().first().text() + ' ');
+}
+
+function focus_on_textarea(){
+    $('textarea.markdown').focus();
 }

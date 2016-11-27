@@ -105,5 +105,44 @@
 .opts_active{
     color: #e76f3c;
 }
+#theme-sidebar{
+    width:292px;
+    display:block;
+    position:fixed;
+}
+/*解决标题栏固定在顶部时引起的偏移*/
+.offset{
+    position: relative;
+    top: -70px;
+    display: block;
+    height: 0;
+    overflow: hidden;
+}
 
-
+#emoji-list li{
+    cursor: pointer;
+    margin-bottom:5px;
+    padding-top:5px;
+    padding-bottom: 5px;
+}
+/*#emoji-list li:hover{*/
+    /*background: lightgray;*/
+/*}*/
+#emoji-list .emoji, .content .emoji{
+    width:20px;
+    height:20px;
+}
+.modal-footer .emoji{
+    width:48px;
+    height:48px;
+}
+.btn-reply{
+    width:100%;
+    margin-top: 10px;
+    background-color:#45C722;
+    color:#fff;
+}
+.btn-reply:hover{
+    color:#fff;
+    background-color:#39B618;
+}

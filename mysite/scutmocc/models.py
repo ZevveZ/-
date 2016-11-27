@@ -171,16 +171,17 @@ class Theme(models.Model):
         return self.Title
 
 
-# BBS answer, 回复主题和评论回复
+# BBS answer, 不区分回复主题和评论回复
 class ThemeAnswer(models.Model):
     Hfr_Id = models.ForeignKey(User)
-    Lc_no = models.IntegerField()
+    # Lc_no = models.IntegerField()
     Fb_date = models.DateTimeField(auto_now_add=True)
     Theme_Id = models.ForeignKey(Theme, null=True)
-    Hf_Content = models.CharField(max_length=500)
+    raw_content = models.CharField(max_length=500)
+    display_content = models.CharField(max_length=500)
     Dz_sum = models.IntegerField(default=0)
-    Legal = models.BooleanField()
-    ThemeAnswer_Id = models.ForeignKey("self", null=True)
+    Legal = models.BooleanField(default=True)
+    # ThemeAnswer_Id = models.ForeignKey("self", null=True)
 
     def __str__(self):
         return self.Hf_Content

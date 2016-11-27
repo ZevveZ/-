@@ -33,5 +33,7 @@ urlpatterns = [
     url(r'^bbs/dianzan$', views.bbs_dianzan, name='bbs_dianzan'),
     url(r'^bbs/attention$', views.bbs_attention, name='bbs_attention'),
     url(r'^bbs/collection$', views.bbs_collect_theme, name='bbs_collect_theme'),
-    url(r'^bbs/reply$', views.bbs_reply, name='bbs_reply')
+    url(r'^bbs/reply$', views.bbs_reply, name='bbs_reply'),
+    url(r'^bbs/reply-delete/(\d+)$', views.bbs_reply_delete, name='bbs_reply_delete'),
+    url(r'^bbs/edit$', views.bbs_theme_edit, name='bbs_theme_edit')
 ]
