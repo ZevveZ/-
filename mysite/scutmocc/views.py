@@ -24,7 +24,7 @@ def user_center(request, user_id):
 def submit_les(request, user_id, kind):
     user = User.objects.get(id=user_id)
     if request.method == 'POST':
-        lesson = SubmitLes(Person_Id=user_id)
+        lesson = SubmitLes.objects.get(Person_Id=user)
         form = SublesForm(request.POST, instance=lesson)
         if form.is_valid():
             form.save()
