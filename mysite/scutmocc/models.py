@@ -9,6 +9,7 @@ class Person(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     Nickname = models.CharField(max_length=10)
     College = models.CharField(max_length=20)
+    # College = models.ForeignKey(College),修改验证
     Sex = models.NullBooleanField(null=True)
     Signature = models.CharField(max_length=100, null=True)
     Fb_sum = models.IntegerField(default=0)
@@ -122,50 +123,64 @@ class ChoiceLes(models.Model):
 
 #   Board
 class Board(models.Model):
-    Field = {
+    Field = [
         ('a', '活动区'),
         ('b', '问题区'),
         ('c', '话题区')
-    }
-    Board_type = models.CharField(max_length=1, choices=Field)
+    ]
+    Board_name = models.CharField(max_length=1, choices=Field, default='a')
     Gg_content = models.CharField(max_length=200)
     Jrzt_sum = models.IntegerField(default=0)
     Zrzt_sum = models.IntegerField(default=0)
     Zt_sum = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.Board_type
+        for x in self.Field:
+            if self.Board_name == x[0]:
+                return x[1]
 
 
-#  Theme
+# College
+class College(models.Model):
+    College_Name = models.CharField(max_length=30)
+    College_Account = models.IntegerField()
+
+    def __str__(self):
+        return self.College_Name
+
+
+#  Theme ,考虑去掉统计信息
 class Theme(models.Model):
     Content = models.TextField()
     Title = models.CharField(max_length=50)
     Fb_date = models.DateTimeField(auto_now_add=True)
-    Zjhf_date = models.DateTimeField()
+    Zjhf_date = models.DateTimeField(auto_now_add=True)
     Hf_sum = models.IntegerField(default=0)
-    Zjhf_sum = models.IntegerField(default=0)
+    Zjhfr = models.ForeignKey(User, related_name='hfr_set')
     Zd = models.BooleanField()
     Dz_sum = models.IntegerField(default=0)
     Board_type = models.ForeignKey(Board)
-    Fbr_id = models.ForeignKey(User)
+    Fbr = models.ForeignKey(User, related_name='fbr_set')
     Yd_sum = models.IntegerField(default=0)
-    Legal = models.BooleanField()
+    Legal = models.BooleanField(default=True)
     Sc_sum = models.IntegerField(default=0)
+    College_type = models.ForeignKey(College)
 
     def __str__(self):
         return self.Title
 
 
-# BBS answer
+# BBS answer, 不区分回复主题和评论回复
 class ThemeAnswer(models.Model):
     Hfr_Id = models.ForeignKey(User)
-    Lc_no = models.IntegerField()
+    # Lc_no = models.IntegerField()
     Fb_date = models.DateTimeField(auto_now_add=True)
-    Theme_Id = models.ForeignKey(Theme)
-    Hf_Content = models.CharField(max_length=500)
+    Theme_Id = models.ForeignKey(Theme, null=True)
+    raw_content = models.CharField(max_length=500)
+    display_content = models.CharField(max_length=500)
     Dz_sum = models.IntegerField(default=0)
-    Legal = models.BooleanField()
+    Legal = models.BooleanField(default=True)
+    # ThemeAnswer_Id = models.ForeignKey("self", null=True)
 
     def __str__(self):
         return self.Hf_Content
@@ -175,6 +190,7 @@ class ThemeAnswer(models.Model):
 class CollectTheme(models.Model):
     Yh_Id = models.ForeignKey(User)
     Theme_Id = models.ForeignKey(Theme)
+    Is_Collected = models.BooleanField(default=False)
 
     def __str__(self):
         return self.Theme_Id
@@ -184,6 +200,17 @@ class CollectTheme(models.Model):
 class Attention(models.Model):
     Fs_Id = models.ForeignKey(User, related_name='fen')
     Ox_Id = models.ForeignKey(User, related_name='Ou')
+    Is_paid = models.BooleanField(default=False)
 
     def __str__(self):
         return self.Fs_Id
+
+
+# 点赞主题或者回复
+class Dianzan(models.Model):
+    Fbr_Id = models.ForeignKey(User)
+    Theme_Id = models.ForeignKey(Theme, null=True)
+    ThemeAnswer_Id = models.ForeignKey(ThemeAnswer, null=True)
+    Is_Dianzan = models.BooleanField(default=False)
+
+

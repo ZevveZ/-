@@ -1,0 +1,148 @@
+.avatar-48 {
+    width: 48px;
+    height: 48px;
+}
+.broaden{
+    width:1000px;
+}
+.count{
+    text-align: right;
+    padding-top:15px;
+}
+.star{
+    color:#EB5424;
+}
+
+/*控制标题的长度*/
+.constrain-length{
+    display:inline-block;
+    /*解决inline-block不对齐*/
+    vertical-align: middle;
+    max-width:750px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+.topic-item{
+    padding:10px 15px;
+    margin:0px -15px;
+    border-bottom: 1px solid #F0F0F0;
+}
+.topic-item:last-child{
+    border-bottom: 0px;
+}
+
+.page_board{
+    background-color:#e9eaed;
+    padding-top:70px;
+}
+.sub_nav {
+    background-color: #f8f8f8;
+    margin-top: -20px;
+    margin-bottom: 15px;
+    padding:8px 0px;
+}
+.panel-footer ul{
+    margin:0px;
+}
+
+.label-awesome{
+    font-size: 13px;
+    background: #FCF8F7;
+    padding: 5px 15px;
+    border-bottom: 1px solid #f3f0f0;
+    color: #eb5424;
+}
+.markdown {
+    position: relative;
+    letter-spacing: .03em;
+    line-height: 1.8em;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+.panel .panel-heading{
+    background-color:#fafafa;
+    border-bottom-color:#eee;
+}
+.opts-color{
+    color:#666;
+}
+.opts-color a:link, .opts-color a:visited{
+    color:#666;
+    padding:3px;
+    text-decoration: none;
+}
+
+.reply {
+    margin: 0px 0px 15px -15px;
+    position: relative;
+    border-bottom: 1px solid #eee;
+    padding-left: 74px;
+}
+.reply:last-child{
+    border-bottom:none;
+}
+.reply .avatar{
+    position:absolute;
+    top:0px;
+    left:15px;
+}
+.reply .infos{
+    min-height:48px;
+}
+.reply .info{
+    font-size:12px;
+    color:#c0c0c0;
+}
+
+.zoom-in{
+    cursor: zoom-in;
+}
+.zoom-in img{
+    max-width:100%;
+}
+.opts_active{
+    color: #e76f3c;
+}
+#theme-sidebar{
+    width:292px;
+    display:block;
+    position:fixed;
+}
+/*解决标题栏固定在顶部时引起的偏移*/
+.offset{
+    position: relative;
+    top: -70px;
+    display: block;
+    height: 0;
+    overflow: hidden;
+}
+
+#emoji-list li{
+    cursor: pointer;
+    margin-bottom:5px;
+    padding-top:5px;
+    padding-bottom: 5px;
+}
+/*#emoji-list li:hover{*/
+    /*background: lightgray;*/
+/*}*/
+#emoji-list .emoji, .content .emoji{
+    width:20px;
+    height:20px;
+}
+.modal-footer .emoji{
+    width:48px;
+    height:48px;
+}
+.btn-reply{
+    width:100%;
+    margin-top: 10px;
+    background-color:#45C722;
+    color:#fff;
+}
+.btn-reply:hover{
+    color:#fff;
+    background-color:#39B618;
+}

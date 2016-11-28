@@ -1,10 +1,181 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ board }}</title>
+    {% include 'template/navstyle.html' %}
+    <link rel="stylesheet" href="{% static 'bbs/css/style.css' %}">
 </head>
-<body>
-This is the {{ board_type }} board.
+<body class="page_board">
+{% include 'template/navbar.html' %}
+<!--
+<div class="sub_nav">
+    <div class="container">
+        <div class="modal" id="school-selector" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>请选择学院</strong>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul class="nav nav-pills">
+            <li role="presentation">
+                <a href="#"  data-toggle="modal" data-target="#school-selector">选择学院</a>
+            </li>
+            <li role="presentation" class="active"><a href="#">默认排序</a></li>
+            <li role="presentation"><a href="#">精品主题</a></li>
+            <li role="presentation"><a href="#">最新发表</a></li>
+            <li role="presentation"><a href="#">最新回复</a></li>
+            <li role="presentation"><a href="#">最多回复</a></li>
+        </ul>
+    </div>
+</div>
+-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="modal" id="school-selector" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">&times;</span></button>
+                                    <strong>请选择学院</strong>
+                                </div>
+                                <div class="modal-body">
+                                    <ul class="list-inline">
+                                        <li><a href=".">所有学院</a></li>
+                                        {% for college in college_list %}
+                                            <li><a href=".?college_type={{ college.id }}">{{ college }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="nav nav-pills">
+                        <li role="presentation">
+                            <a href="#" data-toggle="modal" data-target="#school-selector">选择学院</a>
+                        </li>
+                        {% if college_type %}
+                            <li role="presentation"><a href=".?college_type={{ college_type }}">默认排序</a></li>
+                            <li role="presentation"><a
+                                    href=".?college_type={{ college_type }}&sort_type=popular">精品主题</a></li>
+                            <li role="presentation"><a
+                                    href=".?college_type={{ college_type }}&sort_type=latest">最新发表</a></li>
+                            <li role="presentation"><a href=".?college_type={{ college_type }}&sort_type=latest_reply">最新回复</a>
+                            </li>
+                            <li role="presentation"><a href=".?college_type={{ college_type }}&sort_type=most_reply">最多回复</a>
+                            </li>
+                        {% else %}
+                            <li role="presentation"><a href=".">默认排序</a></li>
+                            <li role="presentation"><a href=".?sort_type=popular">精品主题</a></li>
+                            <li role="presentation"><a href=".?sort_type=latest">最新发表</a></li>
+                            <li role="presentation"><a href=".?sort_type=latest_reply">最新回复</a></li>
+                            <li role="presentation"><a href=".?sort_type=most_reply">最多回复</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <ul class="media-list">
+                        {% for theme in theme_list %}
+                            <li class="media topic-item">
+                                <!--用户头像，待解决-->
+                                <div class="media-left">
+                                    <a href="#">
+                                        <img class="media-object avatar-48" src="{% static 'bbs/img/blue_z.png' %}"
+                                             alt="theme.Fbr.last_name">
+                                    </a>
+                                </div>
+                                <div class="media-body broaden">
+                                    <div class="media-heading">
+                                        <a class="constrain-length" title="{{ theme.Title }}"
+                                           href="#">{{ theme.Title }}</a>
+                                        <!--通过js触发tooltip
+                                        <i class="fa fa-diamond" aria-hidden="true"
+                                              data-toggle="tooltip" data-original-title="精华主题"></i>
+                                        -->
+                                    </div>
+                                    <div>
+                                        <a href="#">{{ theme.Fbr.last_name }}</a>
+                                        <span class="hidden-mobile">
+                                        •
+                                        最后由
+                                            {% if theme.Hf_sum ==  0 %}
+                                                <a href="#">{{ theme.Fbr.last_name }}</a>
+                                                发表于
+                                                <abbr title="时间">{{ theme.Fb_date|date:"Y-m-d H:i:s" }}</abbr>
+                                            {% else %}
+                                                <a href="#">{{ theme.Zjhfr.last_name }}</a>
+                                                回复于
+                                                <abbr title="时间">{{ theme.Zjhf_date|date:"Y-m-d H:i:s" }}</abbr>
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="media-right count">
+                                    <span class="badge">{{ theme.Hf_sum }}</span>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <ul class="pagination">
+                        {% if theme_list.has_previous %}
+                            <li>
+                                <a href="?page_num={{ theme_list.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for page in theme_list.paginator.page_range %}
+                            <li>
+                                {% if page == theme_list.number %}
+                                    <a>{{ page }}</a>
+                                {% else %}
+                                    <a href="?page_num={{ page }}">{{ page }}</a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                        {% if theme_list.has_next %}
+                            <li>
+                                <a href="?page_num={{ theme_list.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">公告</div>
+                <div class="panel-body">
+                    {{ board.Gg_content }}
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Statistics</div>
+                <ul class="list-group">
+                    <li class="list-group-item">今日主题数: {{ board.Jrzt_sum }} 个</li>
+                    <li class="list-group-item">昨日主题数: {{ board.Zrzt_sum }}个</li>
+                    <li class="list-group-item">主题总数: {{ board.Zt_sum }} 个</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+{% include 'template/navscript.html' %}
 </html>
