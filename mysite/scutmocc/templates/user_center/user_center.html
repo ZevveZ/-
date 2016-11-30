@@ -1,10 +1,184 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{% block title %}个人中心{% endblock %}</title>
+    {% include 'template/navstyle.html' %}
+    <style>
+        #art {
+            margin: 100px 200px;
+        }
+    </style>
 </head>
 <body>
-This is the user center of {{ user_id }}.
+{% include 'template/navbar.html' %}
+
+<div id="art" class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <div id="aside" class="accordion  col-md-offset-1" id="accordion2">
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="nav-header"
+                        style="margin-bottom: 5px;font-size: x-large;font-family:'宋体',sans-serif;">{{ user_name }}</li>
+                    <div class="accordion-group" style="margin-bottom: 5px;margin-left: 16px">
+                        <div class="accordion-heading">
+                            <li><a href="#" data-toggle="collapse" data-target="" data-parent="#accordion2">
+                                <i class="glyphicon glyphicon-home"></i> <span style="margin-left: 5px;">主页</span>
+                                <span class="badge">new</span> </a>
+                            </li>
+                        </div>
+                    </div>
+                    <div class="accordion-group" style="margin-bottom: 5px;margin-left: 16px;">
+                        <div class="accordion-heading">
+                            <li><a href="#" data-toggle="collapse" data-target="#bbs" data-parent="#accordion2">
+                                <i class="glyphicon glyphicon-fire"></i> <span style="margin-left: 5px;">论坛</span></a>
+                            </li>
+                        </div>
+                        <div id="bbs" class="accordion-body collapse">
+                            <ul class="nav nav-list" style="padding-left: 30px">
+                                <li><a href="#"><i class="glyphicon glyphicon-list"
+                                                   style="margin-right: 6px"></i>我的历史</a></li>
+                                <li><a href="#"><i class="glyphicon glyphicon-th-large" style="margin-right: 6px"></i>我的收藏</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion-group" style="margin-bottom: 5px;margin-left: 16px;">
+                        <div class="accordion-heading">
+                            <li><a href="#" data-toggle="collapse" data-target="#submit" data-parent="#accordion2">
+                                <i class="glyphicon glyphicon-send" style="margin-right:5px; "></i><span
+                                    style="margin-left: 5px;">发布</span></a>
+                            </li>
+                        </div>
+                        <div id="submit" class="accordion-body collapse">
+                            <ul class="nav nav-list" style="padding-left: 30px">
+                                <li><a href="{% url 'sub_les' user.id 1 %}"><i class="glyphicon glyphicon-star" style="margin-right: 6px"></i>课程</a>
+                                </li>
+                                <li><a href=""><i class="glyphicon glyphicon-star" style="margin-right: 6px"></i>项目</a>
+                                </li>
+                                <li><a href=""><i class="glyphicon glyphicon-star" style="margin-right: 6px"></i>技能</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <li class="divider"></li>
+                    <li class="navbar-header">Others</li>
+                    <li><a href="#"><i class="glyphicon glyphicon-heart-empty"></i>关注</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-user"></i>个人</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-10">
+            {% block content %}
+
+                <div>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#lesson" role="tab" data-toggle="tab">我的课程</a>
+                        </li>
+                        <li role="presentation"><a href="#learn" role="tab" data-toggle="tab">我的学习</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="lesson">
+                            <ul class="nav nav-list">
+                                <li>
+                                    <h3><a href="">英语</a></h3>
+                                    <h5>2016/3/24</h5>
+                                    <div class="well">
+                                        <p>his is a simple hero unit, a simple jumbotron-style component for
+                                            calling extra attention to featured content or information.</p>
+                                        <ul class="list-group">
+                                            <li class="list-group-item list-group-item-info"><span class="label label-primary">Jack</span>  ---  联系方式:18826075423</li>
+                                            <li class="list-group-item list-group-item-success"><span class="label label-primary">Jack</span>  ---  联系方式:18826075423</li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h3><a href="">高数</a></h3>
+                                    <h5>2016/3/24</h5>
+                                    <div class="well">
+                                        <p>his is a simple hero unit, a simple jumbotron-style component for
+                                            calling extra attention to featured content or information.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h3><a href="">高数</a></h3>
+                                    <h5>2016/3/24</h5>
+                                    <div class="well">
+                                        <p>his is a simple hero unit, a simple jumbotron-style component for
+                                            calling extra attention to featured content or information.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h3><a href="">高数</a></h3>
+                                    <h5>2016/3/24</h5>
+                                    <div class="well">
+                                        <p>his is a simple hero unit, a simple jumbotron-style component for
+                                            calling extra attention to featured content or information.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h3><a href="">高数</a></h3>
+                                    <h5>2016/3/24</h5>
+                                    <div class="well">
+                                        <p>his is a simple hero unit, a simple jumbotron-style component for
+                                            calling extra attention to featured content or information.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h3><a href="">高数</a></h3>
+                                    <h5>2016/3/24</h5>
+                                    <div class="well">
+                                        <p>his is a simple hero unit, a simple jumbotron-style component for
+                                            calling extra attention to featured content or information.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="learn">
+                            <ul class="nav nav-list">
+                                <li>
+                                    <h3><a href="">高数</a></h3>
+                                    <h5>2016/3/24</h5>
+                                    <div class="well">
+                                        <p>his is a simple hero unit, a simple jumbotron-style component for
+                                            calling extra attention to featured content or information.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h3><a href="">高数</a></h3>
+                                    <h5>2016/3/24</h5>
+                                    <div class="well">
+                                        <p>his is a simple hero unit, a simple jumbotron-style component for
+                                            calling extra attention to featured content or information.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h3><a href="">高数</a></h3>
+                                    <h5>2016/3/24</h5>
+                                    <div class="well">
+                                        <p>his is a simple hero unit, a simple jumbotron-style component for
+                                            calling extra attention to featured content or information.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+
 </body>
+{% include 'template/navscript.html' %}
+<script>
+    $(function(){
+        $("[id^='id_']").addClass("form-control");
+       })
+</script>
 </html>

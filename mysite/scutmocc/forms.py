@@ -1,5 +1,8 @@
 # coding: utf-8
 from django import forms
+from django.db import models
+from django.forms import ModelForm, Textarea
+from scutmocc.models import SubmitLes
 from django.contrib.auth.models import User
 
 from .validation import validate
@@ -69,5 +72,23 @@ class PersonalForm(forms.Form):
             pass
         else:
             raise forms.ValidationError("学号已经被注册！")
+
+
+class SublesForm(ModelForm):
+    class Meta:
+        model = SubmitLes
+        fields = ['Label_Id', 'Les_Name', 'Les_Intro', 'Les_Time',  'Les_Price', 'Les_Merge', 'Les_Another']
+        widgets = {
+            'Les_Another': Textarea(attrs={'cols': 50, 'rows': 10}),
+        }
+
+    def clean(self):
+        cleaned_data = super(SublesForm, self).clean()
+        pnum = cleaned_data.get('Les_Merge')
+        if pnum > 10:
+            raise forms.ValidationError("招收人数不能超过10个！")
+
+
+
 
 

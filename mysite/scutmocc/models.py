@@ -74,17 +74,16 @@ class LabelField(models.Model):
 # Submit Lesson
 class SubmitLes(models.Model):
     Person_Id = models.ForeignKey(User)
-    Label_Id = models.ForeignKey(LabelField)
+    Label_Id = models.ForeignKey(LabelField, default=None)
     Les_Name = models.CharField(max_length=60)
-    Les_Plan = models.CharField(max_length=200)
-    Les_Time = models.IntegerField()
-    Les_Way = models.CharField(max_length=200, null=True)
-    Les_Price = models.IntegerField()
-    Les_Merge = models.IntegerField()  # 0～3 社团 0~10
+    Les_Intro = models.TextField()
+    Les_Time = models.IntegerField(help_text="次/周")
+    Les_Price = models.IntegerField(help_text="￥")
+    Les_Merge = models.IntegerField(default=1,help_text="最多10人")  # 0～3 社团 0~10
     Les_Another = models.CharField(max_length=150, null=True)
     Les_Term = models.IntegerField(default=1)
     Les_Next = models.DateField(null=True)
-    Les_Status = models.BooleanField()
+    Les_Status = models.BooleanField(default=True)
 
     def __str__(self):
         return self.Les_Name

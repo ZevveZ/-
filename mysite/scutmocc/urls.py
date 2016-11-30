@@ -4,6 +4,7 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
+    # url(r'^test/$', views.test, name='test'),
     url(r'^$', auth_views.login, {'template_name': 'homepage/homepage.html'}, name='homepage'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'homepage/logout.html'}, name='logout'),
     url(r'^register_person/$', views.personal_registration, name='personal_registration'),
@@ -23,7 +24,9 @@ urlpatterns = [
          'post_reset_redirect': '/scutmocc/'},
         name='password_reset_confirm'),
     # consider the length of \d+ latter
-    url(r'^(?P<user_id>\d+)/$', views.user_center, name='user_center'),
+    url(r'^(?P<user_id>\d+)$', views.user_center, name='user_center'),
+    url(r'^(?P<user_id>\d+)/subles/(?P<kind>\d+)/$', views.submit_les, name='sub_les'),
+
     url(r'^course/$', views.course_list, name='course_list'),
     url(r'^course/(?P<label_id>\d+)/$', views.course_detail, name='course_detail'),
     url(r'^course/(?P<label_id>\d+)/(?P<les_id>\d+)$', views.lesson_detail, name='lesson_detail'),

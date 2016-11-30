@@ -11,9 +11,9 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from mysite.settings import SECRET_KEY
-from scutmocc.models import Theme, College, Board, ThemeAnswer, Dianzan, Attention, CollectTheme
+from scutmocc.models import Theme, College, Board, ThemeAnswer, Dianzan, Attention, CollectTheme, SubmitLes
 from scutmocc.validation import Token
-from .forms import ActivityForm, PersonalForm
+from .forms import ActivityForm, PersonalForm, SublesForm
 from scutmocc.juncheepaginator import JuncheePaginator
 import re
 
@@ -24,7 +24,22 @@ def homepage(request):
 
 # display user center
 def user_center(request, user_id):
-    return render(request, 'user_center/user_center.html', {'user_id': user_id})
+    user = User.objects.get(id=user_id)
+    return render(request, 'user_center/user_center.html', {'user_id': user.id, 'user_name': user.last_name})
+
+
+def submit_les(request, user_id, kind):
+    user = User.objects.get(id=user_id)
+    if request.method == 'POST':
+        lesson = SubmitLes.objects.get(Person_Id=user)
+        form = SublesForm(request.POST, instance=lesson)
+        if form.is_valid():
+            form.save()
+        else:
+            render(request, 'user_center/subles.html', {'form': form, 'kind': kind})
+    else:
+        form = SublesForm()
+        return render(request, 'user_center/subles.html', {'form': form, 'kind': kind})
 
 
 # display all kinds of course

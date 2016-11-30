@@ -36,3 +36,4 @@ admin.site.register(CollectTheme)
 admin.site.register(Attention)
 admin.site.register(Activity)
 admin.site.register(College)
+
