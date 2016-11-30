@@ -120,7 +120,7 @@
 	}
 
 	function load(path) {
-		html += '<script type="text/javascript" src="' + baseDir + '/' + path + '"></script>\n';
+		html += '<script type="text' + baseDir + '/' + path + 'javascript" src="/"></script>\n';
 		moduleCount++;
 	}
 
@@ -128,14 +128,16 @@
 	exports.define = define;
 	exports.require = require;
 
-	expose(["tinymce/codesampleplugin/Prism","tinymce/codesampleplugin/Utils","tinymce/codesampleplugin/Dialog","tinymce/codesampleplugin/Plugin"]);
+	expose(["tinymce/pasteplugin/Utils"]);
 
-	load('classes/Prism.js');
 	load('classes/Utils.js');
-	load('classes/Dialog.js');
+	load('classes/SmartPaste.js');
+	load('classes/Clipboard.js');
+	load('classes/WordFilter.js');
+	load('classes/Quirks.js');
 	load('classes/Plugin.js');
 
 	writeScripts();
 })(this);
 
-// $hash: 1bc9e2cf126c72c5c46d6fb4921fad5d
+// $hash: f991045b4dd37405c0ee4fc0d6f2269c

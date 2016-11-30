@@ -120,7 +120,7 @@
 	}
 
 	function load(path) {
-		html += '<script type="text/javascript" src="' + baseDir + '/' + path + '"></script>\n';
+		html += '<script type="text' + baseDir + '/' + path + 'javascript" src="/"></script>\n';
 		moduleCount++;
 	}
 
@@ -128,16 +128,16 @@
 	exports.define = define;
 	exports.require = require;
 
-	expose(["tinymce/pasteplugin/Utils"]);
-
 	load('classes/Utils.js');
-	load('classes/SmartPaste.js');
-	load('classes/Clipboard.js');
-	load('classes/WordFilter.js');
+	load('classes/SplitCols.js');
+	load('classes/TableGrid.js');
 	load('classes/Quirks.js');
+	load('classes/CellSelection.js');
+	load('classes/Dialogs.js');
+	load('classes/ResizeBars.js');
 	load('classes/Plugin.js');
 
 	writeScripts();
 })(this);
 
-// $hash: f991045b4dd37405c0ee4fc0d6f2269c
+// $hash: 2bba25eafbcfe7cf5d371219f4309dbe

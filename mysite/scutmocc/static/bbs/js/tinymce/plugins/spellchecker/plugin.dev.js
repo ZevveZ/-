@@ -120,7 +120,7 @@
 	}
 
 	function load(path) {
-		html += '<script type="text/javascript" src="' + baseDir + '/' + path + '"></script>\n';
+		html += '<script type="text' + baseDir + '/' + path + 'javascript" src="/"></script>\n';
 		moduleCount++;
 	}
 
