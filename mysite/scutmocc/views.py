@@ -9,13 +9,17 @@ from django.http import Http404
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 
 from mysite.settings import SECRET_KEY
-from scutmocc.models import Theme, College, Board, ThemeAnswer, Dianzan, Attention, CollectTheme, SubmitLes
+from scutmocc.models import Theme, College, Board, ThemeAnswer, Dianzan, Attention, CollectTheme, SubmitLes, \
+    Notification
 from scutmocc.validation import Token
 from .forms import ActivityForm, PersonalForm, SublesForm
 from scutmocc.juncheepaginator import JuncheePaginator
 import re
+from PIL import Image
+import time
 
 
 def homepage(request):
@@ -66,11 +70,11 @@ def bbs_homepage(request):
 # display one of boards in bbs
 def bbs_board(request, board_type):
     if board_type == 'activity':
-        board = Board.objects.get(Board_name='a')
+        board = Board.objects.get(Board_name='活动区')
     elif board_type == 'question':
-        board = Board.objects.get(Board_name='b')
+        board = Board.objects.get(Board_name='问题区')
     else:
-        board = Board.objects.get(Board_name='c')
+        board = Board.objects.get(Board_name='话题区')
 
     college_list = College.objects.all()
     theme_list = board.theme_set.filter(Legal=True)
@@ -90,7 +94,7 @@ def bbs_board(request, board_type):
         theme_list = theme_list.order_by('-Hf_sum')
 
     page_num = request.GET.get('page_num', 1)
-    paginator = JuncheePaginator(theme_list, 1)
+    paginator = JuncheePaginator(theme_list, 10)
     try:
         theme_list = paginator.page(page_num)
     except PageNotAnInteger:
@@ -107,7 +111,7 @@ def bbs_theme(request, board_type, theme_id):
     try:
         theme_item = Theme.objects.get(pk=theme_id)
         # 更新阅读数
-        theme_item.Yd_sum +=1
+        theme_item.Yd_sum += 1
         theme_item.save()
     except ObjectDoesNotExist:
         raise Http404()
@@ -139,17 +143,24 @@ def bbs_theme(request, board_type, theme_id):
             is_collected = CollectTheme.objects.get(Yh_Id=request.user, Theme_Id=theme_item.id).Is_Collected
         except ObjectDoesNotExist:
             is_collected = False
-        return render(request, 'bbs/theme.html', {'theme_item': theme_item, 'is_dianzan': is_dianzan,
+        return render(request, 'bbs/theme_display.html', {'theme_item': theme_item, 'is_dianzan': is_dianzan,
                                                   'reply_list': reply_list, 'is_paid': is_paid,
                                                   'is_collected': is_collected})
 
     else:
-        return render(request, 'bbs/theme.html', {'theme_item': theme_item, 'is_dianzan': False,
+        return render(request, 'bbs/theme_display.html', {'theme_item': theme_item, 'is_dianzan': False,
                                                   'is_paid': False, 'is_collected': False})
 
 
+# 将板块名字转换为对应的url
+board_name_to_url = {'活动区': 'activity', '问题区': 'question', '话题区': 'topic'}
+
+
 # use to dianzan in bbs
-# ?如果没有登录跳转到登录界面
+dianzan_theme_template = '在你的主题<a href="http://127.0.0.1:8000/scutmocc/bbs/%(board_type)s/%(theme_id)d">%(title)s</a>点赞了你'
+dianzan_reply_template = '在主题<a href="http://127.0.0.1:8000/scutmocc/bbs/%(board_type)s/%(theme_id)d%(reply_count)s">%(title)s</a>点赞了你的回复'
+
+
 @login_required
 def bbs_dianzan(request):
     # 判断请求是否来自ajax
@@ -162,9 +173,19 @@ def bbs_dianzan(request):
     if dianzan_type == "theme":
         try:
             theme_item = Theme.objects.get(pk=dianzan_id)
-            # 通知主题的发表人有新的点赞
+
             # 更新Dianzan表的数据
-            dianzan_item = Dianzan.objects.get_or_create(Fbr_Id=request.user, Theme_Id=theme_item)[0]
+            try:
+                dianzan_item = Dianzan.objects.get(Fbr_Id=request.user, Theme_Id=theme_item)
+            except ObjectDoesNotExist:
+                dianzan_item = Dianzan.objects.create(Fbr_Id=request.user, Theme_Id=theme_item)
+                # 第一次点赞时才发送通知
+                # 创建通知,通知主题的发表人有新的点赞
+                Notification.objects.create(sender=request.user, receiver=theme_item.Fbr,
+                                            message=dianzan_theme_template % {
+                                                'board_type': board_name_to_url[theme_item.Board_type.Board_name],
+                                                'theme_id': theme_item.id, 'title': theme_item.Title})
+
             # 取反
             dianzan_item.Is_Dianzan = not dianzan_item.Is_Dianzan
             dianzan_item.save()
@@ -181,15 +202,25 @@ def bbs_dianzan(request):
     elif dianzan_type == "reply":
         try:
             reply_item = ThemeAnswer.objects.get(pk=dianzan_id)
-            # 通知回复的发表人有新的点赞
+            print("reply_item")
             # 更新Dianzan表的数据
-            dianzan_item = Dianzan.objects.get_or_create(Fbr_Id=request.user, ThemeAnswer_Id=reply_item)[0]
+            try:
+                dianzan_item = Dianzan.objects.get(Fbr_Id=request.user, ThemeAnswer_Id=reply_item)
+            except ObjectDoesNotExist:
+                dianzan_item = Dianzan.objects.create(Fbr_Id=request.user, ThemeAnswer_Id=reply_item)
+                # 第一次点赞时才发送通知
+                # 创建通知，通知回复的发表人有新的点赞
+                Notification.objects.create(sender=request.user, receiver=reply_item.Hfr_Id,
+                                            message=dianzan_reply_template % {'board_type': board_name_to_url[
+                                                reply_item.Theme_Id.Board_type.Board_name],
+                                                                              'theme_id': reply_item.Theme_Id.id,
+                                                                              'title': reply_item.Theme_Id.Title,
+                                                                              'reply_count': request.GET.get('reply_count')})
             dianzan_item.Is_Dianzan = not dianzan_item.Is_Dianzan
             dianzan_item.save()
 
             # 更新点赞数
             if dianzan_item.Is_Dianzan:
-
                 reply_item.Dz_sum += 1
             else:
                 reply_item.Dz_sum -= 1
@@ -198,6 +229,9 @@ def bbs_dianzan(request):
             return JsonResponse({'res': dianzan_item.Is_Dianzan, 'dz_sum': reply_item.Dz_sum})
         except ThemeAnswer.DoesNotExist:
             return JsonResponse()
+
+
+attention_template = '关注了你'
 
 
 @login_required
@@ -210,14 +244,21 @@ def bbs_attention(request):
         # 根据请求的ox_id获取对应的User
         ox = User.objects.get(pk=request.GET.get("ox_id"))
         # 建立关注关系
-        atten = Attention.objects.get_or_create(Ox_Id=ox, Fs_Id=request.user)[0]
+        try:
+            atten = Attention.objects.get(Ox_Id=ox, Fs_Id=request.user)
+        except ObjectDoesNotExist:
+            atten = Attention.objects.create(Ox_Id=ox, Fs_Id=request.user)
+            # 只有在第一次关注时才发送通知
+            Notification.objects.create(sender=request.user, receiver=ox, message=attention_template)
 
         atten.Is_paid = not atten.Is_paid
         atten.save()
-
         return JsonResponse({"paid": atten.Is_paid})
     except ObjectDoesNotExist:
         raise Http404()
+
+
+collect_notify_template = '收藏了你的主题<a href="http://127.0.0.1:8000/scutmocc/bbs/%(board_type)s/%(theme_id)d">%(title)s</a>'
 
 
 @login_required
@@ -229,7 +270,16 @@ def bbs_collect_theme(request):
         # 获取主题对象
         theme = Theme.objects.get(pk=request.GET.get("theme_id"))
         # 建立收藏关系
-        collect = CollectTheme.objects.get_or_create(Yh_Id=request.user, Theme_Id=theme)[0]
+        try:
+            collect = CollectTheme.objects.get(Yh_Id=request.user, Theme_Id=theme)
+        except ObjectDoesNotExist:
+            collect = CollectTheme.objects.create(Yh_Id=request.user, Theme_Id=theme)
+            # 第一次收藏主题时才发送通知
+            Notification.objects.create(sender=request.user, receiver=theme.Fbr,
+                                        message=collect_notify_template % {'board_type': board_name_to_url[theme.Board_type.Board_name],
+                                                                           'theme_id': theme.id,
+                                                                           'title': theme.Title})
+
         collect.Is_Collected = not collect.Is_Collected
         collect.save()
 
@@ -239,8 +289,8 @@ def bbs_collect_theme(request):
         raise Http404()
 
 
-# 将板块名字转换为对应的url
-board_name_to_url = {'a': 'activity', 'b': 'question', 'c': 'topic'}
+reply_notify_template = '回复了你的主题<a href="http://127.0.0.1:8000/scutmocc/bbs/%(board_type)s/%(theme_id)d#%(reply_count)d">%(title)s</a>'
+mention_notify_template = '在主题<a href="http://127.0.0.1:8000/scutmocc/bbs/%(board_type)s/%(theme_id)d#%(reply_count)d">%(title)s</a>的回复中提到了你'
 
 
 @login_required
@@ -264,7 +314,11 @@ def bbs_reply(request):
             try:
                 mentioned_user = User.objects.get(last_name=i.group(1))
                 # 发送通知给被@的用户
-                # ----
+                Notification.objects.create(sender=request.user, receiver=mentioned_user,
+                                            message=mention_notify_template % {'board_type': board_name_to_url[theme.Board_type.Board_name],
+                                                                               'theme_id': theme.id,
+                                                                               'title': theme.Title,
+                                                                               'reply_count': theme.themeanswer_set.count()})
                 # 对存在的用户在回复内容中进行链接标记,注意用户的last_name不会再修改
                 # 添加标记<a href="某个用户中心">用户的last_name</a>
                 display_content = display_content.replace(i.group(),
@@ -276,7 +330,11 @@ def bbs_reply(request):
         # 保存回复
         themeanswer = ThemeAnswer.objects.create(Hfr_Id=request.user, Theme_Id=theme, raw_content=raw_content, display_content=display_content)
         # 通知主题的作者
-        # ----
+        Notification.objects.create(sender=request.user, receiver=theme.Fbr,
+                                    message=reply_notify_template % {'board_type': board_name_to_url[theme.Board_type.Board_name],
+                                                                     'theme_id': theme.id,
+                                                                     'title': theme.Title,
+                                                                     'reply_count': theme.themeanswer_set.count()})
         # 更新主题信息
         theme.Zjhf_date = themeanswer.Fb_date
         theme.Hf_sum += 1
@@ -292,8 +350,11 @@ def bbs_reply(request):
 @login_required
 def bbs_reply_delete(request, reply_id):
     try:
-        # 删除回复
         reply = ThemeAnswer.objects.get(pk=reply_id)
+        # 判断当前用户是否是回复的发表人
+        if reply.Hfr_Id != request.user:
+            # 当前用户不是回复的发表人
+            return redirect('bbs_homepage')
         reply.delete()
         # 更新回复数
         reply.Theme_Id.Hf_sum -= 1
@@ -304,9 +365,104 @@ def bbs_reply_delete(request, reply_id):
 
 
 @login_required
-def bbs_theme_edit(request):
-    return render(request, 'bbs/theme_edit.html')
+def bbs_theme_delete(request, theme_id):
+    # 判断当前用户是否是主题的发表人
+    theme = Theme.objects.get(pk=theme_id)
+    if theme.Fbr != request.user:
+        # 当前用户不是主题的发表人
+        return redirect('bbs_homepage')
+    # 当前用户是主题的发表人
+    # 删除主题
+    theme.delete()
+    return HttpResponse("删除成功")
 
+
+@login_required
+def bbs_theme_edit(request, theme_id):
+    # 判断是创建主题还是编辑主题
+    if theme_id == '':
+        # 创建主题
+        return render(request, 'bbs/theme_edit.html')
+    else:
+        # 编辑主题
+        # 判断主题是否存在
+        theme = Theme.objects.get(id=theme_id)
+        # 判断主题的作者是否是当前用户
+        if theme.Fbr != request.user:
+            # 重定向到论坛首页
+            return redirect('bbs_homepage')
+        else:
+            # 装入数据
+            return render(request, 'bbs/theme_edit.html', {'theme': theme})
+
+
+@login_required
+def bbs_theme_save(request, theme_id):
+    # 判断是创建主题还是更新主题
+    if theme_id == '':
+        # 创建主题
+        fresh_theme = Theme.objects.create(Content=request.POST.get('content'), Title=request.POST.get('title'),
+                                           Zjhfr=request.user,
+                                           Board_type=Board.objects.get(Board_name=request.POST.get('board_name')),
+                                           Fbr=request.user, College_type=College.objects.get(College_Name=request.POST.get('college_name')))
+        # 用户发帖数加一
+        # request.user.Fb_sum += 1
+        # request.user.save()
+    else:
+        # 更新主题
+        fresh_theme = Theme.objects.get(pk=theme_id)
+        if fresh_theme.Fbr != request.user:
+            # 当前用户不是主题的发表人
+            return redirect('bbs_homepage')
+        # 更新主题的内容、标题、版块类型、学院、最近回复人、最近回复日期
+        fresh_theme.Content = request.POST.get('content')
+        fresh_theme.Title = request.POST.get('title')
+        fresh_theme.Board_type = Board.objects.get(Board_name=request.POST.get('board_name'))
+        fresh_theme.College_type = College.objects.get(College_Name=request.POST.get('college_name'))
+        fresh_theme.save()
+
+    # 重定向到该主题页面
+    return redirect('bbs_theme', board_type=board_name_to_url[fresh_theme.Board_type.Board_name], theme_id=fresh_theme.id)
+
+
+@login_required
+@csrf_exempt
+def bbs_image_upload(request):
+    # 检查是否是post请求
+    if request.method == 'POST':
+        image = request.FILES['file']
+        if image:
+            image_head = str(request.user.id) + str(time.time()).split('.')[0]
+            image_tail = str(image).split('.')[-1]
+            image_name = image_head + '.' + image_tail
+            img = Image.open(image)
+            img.save('media/bbs/theme/' + image_name)
+            return JsonResponse({'location': image_name})
+        else:
+            raise Http404()
+    else:
+        raise Http404()
+
+
+@login_required
+def bbs_notification_display(request):
+    notify_list = Notification.objects.filter(receiver=request.user)
+    notify_list.update(fresh=False)
+    return render(request, 'bbs/notification.html', {'notify_list': notify_list})
+
+
+@login_required
+def bbs_notification_delete(request):
+    Notification.objects.filter(receiver=request.user).delete()
+    return HttpResponse("删除成功")
+
+
+@login_required
+def bbs_notification_check(request):
+    # 检查是否是ajax请求
+    if not request.is_ajax():
+        raise Http404()
+    return JsonResponse({'unread': Notification.objects.filter(receiver=request.user, fresh=True).count()})
 
 # deal with  personal registration
 m_token = Token(SECRET_KEY)

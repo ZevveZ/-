@@ -10,4 +10,20 @@
         $('#id_username').attr("placeholder", "用户名");
         $('#id_password').attr("placeholder", "密码");
     });
+
+    //查看是否有新的通知
+    (function(){
+        $.getJSON('http://127.0.0.1:8000/scutmocc/bbs/notification-check',function(ret){
+            //检查未读通知的数目
+            if(ret['unread']==0){
+                //没有未读的通知
+                $('#notify').css('color','#777');
+                $('#notify').children('span').hide();
+            }else{
+                //更新导航栏的bell
+                $('#notify').css('color','orangered');
+                $('#notify').children('span').text(ret['unread']).show();
+            }
+        });
+    })();
 </script>

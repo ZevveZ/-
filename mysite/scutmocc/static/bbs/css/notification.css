@@ -1,0 +1,16 @@
+body{
+    background-color:#e9eaed;
+    padding-top:70px;
+}
+.panel-heading .pull-right .btn{
+    display:inline
+}
+.avatar-48 {
+    width: 48px;
+    height: 48px;
+}
+.list-group .list-group-item span{
+    float:right;
+    color: #AAA;
+    font-size: 13px;
+}

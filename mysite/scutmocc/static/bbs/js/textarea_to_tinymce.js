@@ -5,6 +5,7 @@
 tinymce.init({
     selector:'textarea',
     language: 'zh_CN',
+    menubar:false,
     plugins: 'image, imagetools, advlist, code, media, link, colorpicker, paste, table, textcolor, imageupload',
     width: 1000,
     height: 400,

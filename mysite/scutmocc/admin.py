@@ -18,8 +18,8 @@ from scutmocc.models import ThemeAnswer
 # 将Theme后台的textarea替换为tinymce
 class ThemeAdmin(admin.ModelAdmin):
     class Media:
-        js = ('/media/scutmocc/js/jquery-3.1.0.min.js', '/media/bbs/js/tinymce/tinymce.min.js',
-              '/media/bbs/js/tinymce/jquery.tinymce.min.js', '/media/bbs/js/textarea_to_tinymce.js')
+        js = ('/static/scutmocc/js/jquery-3.1.0.min.js', '/static/bbs/js/tinymce/tinymce.min.js',
+              '/static/bbs/js/tinymce/jquery.tinymce.min.js', '/static/bbs/js/textarea_to_tinymce.js')
 
 
 admin.site.register(Person)

@@ -38,5 +38,11 @@ urlpatterns = [
     url(r'^bbs/collection$', views.bbs_collect_theme, name='bbs_collect_theme'),
     url(r'^bbs/reply$', views.bbs_reply, name='bbs_reply'),
     url(r'^bbs/reply-delete/(\d+)$', views.bbs_reply_delete, name='bbs_reply_delete'),
-    url(r'^bbs/edit$', views.bbs_theme_edit, name='bbs_theme_edit')
+    url(r'^bbs/theme-delete/(\d+)$', views.bbs_theme_delete, name='bbs_theme_delete'),
+    url(r'^bbs/notification-delete', views.bbs_notification_delete, name='bbs_notification_delete'),
+    url(r'^bbs/edit/(\d*)$', views.bbs_theme_edit, name='bbs_theme_edit'),
+    url(r'^bbs/save/(\d*)$', views.bbs_theme_save, name='bbs_theme_save'),
+    url(r'^bbs/image_upload$', views.bbs_image_upload, name='bbs_image_upload'),
+    url(r'^notification$', views.bbs_notification_display, name='bbs_notification_display'),
+    url(r'notification-check$', views.bbs_notification_check, name='bbs_notification_check')
 ]

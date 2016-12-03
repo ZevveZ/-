@@ -8,8 +8,11 @@ $(document).ready(function(){
         // 获取data-id，data-type
         var id = $(this).parent().data("id");
         var type = $(this).parent().data("type");
+        if(type == 'reply'){
+            var reply_count=$('#reply_count').text()
+        }
         // 发送数据给服务器
-        $.getJSON("http://127.0.0.1:8000/scutmocc/bbs/dianzan", {"id":id,"type":type}, function(ret){
+        $.getJSON("http://127.0.0.1:8000/scutmocc/bbs/dianzan", {"id":id,"type":type,"reply_count": reply_count}, function(ret){
             if(ret!=undefined) {
                 if (type === "theme") {
                     var update_i_list = $("[data-type=theme]").find(".dianzan i");

@@ -6,7 +6,6 @@
     <title>{{ theme_item.Title }}</title>
     {% include 'template/navstyle.html' %}
     <link rel="stylesheet" href="{% static 'bbs/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'scutmocc/css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'bbs/css/fluidbox.min.css' %}">
 </head>
 <body class="page_board">
@@ -55,7 +54,7 @@
                 {% endif %}
                 <div class="panel-body markdown">
                     <article>
-                        {{ theme_item.Content }}
+                        {{ theme_item.Content|safe }}
                     </article>
                 </div>
                 <div class="panel-footer">
@@ -85,6 +84,12 @@
                             {% endif %}
                             <span>收藏</span>
                         </a>
+                        {% if request.user.id == theme_item.Fbr.id %}
+                            <span class="pull-right">
+                                <a href="{% url 'bbs_theme_edit' theme_item.id%}"><i class="fa fa-pencil"></i></a>
+                                <a href="{% url 'bbs_theme_delete' theme_item.id %}" onclick="return confirm('确定删除主题吗？')"><i class="fa fa-trash"></i></a>
+                            </span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -98,7 +103,7 @@
                     {% if request.user.is_authenticated %}
                         {% for reply_item in reply_list %}
                             <div class="reply">
-                                <a name="reply{{ forloop.counter }}" class="offset"></a>
+                                <a name="{{ forloop.counter }}" class="offset"></a>
                                 <div class="avatar">
                                     <a href="#">
                                         <img class="media-object avatar-48" src="{% static 'bbs/img/blue_z.png' %}"
@@ -108,12 +113,12 @@
                                 <div class="infos">
                                     <div class="info">
                                         <span>{{ reply_item.reply_infos.Hfr_Id }}</span>
-                                        <span>#{{ forloop.counter }}</span>
+                                        <span id="reply_count">#{{ forloop.counter }}</span>
                                         ·
                                         <abbr>{{ reply_item.reply_infos.Fb_date|date:"Y-m-d H:i:s" }}</abbr>
                                         <span class="opts-color pull-right" data-id="{{ reply_item.reply_infos.id }}" data-type="reply">
                                             {% if reply_item.reply_infos.Hfr_Id == request.user %}
-                                                <a href="{% url 'bbs_reply_delete' reply_item.reply_infos.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                <a href="{% url 'bbs_reply_delete' reply_item.reply_infos.id %}" onclick="return confirm('确定删除回复吗？')"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                             {% endif %}
                                             <a href="javascript:void(0)" onclick="reply_comment(this)"><i class="fa fa-reply" aria-hidden="true"></i></a>
                                             <a href="#" class="dianzan">
@@ -142,6 +147,7 @@
                     {% else %}
                         {% for reply_item in theme_item.themeanswer_set.all %}
                             <div class="reply">
+                                <a name="{{ forloop.counter }}" class="offset"></a>
                                 <div class="avatar">
                                     <a href="#">
                                         <img class="media-object avatar-48" src="{% static 'bbs/img/blue_z.png' %}"
