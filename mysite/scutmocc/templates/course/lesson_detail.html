@@ -1,10 +1,36 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title></title>
+    {% include 'template/navstyle.html' %}
 </head>
 <body>
-This is the {{ les_id }} lesson's detail in {{ label_id }} course.
+{% include 'template/navbar.html' %}
+<div class="container">
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>{{ lesson.Les_Name }}</h3>
+                <span>{{ lesson.Les_Date }}</span>
+                <span>￥ {{ lesson.Les_Price }}</span>
+            </div>
+            <div class="panel-body">
+                <p>{{ lesson.Les_Intro }}</p>
+                <span>周期</span>
+                {% if lesson.Les_Another %}
+                    <p>{{ lesson.Les_Another }}</p>
+                    <span>周期:</span>
+                    <p>{{ lesson.Les_Time }}次/周</p>
+                    <span>剩余名额:</span>
+                    <p>{{ lesson.Les_Pnum }}</p>
+                {% endif %}
+            </div>
+            <div class="panel-footer"><a href=".?remain={{ user.id }}" class="btn btn-primary btn-block">点我抢课</a></div>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>
 </body>
 </html>

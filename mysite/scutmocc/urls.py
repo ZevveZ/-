@@ -26,10 +26,11 @@ urlpatterns = [
     # consider the length of \d+ latter
     url(r'^(?P<user_id>\d+)$', views.user_center, name='user_center'),
     url(r'^(?P<user_id>\d+)/subles/(?P<kind>\d+)/$', views.submit_les, name='sub_les'),
-
-    url(r'^course/$', views.course_list, name='course_list'),
-    url(r'^course/(?P<label_id>\d+)/$', views.course_detail, name='course_detail'),
-    url(r'^course/(?P<label_id>\d+)/(?P<les_id>\d+)$', views.lesson_detail, name='lesson_detail'),
+    url(r'^(?P<user_id>\d+)/mypage/$', views.my_page, name='my_page'),
+    url(r'^(?P<user_id>\d+)/course/(?P<les_id>\d+)/$', views.my_course, name='my_course'),
+    # url(r'^course/(?P<direction>\w*)$', views.course_list, name='course_detail'),
+    url(r'^course/(?P<direction>\w+)/(?P<labeler>\d+)/(?P<character>\d+)$', views.course_list, name='course_detail'),
+    url(r'^course/(?P<les_id>\d+)$', views.lesson_detail, name='lesson_detail'),
     url(r'^bbs/$', views.bbs_homepage, name='bbs_homepage'),
     url(r'^bbs/(?P<board_type>(?:activity|question|topic))/$', views.bbs_board, name='bbs_board'),
     url(r'^bbs/(?P<board_type>(?:activity|question|topic))/(?P<theme_id>\d+)$', views.bbs_theme, name='bbs_theme'),

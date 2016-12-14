@@ -1,10 +1,194 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>课程中心</title>
+    {% include 'template/navstyle.html' %}
+    <style>
+        header {
+            margin: 60px 0 30px 0;
+            width: 100%;
+        }
+
+        a {
+            color: black;
+        }
+
+        article {
+            width: 100%;
+            height: 500px;
+            background-color: #f3f5f7;
+        }
+
+        .nav_header {
+            margin: 0 auto;
+            width: 60%;
+        }
+
+        article .panel {
+            margin: 0 auto;
+            width: 60%;
+        }
+
+        .l {
+            float: left;
+        }
+
+        .panel-body ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .nav_header .nav_line span {
+            font-size: 12px;
+            font-weight: 700;
+            margin: 9px 0;
+        }
+
+        .nav_header .nav_line li {
+            display: inline-block;
+            text-align: center;
+            height: 22px;
+            width: 50px;
+            margin: 8px 5px;
+        }
+
+        .nav_header .nav_line li a {
+            font-size: 12px;
+            font-weight: 500;
+            text-decoration-line: none;
+        }
+
+        .nav_header .nav_line .cur a {
+            color: white;
+        }
+
+        .cur {
+            background-color: red;
+        }
+
+        hr {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
-This is course list.
+{% include 'template/navbar.html' %}
+<header>
+    <div class="nav_header">
+        <div class="nav_line">
+            <span class="l">方向:</span>
+            <ul>
+                {% if direction == 'd' %}
+                    <li class="cur"><a href="{% url 'course_detail' 'd' labeler character %}">全部</a></li>
+                {% else %}
+                    <li><a href="{% url 'course_detail' 'd' labeler character %}">全部</a></li>
+                {% endif %}
+                {% if direction == 'a' %}
+                    <li class="cur"><a href="{% url 'course_detail' 'a' labeler character %}">课程</a></li>
+                {% else %}
+                    <li><a href="{% url 'course_detail' 'a' labeler character %}">课程</a></li>
+                {% endif %}
+                {% if direction == 'b' %}
+                    <li class="cur"><a href="{% url 'course_detail' 'b' labeler character %}">项目</a></li>
+                {% else %}
+                    <li><a href="{% url 'course_detail' 'b' labeler character %}">项目</a></li>
+                {% endif %}
+                {% if direction == 'c' %}
+                    <li class="cur"><a href="{% url 'course_detail' 'c' labeler character %}">实战</a></li>
+                {% else %}
+                    <li><a href="{% url 'course_detail' 'c' labeler character %}">实战</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <hr>
+        <div class="nav_line">
+            <span class="l">分类:</span>
+            <ul>
+                {% if labeler == '0' %}
+                    <li class="cur"><a href="{% url 'course_detail' direction  0 character %}">全部</a></li>
+                {% else %}
+                    <li ><a href="{% url 'course_detail' direction  0 character %}">全部</a></li>
+                {% endif %}
+                {% for label in labels %}
+                    {% if labeler == label.id %}
+                        <li class="cur"><a href="{% url 'course_detail' direction label.id character %}">{{ label.Label_Name }}</a>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'course_detail' direction label.id character %}">{{ label.Label_Name }}</a>
+                        </li>
+                    {% endif %}
+
+                {% endfor %}
+            </ul>
+        </div>
+        <hr>
+        <div class="nav_line">
+            <span class="l">主体：</span>
+            <ul>
+                <li><a href="{% url 'course_detail' direction labeler 0 %}">全部</a></li>
+                <li><a href="{% url 'course_detail' direction labeler 1 %}">社团</a></li>
+                <li><a href="{% url 'course_detail' direction labeler 2 %}">个体</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+<article>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <div class="row"><span class="col-sm-3">主题</span><span class="col-sm-3">发布者</span><span
+                        class="col-sm-3">日期</span>
+                    <spam class="col-sm-3">简介</spam>
+                </div>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <ul>
+                {% for course in courses %}
+                    <li class="row">
+                        <a href="">
+                            <h4 class="col-sm-3">{{ course.Les_Name }}</h4>
+                            <h4 class="col-sm-3">{{ course.Person_Id.last_name }}</h4>
+                            <h4 class="col-sm-3">{{ course.Les_Date }}</h4>
+                            <h4 class="col-sm-3">{{ course.Les_Intro }}</h4>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="panel-footer">
+            <ul class="pagination">
+                {% if courses.has_previous %}
+                    <li>
+                        <a href="?page_num={{ courses.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for page in courses.paginator.page_range %}
+                    <li>
+                        {% if page == courses.number %}
+                            <a>{{ page }}</a>
+                        {% else %}
+                            <a href="?page_num={{ page }}">{{ page }}</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                {% if courses.has_next %}
+                    <li>
+                        <a href="?page_num={{ courses.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</article>
 </body>
+{% include 'template/navscript.html' %}
+
 </html>

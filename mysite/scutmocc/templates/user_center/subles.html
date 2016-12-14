@@ -1,58 +1,65 @@
 {% extends 'user_center/user_center.html' %}
 {% block title %}发布{% endblock %}
 {% block content %}
-    <form action="#" class="form-horizontal" role="form" method="post">
-       {% csrf_token %}
-    <fieldset>
-        <legend>发布</legend>
-    {{ form.non_field_errors }}
-         <div class="form-group">
-            {{ form.Les_Name.errors }}
-            <label for="{{ form.Les_Name.id_for_label }}" class="col-sm-2 control-label">名称</label>
-            <div class="col-sm-9">
-                {{ form.Les_Name }}
+    <form action="{% url 'sub_les' user.id 1 %}" class="form-horizontal" role="form" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend>发布</legend>
+            {{ lesform.non_field_errors }}
+            <div class="form-group">
+                {{ lesform.name.errors }}
+                <label for="{{ lesform.name.id_for_label }}" class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-9">
+                    {{ lesform.name }}
+                </div>
             </div>
-        </div>
-          <div class="form-group">
-            {{ form.Label_Id.errors }}
-            <label for="{{ form.Label_Id.id_for_label }}" class="col-sm-2 control-label">标签</label>
-            <div class="col-sm-9">
-                {{ form.Label_Id }}
+            <div class="form-group">
+                {{ lesform.label.errors }}
+                <label for="{{ lesform.label.id_for_label }}" class="col-sm-2 control-label">标签</label>
+                <div class="col-sm-9">
+                    {{ lesform.label }}
+                </div>
             </div>
-        </div>
-     <div class="form-group">
-            {{ form.Les_Intro.errors }}
-            <label for="{{ form.Les_Intro.id_for_label }}" class="col-sm-2 control-label">介绍</label>
-            <div class="col-sm-9">
-                {{ form.Les_Intro }}
+            <div class="form-group">
+                {{ lesform.intro.errors }}
+                <label for="{{ form.intro.id_for_label }}" class="col-sm-2 control-label">介绍</label>
+                <div class="col-sm-9">
+                    {{ lesform.intro }}
+                </div>
             </div>
-        </div>
-     <div class="form-group">
-            {{ form.Les_Time.errors }}
-            <label for="{{ form.Les_Time.id_for_label }}" class="col-sm-2 control-label">周期</label>
-            <div class="col-sm-9">
-                {{ form.Les_Time }}
+            <div class="form-group">
+                {{ lesform.time.errors }}
+                <label for="{{ lesform.time.id_for_label }}" class="col-sm-2 control-label">周期</label>
+                <div class="col-sm-9">
+                    {{ lesform.time }}
+                </div>
             </div>
-        </div>
-        {% if user.email == user.username %}
-             <div class="form-group">
-            {{ form.Les_Merge.errors }}
-            <label for="{{ form.Les_Merge.id_for_label }}" class="col-sm-2 control-label">招收人数</label>
-            <div class="col-sm-9">
-                {{ form.Les_Merge }}
+            <div class="form-group">
+                {{ lesform.price.errors }}
+                <label for="{{ form.price.id_for_label }}" class="col-sm-2 control-label">价格</label>
+                <div class="col-sm-9">
+                    {{ lesform.price }}
+                </div>
             </div>
-        </div>
-        {% endif %}
 
-     <div class="form-group">
-            {{ form.Les_Another.errors }}
-            <label for="{{ form.Les_Another.id_for_label }}" class="col-sm-2 control-label">备注</label>
-            <div class="col-sm-9">
-                {{ form.Les_Another }}
+            <div class="form-group">
+                {{ lesform.merge.errors }}
+                <label for="{{ lesform.merge.id_for_label }}" class="col-sm-2 control-label">招收人数</label>
+                <div class="col-sm-9">
+                    {{ lesform.merge }}
+                </div>
             </div>
-        </div>
-        <input id="button" type="submit" class="btn btn-primary btn-lg" value="提交" />
-    </fieldset>
+
+
+            <div class="form-group">
+                {{ lesform.another.errors }}
+                <label for="{{ lesform.another.id_for_label }}" class="col-sm-2 control-label">备注</label>
+                <div class="col-sm-9">
+                    {{ lesform.another }}
+                </div>
+            </div>
+            <input id="button" type="submit" class="btn btn-primary btn-lg" value="提交"/>
+        </fieldset>
 
     </form>
 {% endblock %}

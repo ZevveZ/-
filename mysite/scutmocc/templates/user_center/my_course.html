@@ -1,0 +1,65 @@
+{% extends 'user_center/user_center.html' %}
+{% block title %}发布{% endblock %}
+{% block content %}
+ <form action="{% url 'my_course' user.id id %}" class="form-horizontal" role="form" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend>发布</legend>
+            {{ course.non_field_errors }}
+            <div class="form-group">
+                {{ course.name.errors }}
+                <label for="{{ course.name.id_for_label }}" class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-9">
+                    {{ course.name }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ course.label.errors }}
+                <label for="{{ course.label.id_for_label }}" class="col-sm-2 control-label">标签</label>
+                <div class="col-sm-9">
+                    {{ course.label }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ course.intro.errors }}
+                <label for="{{ form.intro.id_for_label }}" class="col-sm-2 control-label">介绍</label>
+                <div class="col-sm-9">
+                    {{ course.intro }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ course.time.errors }}
+                <label for="{{ course.time.id_for_label }}" class="col-sm-2 control-label">周期</label>
+                <div class="col-sm-9">
+                    {{ course.time }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ course.price.errors }}
+                <label for="{{ course.price.id_for_label }}" class="col-sm-2 control-label">价格</label>
+                <div class="col-sm-9">
+                    {{ course.price }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ course.merge.errors }}
+                <label for="{{ course.merge.id_for_label }}" class="col-sm-2 control-label">招收人数</label>
+                <div class="col-sm-9">
+                    {{ course.merge }}
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                {{ course.another.errors }}
+                <label for="{{ course.another.id_for_label }}" class="col-sm-2 control-label">备注</label>
+                <div class="col-sm-9">
+                    {{ course.another }}
+                </div>
+            </div>
+            <input id="button" type="submit" class="btn btn-primary btn-lg" value="提交"/>
+        </fieldset>
+
+    </form>
+{% endblock %}

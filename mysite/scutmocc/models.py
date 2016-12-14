@@ -7,7 +7,6 @@ from django.db import models
 
 class Person(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    Nickname = models.CharField(max_length=10)
     College = models.CharField(max_length=20)
     # College = models.ForeignKey(College),修改验证
     Sex = models.NullBooleanField(null=True)
@@ -59,12 +58,7 @@ models.signals.post_save.connect(update_activity, sender=User)
 
 # Lesson repo
 class LabelField(models.Model):
-    Lesson = {
-        ('a', '项目'),
-        ('b', '理论课'),
-        ('c', '技能')
-    }
-    Label_Kind = models.CharField(max_length=1, choices=Lesson)
+
     Label_Name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -75,15 +69,23 @@ class LabelField(models.Model):
 class SubmitLes(models.Model):
     Person_Id = models.ForeignKey(User)
     Label_Id = models.ForeignKey(LabelField, default=None)
+    Lesson = {
+        ('a', '项目'),
+        ('b', '理论课'),
+        ('c', '技能')
+    }
+    Les_Kind = models.CharField(max_length=1, choices=Lesson)
     Les_Name = models.CharField(max_length=60)
-    Les_Intro = models.TextField()
+    Les_Intro = models.CharField(max_length=200)
     Les_Time = models.IntegerField(help_text="次/周")
     Les_Price = models.IntegerField(help_text="￥")
-    Les_Merge = models.IntegerField(default=1,help_text="最多10人")  # 0～3 社团 0~10
+    Les_Merge = models.IntegerField(default=1, help_text="最多10人")  # 0～3 社团 0~10
     Les_Another = models.CharField(max_length=150, null=True)
+    Les_Zan = models.IntegerField(default=0)
+    Les_Date = models.DateField(auto_now=True)
     Les_Term = models.IntegerField(default=1)
-    Les_Next = models.DateField(null=True)
     Les_Status = models.BooleanField(default=True)
+    Les_Pnum = models.IntegerField(default=1)
 
     def __str__(self):
         return self.Les_Name
@@ -113,12 +115,13 @@ class AnswerField(models.Model):
 class ChoiceLes(models.Model):
     Les_Id = models.ForeignKey(SubmitLes)
     Person = models.ForeignKey(User)
-    Ch_Date = models.DateField()
+    Contact = models.CharField(max_length=30)
+    Ch_Date = models.DateField(auto_now=True)
     End = models.BooleanField()
     Les_Assess = models.CharField(max_length=500, null=True)
 
     def __str__(self):
-        return self.id
+        return self.Contact
 
 
 #   Board

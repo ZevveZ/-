@@ -7,11 +7,13 @@ from django.core.mail import send_mail
 from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.http import Http404
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-
+import string
 from mysite.settings import SECRET_KEY
-from scutmocc.models import Theme, College, Board, ThemeAnswer, Dianzan, Attention, CollectTheme, SubmitLes
+from scutmocc.models import Theme, College, Board, ThemeAnswer, Dianzan, Attention, CollectTheme, SubmitLes, LabelField, \
+    ChoiceLes
 from scutmocc.validation import Token
 from .forms import ActivityForm, PersonalForm, SublesForm
 from scutmocc.juncheepaginator import JuncheePaginator
@@ -19,42 +21,168 @@ import re
 
 
 def homepage(request):
+
     return render(request, 'homepage/homepage.html')
 
 
 # display user center
 def user_center(request, user_id):
     user = User.objects.get(id=user_id)
-    return render(request, 'user_center/user_center.html', {'user_id': user.id, 'user_name': user.last_name})
+    try:
+        lessons = SubmitLes.objects.filter(Person_Id=user).all()
+        students = {}
+        for lesson in lessons:
+            try:
+                student = ChoiceLes.objects.filter(Les_Id=lesson).all()
+                students[lesson.id] = student
+            except ObjectDoesNotExist:
+                pass
+    except ObjectDoesNotExist:
+        lessons = None
+
+    try:
+        myles = ChoiceLes.objects.filter(Person=user).all()
+    except ObjectDoesNotExist:
+        myles = None
+
+    return render(request, 'user_center/user_center.html', {'lessons': lessons, 'students': students, 'myles': myles})
 
 
+def my_page(request, user_id):
+    print("redirect")
+    return redirect('user_center', user_id=user_id)
+
+
+@login_required
 def submit_les(request, user_id, kind):
+    print("here")
     user = User.objects.get(id=user_id)
     if request.method == 'POST':
-        lesson = SubmitLes.objects.get(Person_Id=user)
-        form = SublesForm(request.POST, instance=lesson)
+        print("post")
+        form = SublesForm(request.POST)
         if form.is_valid():
-            form.save()
+            print("valid")
+            name = form.cleaned_data['name']
+            labelname = form.cleaned_data['label']
+            label = LabelField.objects.get(Label_Name=labelname)
+            intro = form.cleaned_data['intro']
+            time = form.cleaned_data['time']
+            price = form .cleaned_data['price']
+            if form.cleaned_data['merge'] is not None:
+                merge = form.cleaned_data['merge']
+            else:
+                merge = 1
+            another = form.cleaned_data['another']
+            SubmitLes.objects.create(Person_Id=user, Label_Id=label, Les_Name=name, Les_Intro=intro, Les_Time=time,
+                                     Les_Price=price, Les_Merge=merge, Les_Another=another)
+
+            return redirect('user_center', user_id=user_id)
         else:
-            render(request, 'user_center/subles.html', {'form': form, 'kind': kind})
+            print("else")
+            return render(request, 'user_center/subles.html', {'lesform': form, 'kind': kind})
     else:
         form = SublesForm()
-        return render(request, 'user_center/subles.html', {'form': form, 'kind': kind})
+        print("form")
+        return render(request, 'user_center/subles.html', {'lesform': form, 'kind': kind})
+
+
+def my_course(request, user_id, les_id):
+    lesson = SubmitLes.objects.get(id=les_id)
+    data = {'name': lesson.Les_Name, 'label': lesson.Label_Id.Label_Name,
+            'intro': lesson.Les_Intro, 'time': lesson.Les_Time, 'price': lesson.Les_Price,
+            'merge': lesson.Les_Merge, 'another': lesson.Les_Another
+            }
+
+    if request.method == 'POST':
+        form = SublesForm(request.POST, initial=data)
+        if form.is_valid():
+            if form.has_changed():
+                print("valid")
+                name = form.cleaned_data['name']
+                labelname = form.cleaned_data['label']
+                label = LabelField.objects.get(Label_Name=labelname)
+                intro = form.cleaned_data['intro']
+                time = form.cleaned_data['time']
+                price = form.cleaned_data['price']
+                merge = form.cleaned_data['merge']
+                another = form.cleaned_data['another']
+                lesson.Les_Name= name
+                lesson.Label_Id= label
+                lesson.Les_Intro= intro
+                lesson.Les_Time = time
+                lesson.Les_Price= price
+                lesson.Les_Merge= merge
+                lesson.Les_Another = another
+                lesson.save()
+            return redirect('user_center', user_id=user_id)
+        else:
+            return render(request, 'user_center/my_course.html', {'course': form, 'id': les_id})
+    else:
+        form = SublesForm(data)
+        return render(request, 'user_center/my_course.html', {'course': form, 'id': les_id})
 
 
 # display all kinds of course
-def course_list(request):
-    return render(request, 'course/course_list.html')
+def course_list(request, direction, labeler, character):
+    if direction:
+        if direction == 'd':
+            courses = SubmitLes.objects.filter(Les_Status=True)
+        else:
+            courses = SubmitLes.objects.filter(Les_Status=True).filter(Les_Kind=direction)
+    else:
+        courses = SubmitLes.objects.all()
+        direction = 'd'
+    if labeler:
+        if labeler == '0':
+            courses = courses.all()
+        else:
+            labeler = int(labeler)
+            label = LabelField.objects.get(id=labeler)
+            courses = courses.filter(Label_Id=label).all()
+    else:
+        labeler = 0
+    if character:
+        if character == '0':
+            courses = courses.all()
+        if character == '1':
+            courses == courses.all()
+        if character == '2':
+            courses = courses.all()
+    else:
+        character = '0'
+    labels = LabelField.objects.all()
+    page_num = request.GET.get('page_num', 1)
+    paginator = JuncheePaginator(courses, 2)
+    try:
+        courses = paginator.page(page_num)
+    except PageNotAnInteger:
+        courses = paginator.pag(1)
+    except EmptyPage:
+        courses = paginator.pag(paginator.num_pages)
+    return render(request, 'course/course_list.html', context={'courses': courses, 'labels': labels,
+                                                               'direction': direction, 'labeler': labeler,
+                                                               'character': character})
 
 
-# display one kind of courses' detail
-def course_detail(request, label_id):
-    return render(request, 'course/course_detail.html', {'label_id': label_id})
+def course_detail(request, direction, labeler, character):
+    return render(request, 'course/course_detail.html')
 
 
 # display one of lessons' detail
-def lesson_detail(request, label_id, les_id):
-    return render(request, 'course/lesson_detail.html', {'label_id': label_id, 'les_id': les_id})
+@login_required
+def lesson_detail(request, les_id):
+    lesson = SubmitLes.objects.get(id=les_id)
+    remain = request.Get.get('remain')
+    if remain:
+        if lesson.Les_Pnum > 0:
+            student = User.objects.get(id=remain)
+            ChoiceLes.objects.create(Les_Id=les_id, Person=student, Contact=student.email, End=False)
+            lesson.Les_Pnum = lesson.Les_Merge - 1;
+            return HttpResponse("订课成功，请前往个人中心查看")
+        else:
+            return HttpResponse("很遗憾课程人数已满")
+    else:
+        return render(request, 'course/lesson_detail.html', {'lesson': lesson})
 
 
 # display the homepage of bbs

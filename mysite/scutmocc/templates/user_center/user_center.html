@@ -20,10 +20,10 @@
             <div id="aside" class="accordion  col-md-offset-1" id="accordion2">
                 <ul class="nav nav-pills nav-stacked">
                     <li class="nav-header"
-                        style="margin-bottom: 5px;font-size: x-large;font-family:'宋体',sans-serif;">{{ user_name }}</li>
+                        style="margin-bottom: 5px;font-size: x-large;font-family:'宋体',sans-serif;">{{ user.last_name }}</li>
                     <div class="accordion-group" style="margin-bottom: 5px;margin-left: 16px">
                         <div class="accordion-heading">
-                            <li><a href="#" data-toggle="collapse" data-target="" data-parent="#accordion2">
+                            <li><a href="{% url 'my_page' user.id %}" data-toggle="collapse" data-target="" data-parent="#accordion2">
                                 <i class="glyphicon glyphicon-home"></i> <span style="margin-left: 5px;">主页</span>
                                 <span class="badge">new</span> </a>
                             </li>
@@ -54,7 +54,8 @@
                         </div>
                         <div id="submit" class="accordion-body collapse">
                             <ul class="nav nav-list" style="padding-left: 30px">
-                                <li><a href="{% url 'sub_les' user.id 1 %}"><i class="glyphicon glyphicon-star" style="margin-right: 6px"></i>课程</a>
+                                <li><a href="{% url 'sub_les' user.id 1 %}"><i class="glyphicon glyphicon-star"
+                                                                               style="margin-right: 6px"></i>课程</a>
                                 </li>
                                 <li><a href=""><i class="glyphicon glyphicon-star" style="margin-right: 6px"></i>项目</a>
                                 </li>
@@ -82,86 +83,48 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="lesson">
                             <ul class="nav nav-list">
-                                <li>
-                                    <h3><a href="">英语</a></h3>
-                                    <h5>2016/3/24</h5>
+
+                                {% for lesson in lessons %}
+                                    <h3><li><a href="{% url 'my_course' user.id lesson.id %}">{{ lesson.Les_Name }}</a></li></h3>
+                                    <h5>{{ lesson.Les_Date }}</h5>
                                     <div class="well">
-                                        <p>his is a simple hero unit, a simple jumbotron-style component for
-                                            calling extra attention to featured content or information.</p>
+                                        <p>{{ lesson.Les_Intro }}</p>
                                         <ul class="list-group">
-                                            <li class="list-group-item list-group-item-info"><span class="label label-primary">Jack</span>  ---  联系方式:18826075423</li>
-                                            <li class="list-group-item list-group-item-success"><span class="label label-primary">Jack</span>  ---  联系方式:18826075423</li>
+                                                {% for key,value in students.items %}
+                                                    {% if key == lesson.id %}
+                                                        {% for student in value %}
+                                                         <li class="list-group-item list-group-item-info"><span
+                                                    class="label label-primary">{{ student.Person.last_name }}</span>
+                                                --- 联系方式:{{ student.Contact }}
+                                            </li>
+                                                        {% endfor %}
+                                                    {% endif %}
+
+                                                {% endfor %}
                                         </ul>
                                     </div>
-                                </li>
-                                <li>
-                                    <h3><a href="">高数</a></h3>
-                                    <h5>2016/3/24</h5>
+                                {% empty %}
                                     <div class="well">
-                                        <p>his is a simple hero unit, a simple jumbotron-style component for
-                                            calling extra attention to featured content or information.</p>
+                                    你还没有发布课程，赶紧去试一试吧!
                                     </div>
-                                </li>
-                                <li>
-                                    <h3><a href="">高数</a></h3>
-                                    <h5>2016/3/24</h5>
-                                    <div class="well">
-                                        <p>his is a simple hero unit, a simple jumbotron-style component for
-                                            calling extra attention to featured content or information.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <h3><a href="">高数</a></h3>
-                                    <h5>2016/3/24</h5>
-                                    <div class="well">
-                                        <p>his is a simple hero unit, a simple jumbotron-style component for
-                                            calling extra attention to featured content or information.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <h3><a href="">高数</a></h3>
-                                    <h5>2016/3/24</h5>
-                                    <div class="well">
-                                        <p>his is a simple hero unit, a simple jumbotron-style component for
-                                            calling extra attention to featured content or information.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <h3><a href="">高数</a></h3>
-                                    <h5>2016/3/24</h5>
-                                    <div class="well">
-                                        <p>his is a simple hero unit, a simple jumbotron-style component for
-                                            calling extra attention to featured content or information.</p>
-                                    </div>
-                                </li>
+                                {% endfor %}
                             </ul>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="learn">
                             <ul class="nav nav-list">
-                                <li>
-                                    <h3><a href="">高数</a></h3>
-                                    <h5>2016/3/24</h5>
+                                {% for les in myles %}
+                                    <li>
+                                    <h3><a href="">{{ les.Les_Id.Les_Name }}</a></h3>
+                                    <h5>{{ les.Ch_Date }}</h5>
                                     <div class="well">
-                                        <p>his is a simple hero unit, a simple jumbotron-style component for
-                                            calling extra attention to featured content or information.</p>
+                                        <p>{{ les.Les_Id.Les_Intro }}</p>
                                     </div>
                                 </li>
-                                <li>
-                                    <h3><a href="">高数</a></h3>
-                                    <h5>2016/3/24</h5>
+                                    {% empty %}
                                     <div class="well">
-                                        <p>his is a simple hero unit, a simple jumbotron-style component for
-                                            calling extra attention to featured content or information.</p>
+                                    你目前没有选中的课，去首页看看有没有你心仪的课吧~
                                     </div>
-                                </li>
-                                <li>
-                                    <h3><a href="">高数</a></h3>
-                                    <h5>2016/3/24</h5>
-                                    <div class="well">
-                                        <p>his is a simple hero unit, a simple jumbotron-style component for
-                                            calling extra attention to featured content or information.</p>
-                                    </div>
-                                </li>
+                                {% endfor %}
                             </ul>
                         </div>
 
@@ -177,8 +140,8 @@
 </body>
 {% include 'template/navscript.html' %}
 <script>
-    $(function(){
+    $(function () {
         $("[id^='id_']").addClass("form-control");
-       })
+    })
 </script>
 </html>
