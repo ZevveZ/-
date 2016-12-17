@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>论坛</title>
+    <title>步行街</title>
     {% include 'template/navstyle.html' %}
     <link rel="stylesheet" href="{% static 'bbs/css/style.css' %}">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -17,11 +17,8 @@
 </head>
 <body style="padding-top:70px">
 {% include 'template/navbar.html' %}
-<div class="jumbotron">
-    <div class="container">
-        <h2>欢迎来到华工步行街</h2>
-        <p>这里可以吧啦吧啦</p>
-    </div>
+<div class="container" style="margin-bottom: 20px">
+    <img src="{% static 'bbs/img/homepage.jpg' %}" alt="步行街" width="1140px" height="300px">
 </div>
 <div class="container">
     <div class="row">
@@ -63,13 +60,12 @@
                             </div>
                             <div class="media-body broaden">
                                 <div class="media-heading">
-                                    <a class="constrain-length" title="{{ theme.Title }}" href="#">{{ theme.Title }}</a>
-                                    <!--通过js触发tooltip-->
-                                    <i class="fa fa-diamond" aria-hidden="true"
-                                          data-toggle="tooltip" data-original-title="精华主题"></i>
+                                    <a class="constrain-length" title="{{ theme.Title }}" href="{{ theme.Board_type.href}}/{{ theme.id }}">{{ theme.Title }}</a>
+                                    <i class="fa fa-diamond diamond" aria-hidden="true"
+                                          data-toggle="tooltip" data-placement="top" title="精华主题"></i>
                                 </div>
                                 <div>
-                                    <a href="#">{{ theme.Board_type }}</a>
+                                    <a href="{{ theme.Board_type.href }}">{{ theme.Board_type }}</a>
                                     •
                                     <a href="#">{{ theme.Fbr.last_name }}</a>
                                     <span class="hidden-mobile">
@@ -95,7 +91,6 @@
                 </ul>
             </div>
         </div>
-        <div class="panel-footer"><a href="#">查看更多精华主题</a></div>
     </div>
 </div>
 </body>

@@ -20,6 +20,8 @@ from scutmocc.juncheepaginator import JuncheePaginator
 import re
 from PIL import Image
 import time
+import datetime
+from django.core.urlresolvers import reverse
 
 
 def homepage(request):
@@ -27,13 +29,38 @@ def homepage(request):
 
 
 # display user center
+@login_required
 def user_center(request, user_id):
-    user = User.objects.get(id=user_id)
-    return render(request, 'user_center/user_center.html', {'user_id': user.id, 'user_name': user.last_name})
+    # 无论地址中的user_id等于多少，都返回当前登录用户的个人中心
+    return render(request, 'user_center/user_center.html', {'user_id': request.user.id, 'user_name': request.user.last_name})
 
 
+@login_required
+def user_center_bbs(request, user_id):
+    # 允许查看其他用户的信息
+    user = User.objects.get(pk=user_id)
+    # 获取用户的合法主题
+    theme_list = Theme.objects.filter(Fbr=user, Legal=True).all()
+    # 获取用户的回复
+    reply_list = ThemeAnswer.objects.filter(Hfr_Id=user).all()
+    # 获取用户的收藏
+    collect_list = CollectTheme.objects.filter(Yh_Id=user).all()
+    # 获取用户的正在关注
+    following = Attention.objects.filter(Fs_Id=user).all()
+    # 获取关注登录用户的列表
+    follower = Attention.objects.filter(Ox_Id=user).all()
+    return render(request, 'user_center/bbs.html', {'theme_list': theme_list,
+                                                    'reply_list': reply_list,
+                                                    'collect_list': collect_list,
+                                                    'following': following,
+                                                    'follower': follower,
+                                                    'user_name': user.last_name})
+
+
+@login_required
 def submit_les(request, user_id, kind):
-    user = User.objects.get(id=user_id)
+    # 无论地址中的user_id等于多少，都返回当前登录用户的个人中心
+    user = request.user
     if request.method == 'POST':
         lesson = SubmitLes.objects.get(Person_Id=user)
         form = SublesForm(request.POST, instance=lesson)
@@ -63,7 +90,7 @@ def lesson_detail(request, label_id, les_id):
 
 # display the homepage of bbs
 def bbs_homepage(request):
-    best_theme_list = Theme.objects.filter(Legal=True).order_by('-Dz_sum', '-Zjhf_date')[:10]
+    best_theme_list = Theme.objects.filter(Legal=True, Dz_sum__gte=1).order_by('-Dz_sum', '-Zjhf_date')[:10]
     return render(request, "bbs/homepage.html", context={"best_theme_list": best_theme_list})
 
 
@@ -80,6 +107,16 @@ def bbs_board(request, board_type):
     theme_list = board.theme_set.filter(Legal=True)
     college_type = request.GET.get('college_type')
     sort_type = request.GET.get('sort_type')
+
+    # 获取统计信息
+    today = datetime.date.today()
+    yesterday = today + datetime.timedelta(days=-1)
+    total_theme = theme_list.count()
+    today_theme = theme_list.filter(Fb_date__year=today.year, Fb_date__month=today.month,
+                                    Fb_date__day=today.day).count()
+
+    yesterday_theme = theme_list.filter(Fb_date__year=yesterday.year, Fb_date__month=yesterday.month,
+                                        Fb_date__day=yesterday.day).count()
 
     if college_type:
         theme_list = theme_list.filter(College_type=college_type)
@@ -103,7 +140,9 @@ def bbs_board(request, board_type):
         theme_list = paginator.pag(paginator.num_pages)
 
     return render(request, 'bbs/board.html',
-                  context={'college_list': college_list, 'theme_list': theme_list, 'board': board, 'college_type': college_type})
+                  context={'college_list': college_list, 'theme_list': theme_list, 'board': board,
+                           'college_type': college_type, 'total_theme': total_theme, 'today_theme': today_theme,
+                           'yesterday_theme': yesterday_theme})
 
 
 # display one of themes in board
@@ -341,7 +380,7 @@ def bbs_reply(request):
         theme.Zjhfr = request.user
         theme.save()
         # 重定向到主题页面
-        return redirect('bbs_theme', board_type=board_name_to_url[theme.Board_type.Board_name], theme_id=theme.id)
+        return render(request, 'template/jump.html', {'message': '回复成功', 'href': theme.Board_type.href + '/' + str(theme.id)})
     except ObjectDoesNotExist:
         # 主题不存在
         raise Http404()
@@ -359,7 +398,7 @@ def bbs_reply_delete(request, reply_id):
         # 更新回复数
         reply.Theme_Id.Hf_sum -= 1
         reply.Theme_Id.save()
-        return redirect('bbs_theme', board_type=board_name_to_url[reply.Theme_Id.Board_type.Board_name], theme_id=reply.Theme_Id.id)
+        return render(request, 'template/jump.html', {'message': '删除成功', 'href': reply.Theme_Id.Board_type.href + '/' + str(reply.Theme_Id.id)})
     except ObjectDoesNotExist:
         raise Http404()
 
@@ -374,7 +413,7 @@ def bbs_theme_delete(request, theme_id):
     # 当前用户是主题的发表人
     # 删除主题
     theme.delete()
-    return HttpResponse("删除成功")
+    return render(request, 'template/jump.html', {'message': '删除成功', 'href': reverse(bbs_homepage)})
 
 
 @login_required
@@ -382,7 +421,8 @@ def bbs_theme_edit(request, theme_id):
     # 判断是创建主题还是编辑主题
     if theme_id == '':
         # 创建主题
-        return render(request, 'bbs/theme_edit.html')
+        college_list = College.objects.all()
+        return render(request, 'bbs/theme_edit.html', {'college_list': college_list})
     else:
         # 编辑主题
         # 判断主题是否存在
@@ -393,7 +433,8 @@ def bbs_theme_edit(request, theme_id):
             return redirect('bbs_homepage')
         else:
             # 装入数据
-            return render(request, 'bbs/theme_edit.html', {'theme': theme})
+            college_list = College.objects.all()
+            return render(request, 'bbs/theme_edit.html', {'theme': theme, 'college_list': college_list})
 
 
 @login_required
@@ -422,7 +463,7 @@ def bbs_theme_save(request, theme_id):
         fresh_theme.save()
 
     # 重定向到该主题页面
-    return redirect('bbs_theme', board_type=board_name_to_url[fresh_theme.Board_type.Board_name], theme_id=fresh_theme.id)
+    return render(request, 'template/jump.html', {'message': '保存成功', 'href': fresh_theme.Board_type.href + '/' + str(fresh_theme.id)})
 
 
 @login_required
@@ -454,7 +495,7 @@ def bbs_notification_display(request):
 @login_required
 def bbs_notification_delete(request):
     Notification.objects.filter(receiver=request.user).delete()
-    return HttpResponse("删除成功")
+    return render(request, 'template/jump.html', {'message': '清除成功', 'href': reverse(bbs_notification_display)})
 
 
 @login_required

@@ -26,7 +26,7 @@ urlpatterns = [
     # consider the length of \d+ latter
     url(r'^(?P<user_id>\d+)$', views.user_center, name='user_center'),
     url(r'^(?P<user_id>\d+)/subles/(?P<kind>\d+)/$', views.submit_les, name='sub_les'),
-
+    url(r'^(?P<user_id>\d+)/bbs$', views.user_center_bbs, name='user_center_bbs'),
     url(r'^course/$', views.course_list, name='course_list'),
     url(r'^course/(?P<label_id>\d+)/$', views.course_detail, name='course_detail'),
     url(r'^course/(?P<label_id>\d+)/(?P<les_id>\d+)$', views.lesson_detail, name='lesson_detail'),
@@ -44,5 +44,5 @@ urlpatterns = [
     url(r'^bbs/save/(\d*)$', views.bbs_theme_save, name='bbs_theme_save'),
     url(r'^bbs/image_upload$', views.bbs_image_upload, name='bbs_image_upload'),
     url(r'^notification$', views.bbs_notification_display, name='bbs_notification_display'),
-    url(r'notification-check$', views.bbs_notification_check, name='bbs_notification_check')
+    url(r'notification-check$', views.bbs_notification_check, name='bbs_notification_check'),
 ]

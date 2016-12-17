@@ -126,9 +126,7 @@ class ChoiceLes(models.Model):
 class Board(models.Model):
     Board_name = models.CharField(max_length=20)
     Gg_content = models.CharField(max_length=200)
-    Jrzt_sum = models.IntegerField(default=0)
-    Zrzt_sum = models.IntegerField(default=0)
-    Zt_sum = models.IntegerField(default=0)
+    href = models.TextField(null=True)
 
     def __str__(self):
         return self.Board_name

@@ -9,35 +9,6 @@
 </head>
 <body class="page_board">
 {% include 'template/navbar.html' %}
-<!--
-<div class="sub_nav">
-    <div class="container">
-        <div class="modal" id="school-selector" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong>请选择学院</strong>
-                    </div>
-                    <div class="modal-body">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <ul class="nav nav-pills">
-            <li role="presentation">
-                <a href="#"  data-toggle="modal" data-target="#school-selector">选择学院</a>
-            </li>
-            <li role="presentation" class="active"><a href="#">默认排序</a></li>
-            <li role="presentation"><a href="#">精品主题</a></li>
-            <li role="presentation"><a href="#">最新发表</a></li>
-            <li role="presentation"><a href="#">最新回复</a></li>
-            <li role="presentation"><a href="#">最多回复</a></li>
-        </ul>
-    </div>
-</div>
--->
 <div class="container">
     <div class="row">
         <div class="col-md-9">
@@ -98,12 +69,11 @@
                                 </div>
                                 <div class="media-body broaden">
                                     <div class="media-heading">
-                                        <a class="constrain-length" title="{{ theme.Title }}"
-                                           href="#">{{ theme.Title }}</a>
-                                        <!--通过js触发tooltip
-                                        <i class="fa fa-diamond" aria-hidden="true"
-                                              data-toggle="tooltip" data-original-title="精华主题"></i>
-                                        -->
+                                        <a class="constrain-length" title="{{ theme.Title }}" href="{{ theme.Board_type.href }}/{{ theme.id }}">{{ theme.Title }}</a>
+                                        {% if theme.Dz_sum >= 1 %}
+                                            <i class="fa fa-diamond diamond" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="精华主题"></i>
+                                        {% endif %}
+
                                     </div>
                                     <div>
                                         <a href="#">{{ theme.Fbr.last_name }}</a>
@@ -168,9 +138,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Statistics</div>
                 <ul class="list-group">
-                    <li class="list-group-item">今日主题数: {{ board.Jrzt_sum }} 个</li>
-                    <li class="list-group-item">昨日主题数: {{ board.Zrzt_sum }}个</li>
-                    <li class="list-group-item">主题总数: {{ board.Zt_sum }} 个</li>
+                    <li class="list-group-item">今日主题数: {{ today_theme }} 个</li>
+                    <li class="list-group-item">昨日主题数: {{ yesterday_theme }}个</li>
+                    <li class="list-group-item">主题总数: {{ total_theme }} 个</li>
                 </ul>
             </div>
         </div>
@@ -178,4 +148,5 @@
 </div>
 </body>
 {% include 'template/navscript.html' %}
+
 </html>

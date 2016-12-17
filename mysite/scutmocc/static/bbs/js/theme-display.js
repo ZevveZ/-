@@ -2,7 +2,12 @@
  * Created by zev on 11/13/16.
  */
 $(document).ready(function(){
+    // 为每个img标签添加a父标签以支持fluidbox
+    $('article').find('img').each(function(){
+        $(this).wrap("<a class='zoom-in' alt='' href="+$(this).attr('src')+"></a>");
+    });
     $('.zoom-in').fluidbox();
+
     twemoji.parse($("#emoji-list")[0],{ext:'.svg',folder:'2/svg'});
     $('.dianzan').click(function(){
         // 获取data-id，data-type

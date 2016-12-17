@@ -21,13 +21,13 @@
             {% for notify_item in notify_list %}
                 <li class="list-group-item">
                     <a href="#">{{ notify_item.sender }}</a>
-                   {{ notify_item.message|safe }}
+                    {{ notify_item.message|safe }}
                     <span>{{ notify_item.send_date|date:"Y-m-d H:i:s"  }}</span>
                 </li>
-                {% empty %}
-                    <li class="list-group-item">
-                        没有通知
-                    </li>
+            {% empty %}
+                <li class="list-group-item">
+                    没有通知
+                </li>
             {% endfor %}
         </ul>
     </div>

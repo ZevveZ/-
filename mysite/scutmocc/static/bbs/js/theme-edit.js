@@ -3,6 +3,7 @@
  */
 $(document).ready(function(){
     tinymce.init({
+        height: '300',
         selector:"#editor",
         language: 'zh_CN',
         menubar:false,

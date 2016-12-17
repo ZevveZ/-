@@ -1,0 +1,41 @@
+.panel{
+    border-top:0px;
+}
+.panel a{
+    color:#333;
+}
+p{
+    font-size:13px;
+}
+.date-display{
+    float:right;
+    color: #AAA;
+    font-size: 13px;
+}
+.title{
+    font-size:15px;
+}
+.body{
+    color:#666;
+}
+.body p{
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    text-overflow: ellipsis;
+    overflow:hidden;
+}
+.markdown {
+    position: relative;
+    letter-spacing: .03em;
+    line-height: 1.8em;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+.avatar-48{
+    width: 48px;
+    height: 48px;
+}
+.diamond{
+    color:#EB5424;
+}
