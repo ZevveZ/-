@@ -10,10 +10,8 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-
 from mysite.settings import SECRET_KEY
-from scutmocc.models import Theme, College, Board, ThemeAnswer, Dianzan, Attention, CollectTheme, SubmitLes, \
-    Notification
+from scutmocc.models import Theme, College, Board, ThemeAnswer, Dianzan, Attention, CollectTheme, SubmitLes, Notification
 from scutmocc.validation import Token
 from .forms import ActivityForm, PersonalForm, SublesForm
 from scutmocc.juncheepaginator import JuncheePaginator

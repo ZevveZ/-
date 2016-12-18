@@ -6,7 +6,7 @@ from . import views
 urlpatterns = [
     # url(r'^test/$', views.test, name='test'),
     url(r'^$', auth_views.login, {'template_name': 'homepage/homepage.html'}, name='homepage'),
-    url(r'^logout/$', auth_views.logout, {'template_name': 'homepage/logout.html'}, name='logout'),
+    url(r'^logout/$', auth_views.logout, {'template_name': 'template/jump.html', 'extra_context': {'message': '登录成功', 'href': '/scutmocc/'}}, name='logout'),
     url(r'^register_person/$', views.personal_registration, name='personal_registration'),
     url(r'^register_activity/$', views.activity_registration, name='activity_registration'),
     # 修改url
