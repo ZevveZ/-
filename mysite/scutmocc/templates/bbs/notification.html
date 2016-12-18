@@ -20,7 +20,7 @@
         <ul class="list-group">
             {% for notify_item in notify_list %}
                 <li class="list-group-item">
-                    <a href="#">{{ notify_item.sender }}</a>
+                    <a href="{% url 'user_center_bbs' notify_item.sender.id %}">{{ notify_item.sender }}</a>
                     {{ notify_item.message|safe }}
                     <span>{{ notify_item.send_date|date:"Y-m-d H:i:s"  }}</span>
                 </li>

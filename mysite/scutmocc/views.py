@@ -22,6 +22,7 @@ from PIL import Image
 import time
 import datetime
 from django.core.urlresolvers import reverse
+from mysite import settings
 
 
 def homepage(request):
@@ -196,8 +197,8 @@ board_name_to_url = {'活动区': 'activity', '问题区': 'question', '话题�
 
 
 # use to dianzan in bbs
-dianzan_theme_template = '在你的主题<a href="http://127.0.0.1:8000/scutmocc/bbs/%(board_type)s/%(theme_id)d">%(title)s</a>点赞了你'
-dianzan_reply_template = '在主题<a href="http://127.0.0.1:8000/scutmocc/bbs/%(board_type)s/%(theme_id)d%(reply_count)s">%(title)s</a>点赞了你的回复'
+dianzan_theme_template = '在你的主题<a href="' + settings.HOST + 'scutmocc/bbs/%(board_type)s/%(theme_id)d">%(title)s</a>点赞了你'
+dianzan_reply_template = '在主题<a href="' + settings.HOST + 'scutmocc/bbs/%(board_type)s/%(theme_id)d%(reply_count)s">%(title)s</a>点赞了你的回复'
 
 
 @login_required
@@ -297,7 +298,7 @@ def bbs_attention(request):
         raise Http404()
 
 
-collect_notify_template = '收藏了你的主题<a href="http://127.0.0.1:8000/scutmocc/bbs/%(board_type)s/%(theme_id)d">%(title)s</a>'
+collect_notify_template = '收藏了你的主题<a href="' + settings.HOST + 'scutmocc/bbs/%(board_type)s/%(theme_id)d">%(title)s</a>'
 
 
 @login_required
@@ -328,8 +329,8 @@ def bbs_collect_theme(request):
         raise Http404()
 
 
-reply_notify_template = '回复了你的主题<a href="http://127.0.0.1:8000/scutmocc/bbs/%(board_type)s/%(theme_id)d#%(reply_count)d">%(title)s</a>'
-mention_notify_template = '在主题<a href="http://127.0.0.1:8000/scutmocc/bbs/%(board_type)s/%(theme_id)d#%(reply_count)d">%(title)s</a>的回复中提到了你'
+reply_notify_template = '回复了你的主题<a href="' + settings.HOST + 'scutmocc/bbs/%(board_type)s/%(theme_id)d#%(reply_count)d">%(title)s</a>'
+mention_notify_template = '在主题<a href="' + settings.HOST + 'scutmocc/bbs/%(board_type)s/%(theme_id)d#%(reply_count)d">%(title)s</a>的回复中提到了你'
 
 
 @login_required
@@ -527,7 +528,7 @@ def personal_registration(request):
             token = m_token.generate_validation__token(user.username)
             message = '\n'.join([u'{0}，欢迎加入ScutMocc'.format(user.last_name),
                                  u'请访问链接，完成用户验证',
-                                 '\\'.join(['http://127.0.0.1:8000', 'scutmocc', 'activate', token])])
+                                 '\\'.join([settings.HOST, 'scutmocc', 'activate', token])])
             send_mail(u'注册用户验证信息', message, None, [user.email])
             return HttpResponse(u'请到注册邮箱中验证用户，有效期为1小时')
         else:
