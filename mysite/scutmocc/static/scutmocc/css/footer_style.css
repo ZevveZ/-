@@ -1,0 +1,30 @@
+footer{
+            background-color: #FFFFFF;
+        }
+        .footer .footer-sns{
+            text-align: center;
+            margin: 20px auto;
+        }
+        .footer .footer-sns a{
+            margin-right: 20px;
+            color: #D0D6D9;
+            font-size: 30px;
+        }
+        .footer .footer-link{
+            text-align: center;
+            margin: 20px auto;
+            padding-bottom: 20px;
+            border-bottom: 1px solid lightgrey;
+        }
+         .footer .footer-link a{
+             font-size: small;
+              color: dimgray;
+             margin-right: 10px;
+         }
+         .footer .footer-copyright{
+               text-align: center;
+            margin: 20px auto;
+         }
+         .footer .footer-copyright p{
+             color:dimgray ;
+         }

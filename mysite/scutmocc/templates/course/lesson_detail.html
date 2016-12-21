@@ -7,71 +7,123 @@
     {% include 'template/navstyle.html' %}
     <style>
         .container {
-            margin-top: 100px
+            margin-top: 60px
         }
 
-        .col-md-3 .page-header h3 {
-            margin: 0 auto;
-            text-align: center;
+        .page {
+            background-color: whitesmoke;
+            margin: 30px 0;
+            padding: 0 6px 6px 6px;
+            -webkit-box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.1);
+            -moz-box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.1);
+             box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        #left {
+            float: left;
+            width: 70%;
+            margin-left: 20px;
+            padding: 12px;
+        }
+
+        #right {
+            float: right;
+            margin-right: 10px;
+            padding: 12px;
+            width: 20%;
+        }
+
+        .row #left h4 {
+            border-bottom: 1px solid lightgray;
+            padding-bottom: 5px
+        }
+
+        #right h4 {
+            border-bottom: 1px solid lightgray;
+            padding-bottom: 5px
+        }
+
+        .row .infor p {
+            margin: 20px 0;
+        }
+
+        .row .get_les {
+            margin-top: 20px;
+        }
+
+        span {
+            margin-right: 50px;
+        }
+
+        #right .les_row {
+            padding: 6px 0;
         }
     </style>
 </head>
 <body>
 {% include 'template/navbar.html' %}
 <div class="container">
-    <div class="col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3>{{ lesson.Les_Name }}</h3>
-                <span>{{ lesson.Les_Date }}</span>
-                <span style="margin-left: 20px">￥ {{ lesson.Les_Price }}</span>
-            </div>
-            <div class="panel-body">
-                <span>介绍</span>
+    <div class="row page">
+        <h3>{{ lesson.Les_Name }}</h3>
+        <h5>{{ lesson.Person_Id.last_name }}</h5>
+        <span>{{ lesson.Les_Date }}</span>
+        <span>￥ {{ lesson.Les_Price }}</span>
+        <span>剩余名额：{{ lesson.Les_Pnum }}</span>
+    </div>
+    <div class="row">
+        <div id="left" class="page">
+            <div class="infor">
+                <h4>课程概述</h4>
                 <p>{{ lesson.Les_Intro }}</p>
                 {% if lesson.Les_Another %}
-                    <span>备注</span>
+                    <h4>课程说明</h4>
                     <p>{{ lesson.Les_Another }}</p>
                 {% endif %}
-                <span>周期:</span>
-                <p>{{ lesson.Les_Time }}次/周</p>
-                <span>剩余名额:</span>
-                <p>{{ lesson.Les_Pnum }}</p>
             </div>
-            <div class="panel-footer">
-                <form action="{% url 'lesson_detail' lesson.id %}" class="form-horizontal" role="form" method="post">
-                    {% csrf_token %}
-                    <input type="number" name="uid" value="{{ user.id }}" hidden>
-                    <div class="form-group">
-                        <label for="tel" class="col-sm-2 control-label">电话号码</label>
-                        <div class="col-sm-9">
-                            <input type="text" name="tel" id="tel" class="form-control">
-                        </div>
-                    </div>
-                    <input type="submit" class="btn btn-primary btn-block" value="点我抢课"/>
-                </form>
+            <div class="get_les">
+                <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal">点我抢课</button>
+                <!-- 模态框（Modal） -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h5 class="modal-title" id="myModalLabel">请输入你的联系方式</h5>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{% url 'lesson_detail' lesson.id %}" class="form-horizontal" role="form"
+                                      method="post">
+                                    {% csrf_token %}
+                                    <input type="number" name="uid" value="{{ user.id }}" hidden>
+                                    <div class="form-group">
+                                        <label for="tel" class="col-sm-2 control-label">电话号码</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="tel" id="tel" class="form-control">
+                                        </div>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary btn-block" value="提交"/>
+                                </form>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </div>
+
             </div>
         </div>
-    </div>
-        <div class="col-md-3">
-            <div class="panel panel-default">
-                <div class="page-header">
-                    <h3>相关推荐</h3>
-                </div>
-                <div class="panel-body">
-                    <ul>
-                        <li>sss</li>
-                        <li>dsda</li>
-                        <li>qweqw</li>
-                        <li>jhdfal</li>
-                        <li>jhdfal</li>
-                        <li>jhdfal</li>
-                        <li>jhdfal</li>
-                    </ul>
-                </div>
-            </div>
+        <div id="right" class="page">
+            <h4>课程信息</h4>
+            <div class="les_row"><span>课程时长</span><span>{{ lesson.Les_Time }} 周</span></div>
+            <div class="les_row"><span>开课次数</span><span>第{{ lesson.Les_Term }}次</span></div>
+            <div class="les_row"><span>内容类型</span><span>{{ lesson.Label_Id.Label_Name }}</span></div>
+            <div class="les_row"><span>接收人数</span><span>{{ lesson.Les_Merge }}人</span></div>
         </div>
     </div>
+
+
+</div>
 </body>
 {% include 'template/navscript.html' %}
 </html>

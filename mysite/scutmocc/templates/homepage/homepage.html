@@ -6,6 +6,7 @@
     <title>首页</title>
     {% include 'template/navstyle.html' %}
     <link rel="stylesheet" href="{% static 'scutmocc/css/homepage.css' %}">
+    <link rel="stylesheet" href="{% static 'scutmocc/css/footer_style.css' %}">
 </head>
 <body>
 {% include 'template/navbar.html' %}
@@ -54,7 +55,7 @@
     </div>
 
     <div class="row">
-        <h3 style="margin-bottom:30px"><a href="">精品推荐</a></h3>
+        <h3 style="margin-bottom:30px"><a href="{% url 'course_detail' 'd' 0 0 %}">精品推荐</a></h3>
 
         <div class="col-md-2">
             <div class="thumbnail">
@@ -142,7 +143,7 @@
         </div>
     </div>
     <div class="row">
-        <h3><a href="">课程精讲</a></h3>
+        <h3><a href="{% url 'course_detail' 'a' 0 0 %}">课程精讲</a></h3>
 
         <div class="col-md-6">
             <h3>社团</h3>
@@ -152,7 +153,7 @@
                 <li><a href="">~ 想转行 你准备好了吗</a></li>
                 <li><a href="">~ 职场 | 瞎忙族与高效人士的13个不同点</a></li>
                 <li><a href="">~ 职场 | 有一种挨骂叫成长</a></li>
-                <li><a href="{% url 'course_detail' 'd' 0 0 %}">查看更多&gt;&gt;</a></li>
+                <li><a href="{% url 'course_detail' 'a' 0 1 %}">查看更多&gt;&gt;</a></li>
             </ol>
         </div>
         <div class="col-md-6">
@@ -163,12 +164,12 @@
                 <li><a href="">-- 喜报 麦子学院七月精英学员就业榜新</a></li>
                 <li><a href="">-- 职场 | 瞎忙族与高效人士的13个不同点</a></li>
                 <li><a href="">-- 职场 | 有一种挨骂叫成长</a></li>
-                <li><a href="{% url 'course_detail' 'd' 0 0 %}">查看更多&gt;&gt;</a></li>
+                <li><a href="{% url 'course_detail' 'a' 0 2 %}">查看更多&gt;&gt;</a></li>
             </ol>
         </div>
     </div>
     <div class="row">
-        <h3><a href="">技能学习</a></h3>
+        <h3><a href="{% url 'course_detail' 'b' 0 0 %}">技能学习</a></h3>
 
         <div class="col-md-6">
             <h3>社团</h3>
@@ -178,7 +179,7 @@
                 <li><a href="">~ 想转行 你准备好了吗</a></li>
                 <li><a href="">~ 职场 | 瞎忙族与高效人士的13个不同点</a></li>
                 <li><a href="">~ 职场 | 有一种挨骂叫成长</a></li>
-                <li><a href="{% url 'course_detail' 'd' 0 0 %}">查看更多&gt;&gt;</a></li>
+                <li><a href="{% url 'course_detail' 'b' 0 1 %}">查看更多&gt;&gt;</a></li>
             </ol>
         </div>
         <div class="col-md-6">
@@ -189,12 +190,12 @@
                 <li><a href="">-- 喜报 麦子学院七月精英学员就业榜新</a></li>
                 <li><a href="">-- 职场 | 瞎忙族与高效人士的13个不同点</a></li>
                 <li><a href="">-- 职场 | 有一种挨骂叫成长</a></li>
-                <li><a href="{% url 'course_detail' 'd' 0 0 %}">查看更多&gt;&gt;</a></li>
+                <li><a href="{% url 'course_detail' 'b' 0 2 %}">查看更多&gt;&gt;</a></li>
             </ol>
         </div>
     </div>
     <div class="row">
-        <h3><a href="">项目实战</a></h3>
+        <h3><a href="{% url 'course_detail' 'c' 0 0 %}">项目实战</a></h3>
 
         <div class="col-md-6">
             <h3>社团</h3>
@@ -204,7 +205,7 @@
                 <li><a href="">~ 想转行 你准备好了吗</a></li>
                 <li><a href="">~ 职场 | 瞎忙族与高效人士的13个不同点</a></li>
                 <li><a href="">~ 职场 | 有一种挨骂叫成长</a></li>
-                <li><a href="{% url 'course_detail' 'd' 0 0 %}">查看更多&gt;&gt;</a></li>
+                <li><a href="{% url 'course_detail' 'c' 0 1 %}">查看更多&gt;&gt;</a></li>
             </ol>
         </div>
         <div class="col-md-6">
@@ -215,15 +216,15 @@
                 <li><a href="">-- 喜报 麦子学院七月精英学员就业榜新</a></li>
                 <li><a href="">-- 职场 | 瞎忙族与高效人士的13个不同点</a></li>
                 <li><a href="">-- 职场 | 有一种挨骂叫成长</a></li>
-                <li><a href="{% url 'course_detail' 'd' 0 0 %}">查看更多&gt;&gt;</a></li>
+                <li><a href="{% url 'course_detail' 'c' 0 2 %}">查看更多&gt;&gt;</a></li>
             </ol>
         </div>
     </div>
     <div class="row">
-        <h3>分类</h3>
+        <a href="{% url 'course_detail' 'd' 0 0 %}" style="color: black"><h3>分类</h3></a>
         <div style="margin-top:50px ">
             <div class="col-md-2">
-               <div class="thumbnail">
+                <div class="thumbnail">
                     <a href="#">
                         <img src="{% static 'scutmocc/images/f1.jpg' %}" alt=""/>
                     </a>
@@ -233,7 +234,7 @@
                 </div>
             </div>
             <div class="col-md-2">
-               <div class="thumbnail">
+                <div class="thumbnail">
                     <a href="#">
                         <img src="{% static 'scutmocc/images/f2.jpg' %}" alt=""/>
                     </a>
@@ -253,7 +254,7 @@
                 </div>
             </div>
             <div class="col-md-2">
-               <div class="thumbnail">
+                <div class="thumbnail">
                     <a href="#">
                         <img src="{% static 'scutmocc/images/f4.jpg' %}" alt=""/>
                     </a>
@@ -296,7 +297,7 @@
 
             </div>
             <div class="col-md-2">
-               <div class="thumbnail">
+                <div class="thumbnail">
                     <a href="#">
                         <img src="{% static 'scutmocc/images/f8.jpg' %}" alt=""/>
                     </a>
@@ -306,7 +307,7 @@
                 </div>
             </div>
             <div class="col-md-2">
-               <div class="thumbnail">
+                <div class="thumbnail">
                     <a href="#">
                         <img src="{% static 'scutmocc/images/f9.jpg' %}" alt=""/>
                     </a>
@@ -316,7 +317,7 @@
                 </div>
             </div>
             <div class="col-md-2">
-               <div class="thumbnail">
+                <div class="thumbnail">
                     <a href="#">
                         <img src="{% static 'scutmocc/images/f10.jpg' %}" alt=""/>
                     </a>
@@ -336,7 +337,7 @@
                 </div>
             </div>
             <div class="col-md-2">
-               <div class="thumbnail">
+                <div class="thumbnail">
                     <a href="#">
                         <img src="{% static 'scutmocc/images/f12.jpg' %}" alt=""/>
                     </a>
@@ -352,9 +353,7 @@
 
     </div>
 </article>
-<footer>
-
-</footer>
+{% include 'template/footer.html' %}
 </body>
 {% include 'template/navscript.html' %}
 </html>

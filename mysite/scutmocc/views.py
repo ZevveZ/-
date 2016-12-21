@@ -179,7 +179,7 @@ def my_course(request, user_id, les_id):
 def course_list(request, direction, labeler, character):
     if direction:
         if direction == 'd':
-            courses = SubmitLes.objects.filter(Les_Status=True)
+            courses = SubmitLes.objects.filter(Les_Status=True).filter(Les_Pnum__gt=0)
         else:
             courses = SubmitLes.objects.filter(Les_Status=True).filter(Les_Kind=direction)
     else:
