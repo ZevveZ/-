@@ -9,7 +9,7 @@
     text-align: right;
     padding-top:15px;
 }
-.star{
+.diamond{
     color:#EB5424;
 }
 
@@ -145,4 +145,8 @@
 .btn-reply:hover{
     color:#fff;
     background-color:#39B618;
+}
+
+a:hover, a:link{
+    text-decoration:none;
 }

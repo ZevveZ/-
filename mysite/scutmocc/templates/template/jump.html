@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>跳转...</title>
+</head>
+<body>
+<div>
+    <span>{{ message }}</span>,<span id="totalSecond">3</span>秒后<a href="{{ href }}">跳转</a>
+</div>
+<script language="javascript" type="text/javascript">
+    var second = document.getElementById('totalSecond').textContent;
+
+    if (navigator.appName.indexOf("Explorer") > -1)  {
+        second = document.getElementById('totalSecond').innerText;
+    } else {
+        second = document.getElementById('totalSecond').textContent;
+    }
+
+    setInterval("redirect()", 1000);
+    function redirect() {
+        if (second < 0) {
+            location.href = '{{ href }}';
+        } else {
+            if (navigator.appName.indexOf("Explorer") > -1) {
+                document.getElementById('totalSecond').innerText = second--;
+            } else {
+                document.getElementById('totalSecond').textContent = second--;
+            }
+        }
+    }
+</script>
+</body>
+</html>

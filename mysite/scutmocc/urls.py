@@ -4,10 +4,9 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
-    # url(r'^test/$', views.test, name='test'),
     url(r'^search/$',views.search, name='search'),
     url(r'^$', auth_views.login, {'template_name': 'homepage/homepage.html'}, name='homepage'),
-    url(r'^logout/$', auth_views.logout, {'template_name': 'homepage/logout.html'}, name='logout'),
+    url(r'^logout/$', auth_views.logout, {'template_name': 'template/jump.html', 'extra_context': {'message': '登录成功', 'href': '/scutmocc/'}}, name='logout'),
     url(r'^register_person/$', views.personal_registration, name='personal_registration'),
     url(r'^register_activity/$', views.activity_registration, name='activity_registration'),
     # 修改url
@@ -29,10 +28,9 @@ urlpatterns = [
     url(r'^(?P<user_id>\d+)/subles/(?P<kind>\d+)/$', views.submit_les, name='sub_les'),
     url(r'^(?P<user_id>\d+)/mypage/$', views.my_page, name='my_page'),
     url(r'^(?P<user_id>\d+)/course/(?P<les_id>\d+)/$', views.my_course, name='my_course'),
-    # url(r'^course/(?P<direction>\w*)$', views.course_list, name='course_detail'),
     url(r'^course/(?P<direction>\w+)/(?P<labeler>\d+)/(?P<character>\d+)$', views.course_list, name='course_detail'),
-    # url(r'^course/(?P<direction>\w+)/(?P<labeler>\d+)/(?P<character>\d+)/(?P<les_id>\d+)$',views.lesson_detail, name='lesson_detail'),
     url(r'^lesson/(?P<les_id>\d+)$', views.lesson_detail, name='lesson_detail'),
+    url(r'^(?P<user_id>\d+)/bbs$', views.user_center_bbs, name='user_center_bbs'),
     url(r'^bbs/$', views.bbs_homepage, name='bbs_homepage'),
     url(r'^bbs/(?P<board_type>(?:activity|question|topic))/$', views.bbs_board, name='bbs_board'),
     url(r'^bbs/(?P<board_type>(?:activity|question|topic))/(?P<theme_id>\d+)$', views.bbs_theme, name='bbs_theme'),
@@ -41,5 +39,11 @@ urlpatterns = [
     url(r'^bbs/collection$', views.bbs_collect_theme, name='bbs_collect_theme'),
     url(r'^bbs/reply$', views.bbs_reply, name='bbs_reply'),
     url(r'^bbs/reply-delete/(\d+)$', views.bbs_reply_delete, name='bbs_reply_delete'),
-    url(r'^bbs/edit$', views.bbs_theme_edit, name='bbs_theme_edit')
+    url(r'^bbs/theme-delete/(\d+)$', views.bbs_theme_delete, name='bbs_theme_delete'),
+    url(r'^bbs/notification-delete', views.bbs_notification_delete, name='bbs_notification_delete'),
+    url(r'^bbs/edit/(\d*)$', views.bbs_theme_edit, name='bbs_theme_edit'),
+    url(r'^bbs/save/(\d*)$', views.bbs_theme_save, name='bbs_theme_save'),
+    url(r'^bbs/image_upload$', views.bbs_image_upload, name='bbs_image_upload'),
+    url(r'^notification$', views.bbs_notification_display, name='bbs_notification_display'),
+    url(r'notification-check$', views.bbs_notification_check, name='bbs_notification_check'),
 ]

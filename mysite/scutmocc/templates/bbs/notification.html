@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>提醒</title>
+    {% include 'template/navstyle.html' %}
+    <link rel="stylesheet" href="{% static 'bbs/css/notification.css' %}">
+</head>
+<body >
+{% include 'template/navbar.html' %}
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            所有通知
+            <span class="pull-right">
+                    <a href="{% url 'bbs_notification_delete' %}" onclick="return confirm('确定清空通知吗?')" class="btn btn-danger">清空</a>
+                </span>
+        </div>
+        <ul class="list-group">
+            {% for notify_item in notify_list %}
+                <li class="list-group-item">
+                    <a href="{% url 'user_center_bbs' notify_item.sender.id %}">{{ notify_item.sender }}</a>
+                    {{ notify_item.message|safe }}
+                    <span>{{ notify_item.send_date|date:"Y-m-d H:i:s"  }}</span>
+                </li>
+            {% empty %}
+                <li class="list-group-item">
+                    没有通知
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+</body>
+{% include 'template/navscript.html' %}
+</html>

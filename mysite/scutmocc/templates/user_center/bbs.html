@@ -1,0 +1,121 @@
+{% extends 'user_center/user_center.html' %}
+{% load staticfiles %}
+{% block title%}华工步行街{% endblock %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'user_center/css/bbs.css' %}">
+    <script src="{% static 'user_center/js/bbs.js' %}"></script>
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#theme" aria-controls="theme" role="tab" data-toggle="tab">主题</a></li>
+            <li role="presentation"><a href="#reply" aria-controls="reply" role="tab" data-toggle="tab">回复</a></li>
+            <li role="presentation"><a href="#collect" aria-controls="collect" role="tab" data-toggle="tab">收藏</a></li>
+            <li role="presentation"><a href="#following" aria-controls="following" role="tab" data-toggle="tab">正在关注</a></li>
+            <li role="presentation"><a href="#follower" aria-controls="follower" role="tab" data-toggle="tab">关注者</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="panel panel-default tab-pane active" id="theme">
+                <ul class="list-group">
+                    {% for item in theme_list %}
+                        <li class="list-group-item">
+                            <div class="title">
+                                <a href="{{ item.Board_type.href }}/{{ item.id }}">{{ item.Title|slice:"30" }}</a>
+                                <span class="date-display">{{ item.Fb_date|date:"Y-m-d H:i:s"  }}</span>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">
+                            没有主题
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div role="tabpanel" class="panel panel-default tab-pane" id="reply">
+                <ul class="list-group">
+                    {% for item in reply_list %}
+                        <li class="list-group-item">
+                            <div class="title">
+                                <a href="{{ item.Theme_Id.Board_type.href }}/{{ item.Theme_Id.id }}">{{ item.Theme_Id.Title|slice:'30' }}</a>:
+                                <span class="date-display">{{ item.Fb_date|date:"Y-m-d H:i:s"  }}</span>
+                            </div>
+                            <div class="body markdown">
+                                <p>{{ item.display_content }}</p>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">
+                            没有回复
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div role="tabpanel" class="panel panel-default tab-pane" id="collect">
+                <ul class="list-group">
+                    {% for item in collect_list %}
+                        <li class="list-group-item">
+                            <div class="title">
+                                <a href="{{ item.Theme_Id.Board_type.href }}/{{ item.Theme_Id.id }}">{{ item.Theme_Id.Title|slice:"30" }}</a>
+                                <span class="date-display">{{ item.Theme_Id.Fb_date|date:"Y-m-d H:i:s"  }}</span>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">
+                            没有收藏
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div role="tabpanel" class="panel panel-default tab-pane" id="following">
+                <div class="panel-body">
+                    <div class="row">
+                        {% for item in following %}
+                            <div class="col-md-4">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="{% url 'user_center_bbs' item.Ox_Id.id %}">
+                                            <img class="media-object avatar-48" src="{% static 'bbs/img/blue_z.png' %}">
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <div class="media-heading">
+                                            {{ item.Ox_Id.last_name }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col-md-12">
+                                没有正在关注
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="panel panel-default tab-pane" id="follower">
+                <div class="panel-body">
+                    <div class="row">
+                        {% for item in follower %}
+                            <div class="col-md-4">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="{% url 'user_center_bbs' item.Fs_Id.id %}">
+                                            <img class="media-object avatar-48" src="{% static 'bbs/img/blue_z.png' %}">
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <div class="media-heading">
+                                            {{ item.Ox_Id.last_name }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col-md-12">
+                                没有关注
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -3,32 +3,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>
+        {% if theme %}
+           {{ theme.Title }}
+        {% else %}
+            创建新主题
+        {% endif %}
+    </title>
+    <title>{{ theme.Title }}</title>
     {% include 'template/navstyle.html' %}
     <link rel="stylesheet" href="{% static 'bbs/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'bbs/css/theme-edit.css' %}">
     {% include 'template/navscript.html' %}
-    <script src="{% static 'bbs/tinymce/js/tinymce/tinymce.min.js' %}"></script>
-    <script src="{% static 'bbs/tinymce/js/tinymce/jquery.tinymce.min.js' %}"></script>
+    <script src="{% static 'bbs/js/tinymce/tinymce.min.js' %}"></script>
+    <script src="{% static 'bbs/js/tinymce/jquery.tinymce.min.js' %}"></script>
     <script src="{% static 'bbs/js/theme-edit.js' %}"></script>
 </head>
 <body class="page_board">
-    {% include 'template/navbar.html' %}
-    <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                编辑主题
-            </div>
-            <div class="panel-body">
-                <form action="#" method="post">
-                    {% csrf_token %}
-                    <textarea id='editor'></textarea>
-                    <div class="pull-right"  style="margin-top:10px">
-                        <a class="btn btn-danger">删除</a>
-                        <input type="submit" value="保存" class="btn btn-primary">
+{% include 'template/navbar.html' %}
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            编辑主题
+        </div>
+        <div class="panel-body">
+            <form id='theme_form' action="{% url 'bbs_theme_save' theme.id %}" method="post" onsubmit="return validate_editor_form(this);">
+                {% csrf_token %}
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">学院 <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    {% for college in college_list %}
+                                        <li><a href="javascript:void(0)" onclick="update_input(this)">{{ college }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <input name="college_name" value="{{ theme.College_type }}" type="text" class="form-control" aria-label="..." placeholder="请选择学院" readonly="true">
+                        </div>
                     </div>
-                </form>
-            </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">版块 <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)" onclick="update_input(this)">活动区</a></li>
+                                    <li><a href="javascript:void(0)" onclick="update_input(this)">问题区</a></li>
+                                    <li><a href="javascript:void(0)" onclick="update_input(this)">话题区</a></li>
+                                </ul>
+                            </div>
+                            <input name="board_name" value="{{ theme.Board_type }}" type="text" class="form-control" aria-label="..." placeholder="请选择版块" readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">标题 </span>
+                            <input name='title'  value="{{ theme.Title }}" type="text" class="form-control" placeholder="请输入标题" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-md-12">
+                        <textarea name='content' id='editor'>{{ theme.Content }}</textarea>
+                        <div class="pull-right"  style="margin-top:10px">
+                            <a class="btn btn-danger">删除</a>
+                            <input type="submit" value="保存" class="btn btn-primary">
+                        </div>
+                    </div>
+                </div>
+
+            </form>
         </div>
     </div>
+</div>
 </body>
 </html>

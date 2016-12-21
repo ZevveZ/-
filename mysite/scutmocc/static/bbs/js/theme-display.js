@@ -2,14 +2,22 @@
  * Created by zev on 11/13/16.
  */
 $(document).ready(function(){
+    // 为每个img标签添加a父标签以支持fluidbox
+    $('article').find('img').each(function(){
+        $(this).wrap("<a class='zoom-in' alt='' href="+$(this).attr('src')+"></a>");
+    });
     $('.zoom-in').fluidbox();
+
     twemoji.parse($("#emoji-list")[0],{ext:'.svg',folder:'2/svg'});
     $('.dianzan').click(function(){
         // 获取data-id，data-type
         var id = $(this).parent().data("id");
         var type = $(this).parent().data("type");
+        if(type == 'reply'){
+            var reply_count=$('#reply_count').text()
+        }
         // 发送数据给服务器
-        $.getJSON("http://127.0.0.1:8000/scutmocc/bbs/dianzan", {"id":id,"type":type}, function(ret){
+        $.getJSON("http://127.0.0.1:8000/scutmocc/bbs/dianzan", {"id":id,"type":type,"reply_count": reply_count}, function(ret){
             if(ret!=undefined) {
                 if (type === "theme") {
                     var update_i_list = $("[data-type=theme]").find(".dianzan i");

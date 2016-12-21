@@ -8,11 +8,13 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">论坛<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">话题区</a></li>
+                    <li><a href="{% url 'bbs_homepage' %}">首页</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">问题区</a></li>
+                    <li><a href="{% url 'bbs_board' 'topic' %}">话题区</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">活动区</a></li>
+                    <li><a href="{% url 'bbs_board' 'question' %}">问题区</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{% url 'bbs_board' 'activity' %}">活动区</a></li>
                 </ul>
             </li>
         </ul>
@@ -24,14 +26,13 @@
         </div>
         <button type="submit" class="btn btn-default">Go</button>
     </form>
-    <ul class="nav navbar-nav pull-right">
+    <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
             <li class="dropdown" style="margin-right: 30px">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ user.last_name }} <span
                         class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="{% url 'user_center' user.id %}">个人中心</a></li>
-
                     <li class="divider"></li>
                     <li><a href="{% url 'password_change' %}">修改密码</a></li>
                     <li class="divider"></li>
@@ -43,6 +44,22 @@
             <li><a id="register" class="fancybox" href="#newuser" title="Register">注册</a></li>
         {% endif %}
     </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a id="notify" href="{% url 'bbs_notification_display' %}">
+                <i class="fa fa-bell"></i>
+                <span style="display:none"></span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <i class="fa fa-plus"></i> <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'bbs_theme_edit' ''%}">发表主题</a></li>
+            </ul>
+        </li>
+    </ul>
 </nav>
 <div class="layer">
     <form id="user" action="{% url 'homepage' %}" method="post" class="form-horizontal" role="form">
@@ -53,17 +70,18 @@
             {% if form.errors %}
                 <script>alert("用户名或密码错误")</script>
             {% endif %}
-            <div class="form-group">
-                <div class="col-sm-8">
-                    {{ form.username }}
+{#            {{ form.username }}#}
+{#            {{ form.password }}#}
+            <div class="login">
+                <div class="input-group">
+                    <span class="input-group-addon" id="name">用户名</span>
+                    <input name='username' type="text" class="form-control" aria-describedby="name" required maxlength="254" autofocus>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="psw">密码&nbsp;&nbsp;&nbsp;</span>
+                    <input name="password" type="password" class="form-control" aria-describedby="psw" required>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="col-sm-8">
-                    {{ form.password }}
-                </div>
-            </div>
-
             <input type="submit" value="登录" class="btn btn-primary btn-lg btn-block"/>
             <input type="hidden" name="next" value="{% url 'homepage' %}"/>
         </fieldset>
@@ -71,7 +89,7 @@
 </div>
 <div class="layer">
     <div id="newuser">
-            <a href="{% url 'personal_registration' %}" class="btn btn-primary btn-lg ">个 人</a>
-            <a href="{% url 'activity_registration' %}" class="btn btn-primary btn-lg ">社 团</a>
+        <a href="{% url 'personal_registration' %}" class="btn btn-primary btn-lg ">个 人</a>
+        <a href="{% url 'activity_registration' %}" class="btn btn-primary btn-lg ">社 团</a>
     </div>
 </div>

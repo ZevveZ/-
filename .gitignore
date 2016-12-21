@@ -1,6 +1,6 @@
 数据库设计/
 migrations/
 *.pyc
-*.sqlite3
+mysite/*.sqlite3
 .idea/
 __pycache__/

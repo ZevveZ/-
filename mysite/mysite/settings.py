@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mysite',
+        'USER': 'zev',
+        'PASSWORD': 'hellozev',
+        'HOST': 'localhost',
+        'PORT': '3306'
     }
 }
 
@@ -136,3 +140,8 @@ EMAIL_PORT = 25
 EMAIL_HOST_USER = 'zevvez@sina.com'
 EMAIL_HOST_PASSWORD = 'scutmoccmail'
 DEFAULT_FROM_EMAIL = 'ScutMocc <zevvez@sina.com>'
+
+# 修改装饰器默认的登录url
+LOGIN_URL = '/scutmocc/'
+
+HOST = 'http://127.0.0.1:8000/'

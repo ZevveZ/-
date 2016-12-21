@@ -11,12 +11,13 @@ class Person(models.Model):
     # College = models.ForeignKey(College),修改验证
     Sex = models.NullBooleanField(null=True)
     Signature = models.CharField(max_length=100, null=True)
-    Fb_sum = models.IntegerField(default=0)
-    Hf_sum = models.IntegerField(default=0)
-    Gz_sum = models.IntegerField(default=0)
-    Bgz_sum = models.IntegerField(default=0)
-    Sc_sum = models.IntegerField(default=0)
-    Rank = models.IntegerField(default=0)
+    # 去除统计信息
+    # Fb_sum = models.IntegerField(default=0)
+    # Hf_sum = models.IntegerField(default=0)
+    # Gz_sum = models.IntegerField(default=0)
+    # Bgz_sum = models.IntegerField(default=0)
+    # Sc_sum = models.IntegerField(default=0)
+    # Rank = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.last_name
@@ -126,21 +127,12 @@ class ChoiceLes(models.Model):
 
 #   Board
 class Board(models.Model):
-    Field = [
-        ('a', '活动区'),
-        ('b', '问题区'),
-        ('c', '话题区')
-    ]
-    Board_name = models.CharField(max_length=1, choices=Field, default='a')
+    Board_name = models.CharField(max_length=20)
     Gg_content = models.CharField(max_length=200)
-    Jrzt_sum = models.IntegerField(default=0)
-    Zrzt_sum = models.IntegerField(default=0)
-    Zt_sum = models.IntegerField(default=0)
+    href = models.TextField(null=True)
 
     def __str__(self):
-        for x in self.Field:
-            if self.Board_name == x[0]:
-                return x[1]
+        return self.Board_name
 
 
 # College
@@ -160,7 +152,7 @@ class Theme(models.Model):
     Zjhf_date = models.DateTimeField(auto_now_add=True)
     Hf_sum = models.IntegerField(default=0)
     Zjhfr = models.ForeignKey(User, related_name='hfr_set')
-    Zd = models.BooleanField()
+    Zd = models.BooleanField(default=False)
     Dz_sum = models.IntegerField(default=0)
     Board_type = models.ForeignKey(Board)
     Fbr = models.ForeignKey(User, related_name='fbr_set')
@@ -178,7 +170,7 @@ class ThemeAnswer(models.Model):
     Hfr_Id = models.ForeignKey(User)
     # Lc_no = models.IntegerField()
     Fb_date = models.DateTimeField(auto_now_add=True)
-    Theme_Id = models.ForeignKey(Theme, null=True)
+    Theme_Id = models.ForeignKey(Theme)
     raw_content = models.CharField(max_length=500)
     display_content = models.CharField(max_length=500)
     Dz_sum = models.IntegerField(default=0)
@@ -216,4 +208,13 @@ class Dianzan(models.Model):
     ThemeAnswer_Id = models.ForeignKey(ThemeAnswer, null=True)
     Is_Dianzan = models.BooleanField(default=False)
 
+
+# 消息提醒
+class Notification(models.Model):
+    sender = models.ForeignKey(User, related_name='sender')
+    receiver = models.ForeignKey(User, related_name='receiver')
+    send_date = models.DateTimeField(auto_now_add=True)
+    # message_type = models.IntegerField()
+    message = models.TextField()
+    fresh = models.BooleanField(default=True)
 
