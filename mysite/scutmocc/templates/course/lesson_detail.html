@@ -5,6 +5,16 @@
     <meta charset="UTF-8">
     <title></title>
     {% include 'template/navstyle.html' %}
+    <style>
+        .container {
+            margin-top: 100px
+        }
+
+        .col-md-3 .page-header h3 {
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 {% include 'template/navbar.html' %}
@@ -14,23 +24,54 @@
             <div class="panel-heading">
                 <h3>{{ lesson.Les_Name }}</h3>
                 <span>{{ lesson.Les_Date }}</span>
-                <span>￥ {{ lesson.Les_Price }}</span>
+                <span style="margin-left: 20px">￥ {{ lesson.Les_Price }}</span>
             </div>
             <div class="panel-body">
+                <span>介绍</span>
                 <p>{{ lesson.Les_Intro }}</p>
-                <span>周期</span>
                 {% if lesson.Les_Another %}
+                    <span>备注</span>
                     <p>{{ lesson.Les_Another }}</p>
-                    <span>周期:</span>
-                    <p>{{ lesson.Les_Time }}次/周</p>
-                    <span>剩余名额:</span>
-                    <p>{{ lesson.Les_Pnum }}</p>
                 {% endif %}
+                <span>周期:</span>
+                <p>{{ lesson.Les_Time }}次/周</p>
+                <span>剩余名额:</span>
+                <p>{{ lesson.Les_Pnum }}</p>
             </div>
-            <div class="panel-footer"><a href=".?remain={{ user.id }}" class="btn btn-primary btn-block">点我抢课</a></div>
+            <div class="panel-footer">
+                <form action="{% url 'lesson_detail' lesson.id %}" class="form-horizontal" role="form" method="post">
+                    {% csrf_token %}
+                    <input type="number" name="uid" value="{{ user.id }}" hidden>
+                    <div class="form-group">
+                        <label for="tel" class="col-sm-2 control-label">电话号码</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="tel" id="tel" class="form-control">
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-primary btn-block" value="点我抢课"/>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="col-md-3"></div>
-</div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="page-header">
+                    <h3>相关推荐</h3>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        <li>sss</li>
+                        <li>dsda</li>
+                        <li>qweqw</li>
+                        <li>jhdfal</li>
+                        <li>jhdfal</li>
+                        <li>jhdfal</li>
+                        <li>jhdfal</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+{% include 'template/navscript.html' %}
 </html>

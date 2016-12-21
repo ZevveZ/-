@@ -65,7 +65,7 @@
         }
 
         .cur {
-            background-color: red;
+            background-color: crimson;
         }
 
         hr {
@@ -94,7 +94,7 @@
                 {% if direction == 'b' %}
                     <li class="cur"><a href="{% url 'course_detail' 'b' labeler character %}">项目</a></li>
                 {% else %}
-                    <li><a href="{% url 'course_detail' 'b' labeler character %}">项目</a></li>
+                    <li><a href="{% url 'course_detail' 'b' labeler character %}">技能</a></li>
                 {% endif %}
                 {% if direction == 'c' %}
                     <li class="cur"><a href="{% url 'course_detail' 'c' labeler character %}">实战</a></li>
@@ -110,17 +110,17 @@
                 {% if labeler == '0' %}
                     <li class="cur"><a href="{% url 'course_detail' direction  0 character %}">全部</a></li>
                 {% else %}
-                    <li ><a href="{% url 'course_detail' direction  0 character %}">全部</a></li>
+                    <li><a href="{% url 'course_detail' direction  0 character %}">全部</a></li>
                 {% endif %}
                 {% for label in labels %}
                     {% if labeler == label.id %}
-                        <li class="cur"><a href="{% url 'course_detail' direction label.id character %}">{{ label.Label_Name }}</a>
+                        <li class="cur"><a
+                                href="{% url 'course_detail' direction label.id character %}">{{ label.Label_Name }}</a>
                         </li>
                     {% else %}
                         <li><a href="{% url 'course_detail' direction label.id character %}">{{ label.Label_Name }}</a>
                         </li>
                     {% endif %}
-
                 {% endfor %}
             </ul>
         </div>
@@ -128,9 +128,22 @@
         <div class="nav_line">
             <span class="l">主体：</span>
             <ul>
-                <li><a href="{% url 'course_detail' direction labeler 0 %}">全部</a></li>
-                <li><a href="{% url 'course_detail' direction labeler 1 %}">社团</a></li>
-                <li><a href="{% url 'course_detail' direction labeler 2 %}">个体</a></li>
+                {% if character == '0' %}
+                    <li class="cur"><a href="{% url 'course_detail' direction labeler 0 %}">全部</a></li>
+                {% else %}
+                    <li><a href="{% url 'course_detail' direction labeler 0 %}">全部</a></li>
+                {% endif %}
+                {% if character == '1' %}
+                    <li class="cur"><a href="{% url 'course_detail' direction labeler 1 %}">社团</a></li>
+                {% else %}
+                    <li><a href="{% url 'course_detail' direction labeler 1 %}">社团</a></li>
+                {% endif %}
+                {% if character == '2' %}
+                    <li class="cur"><a href="{% url 'course_detail' direction labeler 2 %}">个体</a></li>
+                {% else %}
+                    <li><a href="{% url 'course_detail' direction labeler 2 %}">个体</a></li>
+                {% endif %}
+
             </ul>
         </div>
     </div>
@@ -149,7 +162,7 @@
             <ul>
                 {% for course in courses %}
                     <li class="row">
-                        <a href="">
+                        <a href="{% url 'lesson_detail' course.id %}">
                             <h4 class="col-sm-3">{{ course.Les_Name }}</h4>
                             <h4 class="col-sm-3">{{ course.Person_Id.last_name }}</h4>
                             <h4 class="col-sm-3">{{ course.Les_Date }}</h4>

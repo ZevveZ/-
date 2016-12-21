@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索结果页</title>
+    {% include 'template/navstyle.html' %}
+    <style>
+        .container{
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+{% include 'template/navbar.html' %}
+<div class="container">
+    {% for lesson in lessons %}
+        <div class="row">
+        <h3>{{ lesson.Les_Name }}</h3>
+        <p>{{ lesson.Les_Intro }}</p>
+        </div>
+    {% endfor %}
+</div>
+</body>
+{% include 'template/navscript.html' %}
+</html>

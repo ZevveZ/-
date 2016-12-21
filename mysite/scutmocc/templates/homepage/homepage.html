@@ -9,7 +9,7 @@
 </head>
 <body>
 {% include 'template/navbar.html' %}
-<div class="container">
+<article class="container">
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <!-- 轮播（Carousel）指标 -->
         <ol class="carousel-indicators">
@@ -22,29 +22,24 @@
         <!-- 轮播（Carousel）项目 -->
         <div class="carousel-inner">
             <div class="item active">
-                <img src="{% static 'scutmocc/css/1.jpg' %}" alt="First slide">
-
-                <div class="carousel-caption">标题 1</div>
+                <a href=""><img src="{% static 'scutmocc/images/t1.jpg' %}" alt="First slide"></a>
+                {#                <div class="carousel-caption">标题 1</div>#}
             </div>
             <div class="item">
-                <img src="{% static 'scutmocc/css/2.jpg' %}" alt="Second slide">
-
-                <div class="carousel-caption">标题 2</div>
+                <a href=""><img src="{% static 'scutmocc/images/t2.jpg' %}" alt="Second slide"></a>
+                {#                <div class="carousel-caption">标题 2</div>#}
             </div>
             <div class="item">
-                <img src="{% static 'scutmocc/css/3.jpg' %}" alt="Third slide">
-
-                <div class="carousel-caption">标题 3</div>
+                <a href=""><img src="{% static 'scutmocc/images/t3.jpg' %}" alt="Third slide"></a>
+                {#                <div class="carousel-caption">标题 3</div>#}
             </div>
             <div class="item">
-                <img src="{% static 'scutmocc/css/4.jpg' %}" alt="Four slide">
-
-                <div class="carousel-caption">标题 4</div>
+                <a href=""><img src="{% static 'scutmocc/images/t4.jpg' %}" alt="Four slide"></a>
+                {#                <div class="carousel-caption">标题 4</div>#}
             </div>
             <div class="item">
-                <img src="{% static 'scutmocc/css/5.jpg' %}" alt="Four slide">
-
-                <div class="carousel-caption">标题 5</div>
+                <a href=""><img src="{% static 'scutmocc/images/t5.png' %}" alt="Four slide"></a>
+                {#                <div class="carousel-caption">标题 5</div>#}
             </div>
         </div>
         <!-- 轮播（Carousel）导航 -->
@@ -57,16 +52,17 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
+
     <div class="row">
-        <h2 style="margin-bottom:30px"><a href="">精品推荐</a></h2>
+        <h3 style="margin-bottom:30px"><a href="">精品推荐</a></h3>
 
         <div class="col-md-2">
             <div class="thumbnail">
-                <a href=""><img src="{% static 'scutmocc/css/6.png' %}" alt="..."></a>
+                <a href=""><img src="{% static 'scutmocc/images/j1.jpg' %}" alt="..."></a>
                 <div class="caption">
-                    <h4><a href="">Thumbnail label</a></h4>
+                    <h5><a href="">数据库设计</a></h5>
                     <p class="teacher"><a href="#"><span class="label label-primary"
-                                                         style="font-size: small;">百步梯</span></a></p>
+                                                         style="font-size: smaller;">百步梯</span></a></p>
                     <p class="price">
                         <a href="#">￥120</a>
                         <a href="#">123人赞</a>
@@ -76,11 +72,11 @@
         </div>
         <div class="col-md-2">
             <div class="thumbnail">
-                <a href=""><img src="{% static 'scutmocc/css/6.png' %}" alt="..."></a>
+                <a href=""><img src="{% static 'scutmocc/images/j2.jpg' %}" alt="..."></a>
                 <div class="caption">
-                    <h4><a href="">Thumbnail label</a></h4>
+                    <h5><a href="">Android开发</a></h5>
                     <p class="teacher"><a href="#"><span class="label label-success"
-                                                         style="font-size: small;">百步梯</span></a></p>
+                                                         style="font-size: smaller;">BBT</span></a></p>
                     <p class="price">
                         <a href="#">￥120</a>
                         <a href="#">123人赞</a>
@@ -90,11 +86,11 @@
         </div>
         <div class="col-md-2">
             <div class="thumbnail">
-                <a href=""><img src="{% static 'scutmocc/css/6.png' %}" alt="..."></a>
+                <a href=""><img src="{% static 'scutmocc/images/j3.jpg' %}" alt="..."></a>
                 <div class="caption">
-                    <h4><a href="">Thumbnail label</a></h4>
+                    <h5><a href="">Thumbnail label</a></h5>
                     <p class="teacher"><a href="#"><span class="label label-primary"
-                                                         style="font-size: small;">百步梯</span></a></p>
+                                                         style="font-size: smaller;">OFO</span></a></p>
                     <p class="price">
                         <a href="#">￥120</a>
                         <a href="#">123人赞</a>
@@ -104,11 +100,11 @@
         </div>
         <div class="col-md-2">
             <div class="thumbnail">
-                <a href=""><img src="{% static 'scutmocc/css/6.png' %}" alt="..."></a>
+                <a href=""><img src="{% static 'scutmocc/images/j4.jpg' %}" alt="..."></a>
                 <div class="caption">
-                    <h4><a href="">Thumbnail label</a></h4>
+                    <h5><a href="">SQL Server</a></h5>
                     <p class="teacher"><a href="#"><span class="label label-success"
-                                                         style="font-size: small;">百步梯</span></a></p>
+                                                         style="font-size: smaller;">AGV</span></a></p>
                     <p class="price">
                         <a href="#">￥120</a>
                         <a href="#">123人赞</a>
@@ -118,11 +114,11 @@
         </div>
         <div class="col-md-2">
             <div class="thumbnail">
-                <a href=""><img src="{% static 'scutmocc/css/6.png' %}" alt="..."></a>
+                <a href=""><img src="{% static 'scutmocc/images/j5.jpg' %}" alt="..."></a>
                 <div class="caption">
-                    <h4><a href="">Thumbnail label</a></h4>
+                    <h5><a href="">LOL打野攻略</a></h5>
                     <p class="teacher"><a href="#"><span class="label label-primary"
-                                                         style="font-size: small;">百步梯</span></a></p>
+                                                         style="font-size: smaller;">EDG</span></a></p>
                     <p class="price">
                         <a href="#">￥120</a>
                         <a href="#">123人赞</a>
@@ -132,11 +128,11 @@
         </div>
         <div class="col-md-2">
             <div class="thumbnail">
-                <a href=""><img src="{% static 'scutmocc/css/6.png' %}" alt="..."></a>
+                <a href=""><img src="{% static 'scutmocc/images/j6.jpg' %}" alt="..."></a>
                 <div class="caption">
-                    <h4><a href="">Thumbnail label</a></h4>
+                    <h5><a href="">Thumbnail label</a></h5>
                     <p class="teacher"><a href="#"><span class="label label-success"
-                                                         style="font-size: small;">百步梯</span></a></p>
+                                                         style="font-size: smaller;">百步梯</span></a></p>
                     <p class="price">
                         <a href="#">￥120</a>
                         <a href="#">123人赞</a>
@@ -146,165 +142,219 @@
         </div>
     </div>
     <div class="row">
-        <h2><a href="">课程精讲</a></h2>
+        <h3><a href="">课程精讲</a></h3>
 
         <div class="col-md-6">
             <h3>社团</h3>
-            <ol class="list-group">
-                <li class="list-group-item"><a href="">2016跳槽最靠谱建议：钱多活少离家近的互联网工作，有吗？</a></li>
-                <li class="list-group-item"><a href="">想转行 你准备好了吗</a></li>
-                <li class="list-group-item"><a href="">想转行 你准备好了吗</a></li>
-                <li class="list-group-item"><a href="">职场 | 瞎忙族与高效人士的13个不同点</a></li>
-                <li class="list-group-item"><a href="">职场 | 有一种挨骂叫成长</a></li>
-                <li><a href="{% url 'course_detail' 10 %}">查看更多&gt;&gt;</a></li>
+            <ol>
+                <li><a href="">~ 2016跳槽最靠谱建议：钱多活少离家近的互联网工作</a></li>
+                <li><a href="">~ 想转行 你准备好了吗</a></li>
+                <li><a href="">~ 想转行 你准备好了吗</a></li>
+                <li><a href="">~ 职场 | 瞎忙族与高效人士的13个不同点</a></li>
+                <li><a href="">~ 职场 | 有一种挨骂叫成长</a></li>
+                <li><a href="{% url 'course_detail' 'd' 0 0 %}">查看更多&gt;&gt;</a></li>
             </ol>
         </div>
         <div class="col-md-6">
             <h3>个人</h3>
-            <ol class="list-group">
-                <li class="list-group-item"><a href="">2016跳槽最靠谱建议：钱多活少离家近的互联网工作，有吗？</a></li>
-                <li class="list-group-item"><a href="">想转行 你准备好了吗</a></li>
-                <li class="list-group-item"><a href="">喜报 麦子学院七月精英学员就业榜新</a></li>
-                <li class="list-group-item"><a href="">职场 | 瞎忙族与高效人士的13个不同点</a></li>
-                <li class="list-group-item"><a href="">职场 | 有一种挨骂叫成长</a></li>
-                <li><a href="{% url 'course_detail' 11 %}">查看更多&gt;&gt;</a></li>
+            <ol>
+                <li><a href="">-- 2016跳槽最靠谱建议：钱多活少离家近的互联网工作</a></li>
+                <li><a href="">-- 想转行 你准备好了吗</a></li>
+                <li><a href="">-- 喜报 麦子学院七月精英学员就业榜新</a></li>
+                <li><a href="">-- 职场 | 瞎忙族与高效人士的13个不同点</a></li>
+                <li><a href="">-- 职场 | 有一种挨骂叫成长</a></li>
+                <li><a href="{% url 'course_detail' 'd' 0 0 %}">查看更多&gt;&gt;</a></li>
             </ol>
         </div>
     </div>
     <div class="row">
-        <h2><a href="">技能学习</a></h2>
+        <h3><a href="">技能学习</a></h3>
 
         <div class="col-md-6">
             <h3>社团</h3>
-            <ol class="list-group">
-                <li class="list-group-item"><a href="">2016跳槽最靠谱建议：钱多活少离家近的互联网工作，有吗？</a></li>
-                <li class="list-group-item"><a href="">想转行 你准备好了吗</a></li>
-                <li class="list-group-item"><a href="">想转行 你准备好了吗</a></li>
-                <li class="list-group-item"><a href="">职场 | 瞎忙族与高效人士的13个不同点</a></li>
-                <li class="list-group-item"><a href="">职场 | 有一种挨骂叫成长</a></li>
-                <li><a href="{% url 'course_detail' 20 %}">查看更多&gt;&gt;</a></li>
+            <ol>
+                <li><a href="">~ 2016跳槽最靠谱建议：钱多活少离家近的互联网工作</a></li>
+                <li><a href="">~ 想转行 你准备好了吗</a></li>
+                <li><a href="">~ 想转行 你准备好了吗</a></li>
+                <li><a href="">~ 职场 | 瞎忙族与高效人士的13个不同点</a></li>
+                <li><a href="">~ 职场 | 有一种挨骂叫成长</a></li>
+                <li><a href="{% url 'course_detail' 'd' 0 0 %}">查看更多&gt;&gt;</a></li>
             </ol>
         </div>
         <div class="col-md-6">
             <h3>个人</h3>
-            <ol class="list-group">
-                <li class="list-group-item"><a href="">2016跳槽最靠谱建议：钱多活少离家近的互联网工作，有吗？</a></li>
-                <li class="list-group-item"><a href="">想转行 你准备好了吗</a></li>
-                <li class="list-group-item"><a href="">喜报 麦子学院七月精英学员就业榜新</a></li>
-                <li class="list-group-item"><a href="">职场 | 瞎忙族与高效人士的13个不同点</a></li>
-                <li class="list-group-item"><a href="">职场 | 有一种挨骂叫成长</a></li>
-                <li><a href="{% url 'course_detail' 21 %}">查看更多&gt;&gt;</a></li>
+            <ol>
+                <li><a href="">-- 2016跳槽最靠谱建议：钱多活少离家近的互联网工作</a></li>
+                <li><a href="">-- 想转行 你准备好了吗</a></li>
+                <li><a href="">-- 喜报 麦子学院七月精英学员就业榜新</a></li>
+                <li><a href="">-- 职场 | 瞎忙族与高效人士的13个不同点</a></li>
+                <li><a href="">-- 职场 | 有一种挨骂叫成长</a></li>
+                <li><a href="{% url 'course_detail' 'd' 0 0 %}">查看更多&gt;&gt;</a></li>
             </ol>
         </div>
     </div>
     <div class="row">
-        <h2><a href="">项目实战</a></h2>
+        <h3><a href="">项目实战</a></h3>
 
         <div class="col-md-6">
             <h3>社团</h3>
-            <ol class="list-group">
-                <li class="list-group-item"><a href="">2016跳槽最靠谱建议：钱多活少离家近的互联网工作，有吗？</a></li>
-                <li class="list-group-item"><a href="">想转行 你准备好了吗</a></li>
-                <li class="list-group-item"><a href="">想转行 你准备好了吗</a></li>
-                <li class="list-group-item"><a href="">职场 | 瞎忙族与高效人士的13个不同点</a></li>
-                <li class="list-group-item"><a href="">职场 | 有一种挨骂叫成长</a></li>
-                <li><a href="{% url 'course_detail' 30 %}">查看更多&gt;&gt;</a></li>
+            <ol>
+                <li><a href="">~ 2016跳槽最靠谱建议：钱多活少离家近的互联网工作</a></li>
+                <li><a href="">~ 想转行 你准备好了吗</a></li>
+                <li><a href="">~ 想转行 你准备好了吗</a></li>
+                <li><a href="">~ 职场 | 瞎忙族与高效人士的13个不同点</a></li>
+                <li><a href="">~ 职场 | 有一种挨骂叫成长</a></li>
+                <li><a href="{% url 'course_detail' 'd' 0 0 %}">查看更多&gt;&gt;</a></li>
             </ol>
         </div>
         <div class="col-md-6">
             <h3>个人</h3>
-            <ol class="list-group">
-                <li class="list-group-item"><a href="">2016跳槽最靠谱建议：钱多活少离家近的互联网工作，有吗？</a></li>
-                <li class="list-group-item"><a href="">想转行 你准备好了吗</a></li>
-                <li class="list-group-item"><a href="">喜报 麦子学院七月精英学员就业榜新</a></li>
-                <li class="list-group-item"><a href="">职场 | 瞎忙族与高效人士的13个不同点</a></li>
-                <li class="list-group-item"><a href="">职场 | 有一种挨骂叫成长</a></li>
-                <li><a href="{% url 'course_detail' 31 %}">查看更多&gt;&gt;</a></li>
+            <ol>
+                <li><a href="">-- 2016跳槽最靠谱建议：钱多活少离家近的互联网工作</a></li>
+                <li><a href="">-- 想转行 你准备好了吗</a></li>
+                <li><a href="">-- 喜报 麦子学院七月精英学员就业榜新</a></li>
+                <li><a href="">-- 职场 | 瞎忙族与高效人士的13个不同点</a></li>
+                <li><a href="">-- 职场 | 有一种挨骂叫成长</a></li>
+                <li><a href="{% url 'course_detail' 'd' 0 0 %}">查看更多&gt;&gt;</a></li>
             </ol>
         </div>
     </div>
     <div class="row">
-        <h2>分类</h2>
+        <h3>分类</h3>
         <div style="margin-top:50px ">
             <div class="col-md-2">
-                <a href="#" class="thumbnail">
-                    <img src="{% static 'scutmocc/css/6.png' %}" alt=""/>
-                </a>
+               <div class="thumbnail">
+                    <a href="#">
+                        <img src="{% static 'scutmocc/images/f1.jpg' %}" alt=""/>
+                    </a>
+                    <div class="caption">
+                        <h6>android进阶</h6>
+                    </div>
+                </div>
             </div>
             <div class="col-md-2">
-                <a href="#" class="thumbnail">
-
-                    <img src="{% static 'scutmocc/css/6.png' %}" alt=""/>
-                </a>
+               <div class="thumbnail">
+                    <a href="#">
+                        <img src="{% static 'scutmocc/images/f2.jpg' %}" alt=""/>
+                    </a>
+                    <div class="caption">
+                        <h6>java思想</h6>
+                    </div>
+                </div>
             </div>
             <div class="col-md-2">
-                <a href="#" class="thumbnail">
-
-                    <img src="{% static 'scutmocc/css/6.png' %}" alt=""/>
-                </a>
+                <div class="thumbnail">
+                    <a href="#">
+                        <img src="{% static 'scutmocc/images/f3.jpg' %}" alt=""/>
+                    </a>
+                    <div class="caption">
+                        <h6>MBA进修</h6>
+                    </div>
+                </div>
             </div>
             <div class="col-md-2">
-                <a href="#" class="thumbnail">
-
-                    <img src="{% static 'scutmocc/css/6.png' %}" alt=""/>
-                </a>
+               <div class="thumbnail">
+                    <a href="#">
+                        <img src="{% static 'scutmocc/images/f4.jpg' %}" alt=""/>
+                    </a>
+                    <div class="caption">
+                        <h6>计算机概论</h6>
+                    </div>
+                </div>
             </div>
             <div class="col-md-2">
-                <a href="#" class="thumbnail">
-
-                    <img src="{% static 'scutmocc/css/6.png' %}" alt=""/>
-                </a>
+                <div class="thumbnail">
+                    <a href="#">
+                        <img src="{% static 'scutmocc/images/f5.jpg' %}" alt=""/>
+                    </a>
+                    <div class="caption">
+                        <h6>微观金融</h6>
+                    </div>
+                </div>
             </div>
             <div class="col-md-2">
-                <a href="#" class="thumbnail">
-
-                    <img src="{% static 'scutmocc/css/6.png' %}" alt=""/>
-                </a>
+                <div class="thumbnail">
+                    <a href="#">
+                        <img src="{% static 'scutmocc/images/f6.jpg' %}" alt=""/>
+                    </a>
+                    <div class="caption">
+                        <h6>游戏设计</h6>
+                    </div>
+                </div>
             </div>
         </div>
         <div>
             <div class="col-md-2">
-                <a href="#" class="thumbnail">
+                <div class="thumbnail">
+                    <a href="#">
+                        <img src="{% static 'scutmocc/images/f7.jpg' %}" alt=""/>
+                    </a>
+                    <div class="caption">
+                        <h6>数据分析</h6>
+                    </div>
+                </div>
 
-                    <img src="{% static 'scutmocc/css/6.png' %}" alt=""/>
-                </a>
             </div>
             <div class="col-md-2">
-                <a href="#" class="thumbnail">
-
-                    <img src="{% static 'scutmocc/css/6.png' %}" alt=""/>
-                </a>
+               <div class="thumbnail">
+                    <a href="#">
+                        <img src="{% static 'scutmocc/images/f8.jpg' %}" alt=""/>
+                    </a>
+                    <div class="caption">
+                        <h6>宏观经济</h6>
+                    </div>
+                </div>
             </div>
             <div class="col-md-2">
-                <a href="#" class="thumbnail">
-
-                    <img src="{% static 'scutmocc/css/6.png' %}" alt=""/>
-                </a>
+               <div class="thumbnail">
+                    <a href="#">
+                        <img src="{% static 'scutmocc/images/f9.jpg' %}" alt=""/>
+                    </a>
+                    <div class="caption">
+                        <h6>音乐制作</h6>
+                    </div>
+                </div>
             </div>
             <div class="col-md-2">
-                <a href="#" class="thumbnail">
-
-                    <img src="{% static 'scutmocc/css/6.png' %}" alt=""/>
-                </a>
+               <div class="thumbnail">
+                    <a href="#">
+                        <img src="{% static 'scutmocc/images/f10.jpg' %}" alt=""/>
+                    </a>
+                    <div class="caption">
+                        <h6>现代物理</h6>
+                    </div>
+                </div>
             </div>
             <div class="col-md-2">
-                <a href="#" class="thumbnail">
-
-                    <img src="{% static 'scutmocc/css/6.png' %}" alt=""/>
-                </a>
+                <div class="thumbnail">
+                    <a href="#">
+                        <img src="{% static 'scutmocc/images/f11.jpg' %}" alt=""/>
+                    </a>
+                    <div class="caption">
+                        <h6>实用医学</h6>
+                    </div>
+                </div>
             </div>
             <div class="col-md-2">
-                <a href="#" class="thumbnail">
-
-                    <img src="{% static 'scutmocc/css/6.png' %}" alt=""/>
-                </a>
+               <div class="thumbnail">
+                    <a href="#">
+                        <img src="{% static 'scutmocc/images/f12.jpg' %}" alt=""/>
+                    </a>
+                    <div class="caption">
+                        <h6>宇宙探秘</h6>
+                    </div>
+                </div>
             </div>
         </div>
-        <div style="text-align: center"><a style="color:green;" href="" class="btn btn-default btn-lg" role="button">查看更多</a>
+        <div style="text-align: center;"><a style="background-color: whitesmoke" href="" class="btn btn-default"
+                                            role="button">查看更多</a>
         </div>
 
     </div>
-</div>
+</article>
+<footer>
+
+</footer>
 </body>
 {% include 'template/navscript.html' %}
 </html>

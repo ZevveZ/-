@@ -21,8 +21,37 @@ import re
 
 
 def homepage(request):
-
+    xiangmu = SubmitLes.objects.filter(Les_Kind='a')
+    lesson = SubmitLes.objects.filter(Les_Kind='b')
+    shizhan = SubmitLes.objects.filter(Les_Kind='c')
+    x_length = xiangmu.counet()
+    l_length = lesson.count()
+    s_length = shizhan.count()
+    if x_length > 5:
+        xiangmu = xiangmu.all()[x_length-5:x_length]
+    else:
+        xiangmu = xiangmu.all()
+    if l_length > 5:
+        lesson = lesson.all()[l_length-5:l_length]
+    else:
+        lesson = lesson.all()
+    if s_length > 5:
+        shizhan = shizhan.all()[s_length-5:s_length]
+    else:
+        shizhan = shizhan.all()
     return render(request, 'homepage/homepage.html')
+
+
+def search(request):
+    if request.method == 'POST':
+        key = request.POST.get('keyword')
+        try:
+            lessons = SubmitLes.objects.filter(Les_Name__icontains=key).all()
+        except ObjectDoesNotExist:
+            return HttpResponse("很抱歉没有找到相关课程")
+        return render(request, 'homepage/search_result.html', {'lessons': lessons})
+    else:
+        return HttpResponse('页面不存在')
 
 
 # display user center
@@ -145,9 +174,9 @@ def course_list(request, direction, labeler, character):
         if character == '0':
             courses = courses.all()
         if character == '1':
-            courses == courses.all()
+            courses == courses.filter(Person_Id__activity__isnull=True).all()
         if character == '2':
-            courses = courses.all()
+            courses = courses.filter(Person_Id__person__isnull=True).all()
     else:
         character = '0'
     labels = LabelField.objects.all()
@@ -172,17 +201,31 @@ def course_detail(request, direction, labeler, character):
 @login_required
 def lesson_detail(request, les_id):
     lesson = SubmitLes.objects.get(id=les_id)
-    remain = request.Get.get('remain')
-    if remain:
+    if request.method == 'POST':
+        tel = request.POST.get('tel')
+        uid = request.POST.get('uid')
         if lesson.Les_Pnum > 0:
-            student = User.objects.get(id=remain)
-            ChoiceLes.objects.create(Les_Id=les_id, Person=student, Contact=student.email, End=False)
-            lesson.Les_Pnum = lesson.Les_Merge - 1;
+            student = User.objects.get(id=uid)
+            ChoiceLes.objects.create(Les_Id=lesson, Person=student, Contact=tel, End=False)
+            lesson.Les_Pnum = lesson.Les_Merge - 1
+            lesson.save()
             return HttpResponse("订课成功，请前往个人中心查看")
         else:
             return HttpResponse("很遗憾课程人数已满")
     else:
         return render(request, 'course/lesson_detail.html', {'lesson': lesson})
+
+        # remain = request.Get.get('remain')
+    # if remain:
+    #     if lesson.Les_Pnum > 0:
+    #         student = User.objects.get(id=remain)
+    #         ChoiceLes.objects.create(Les_Id=les_id, Person=student, Contact=student.email, End=False)
+    #         lesson.Les_Pnum = lesson.Les_Merge - 1;
+    #         return HttpResponse("订课成功，请前往个人中心查看")
+    #     else:
+    #         return HttpResponse("很遗憾课程人数已满")
+    # else:
+    #     return render(request, 'course/lesson_detail.html', {'lesson': lesson})
 
 
 # display the homepage of bbs
